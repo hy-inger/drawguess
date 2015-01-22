@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+	<style type="text/css">
+	table { border:1px solid green;}
+	table thead tr th{ border:1px solid green;}
+	table tbody tr td{ border:1px solid green;}
+	a{cursor: pointer;}
+	</style>
+	
+  </head>
+  <body>
+	<p>
+		<a href="add">增加</a>
+		
+	</p>
+    <h1>DEMO List</h1>
+    
+	
+	<table>
+		<thead>
+			<tr>
+				<th>_id</th>
+				<th>sid</th>
+				<th>name</th>
+				<th>school</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% user.forEach(function( demo ){ %>
+			<tr>
+				<td><%=demo._id%></td>
+				<td><%= demo.sid %></td>
+				<td><%= demo.name %></td>
+				<td><%= demo.school %></td>
+				<td><a class="delete" _id = "<%= demo._id%>">Delete</a> | <a href="modify?id=<%=demo._id%>">Update</a></td>
+			</tr>
+			<% }); %>
+		</tbody>
+	</table>
+  </body>
+  <script type="text/javascript" src = "/javascripts/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript">
+  	var del = $(".delete");
+  	del.click(function(){
+  		var id = $(this).attr("_id");
+  		var $this = $(this);
+  		$.ajax({
+  			url:"/del?id="+id,
+  			type:"GET",
+  			async:false,
+  			success:function(data){
+  				console.log(data);
+  				if(data.data){
+  					alert("删除成功！");
+  					$this.parents("tr").slideUp();
+  				}
+  			}
+  		});
+  	});
+
+  </script>
+</html>
