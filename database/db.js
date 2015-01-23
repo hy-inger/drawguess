@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost/testdb');//；连接数据库
+var db = mongoose.connect('mongodb://localhost/drawguess');//；连接数据库
 db.connection.on("error",function(error){
 	console.log("数据库连接失败："+error);
 });
