@@ -1,0 +1,40 @@
+*{
+	margin:0;
+	padding:0;
+}
+body {
+  
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a{
+	text-decoration: none;
+}
+ul{
+	list-style: none;
+}
+
+.container{
+	margin:0 auto;
+	width:1000px;
+}
+#mycanvas{
+	width:400;
+	height:400;
+	border:1px solid #ccc;
+}
+.pencil li{
+	float:left;
+	padding:10px 20px;
+	cursor: pointer;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+.clearfix {
+  zoom: 1;
+}
