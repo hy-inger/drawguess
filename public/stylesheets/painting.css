@@ -21,12 +21,26 @@ ul{
 	width:400;
 	height:400;
 	border:1px solid #ccc;
+	cursor: default;
 }
 .pencil li{
 	float:left;
 	padding:10px 20px;
 	cursor: pointer;
 }
+.color{
+	width:175px;
+}
+.color li{
+	float:left;
+	width:25px;
+	height:25px;
+}
+
+
+
+
+
 
 .clearfix:after {
   content: ".";
