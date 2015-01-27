@@ -2,20 +2,50 @@ function Draw(canvasObj){
 	var mouseX,mouseY,mx,my;
 	var isDraw = false;
 	var ctx = canvasObj.getContext('2d');
+	var type = "pencil";
 	ctx.shadowBlur = 3;
-	//ctx.shadowColor = 'rgb(0,0,0)';
 	ctx.lineJoin = ctx.lineCap = "round";//线条末端样式
+	console.log(canvasObj.offsetLeft+" "+canvasObj.offsetTop);
+	console.log(canvasObj.offsetWidth+" "+canvasObj.offsetHeight);
 	this.setlineWidth = function(lw){
 		ctx.lineWidth = lw;
 	}
 	this.setcolor = function(sc){		
-		ctx.strokeStyle = sc;
-		ctx.shadowColor = sc;
+		ctx.strokeStyle = sc;//修改画笔颜色
+		ctx.shadowColor = sc;//修改线条阴影颜色
 	}
+	this.settype = function(st){
+		type = st;
+	}
+	this.emptyCanvas = function(){
+		ctx.clearRect(0,0,canvasObj.width,canvasObj.height);
+	}
+	//获取鼠标click或move的坐标
 	var coordinate = function(e){
-		mouseX = e.clientX-parseInt($(".container").css("margin-left"));
-		mouseY = e.clientY;
+		mouseX = e.clientX - canvasObj.offsetLeft;
+		mouseY = e.clientY - canvasObj.offsetTop;
 
+	}
+	//画笔功能，绘制路径。
+	var drawline = function(){
+		ctx.globalCompositeOperation = 'source-over';//默认行为。
+		ctx.save();
+		ctx.beginPath();
+		ctx.moveTo(mx,my);
+		ctx.lineTo(mouseX,mouseY);
+		ctx.closePath();
+		ctx.stroke();
+		mx = mouseX;
+		my = mouseY;
+	}
+	//橡皮擦功能。以圆为路径擦除。
+	var erasering = function(){
+		ctx.globalCompositeOperation = 'destination-out';//说明如何在画布上组合颜色，destination-out表示已有内容不被重叠的部分保留，其他内容透明。
+		ctx.save();
+		ctx.beginPath();
+		ctx.arc(mouseX,mouseY,10,0,2*Math.PI);
+		ctx.fill();
+		ctx.restore();
 	}
 	canvasObj.onmousedown = function(e){		
 		isDraw = true;	
@@ -25,17 +55,14 @@ function Draw(canvasObj){
 	}
 	canvasObj.onmousemove = function(e){
 		coordinate(e);
-		console.log(ctx.fillStyle);
 		if(isDraw){
-			ctx.save();
-			ctx.beginPath();
-			ctx.moveTo(mx,my);
-			ctx.lineTo(mouseX,mouseY);
-			ctx.closePath();
-			ctx.stroke();
-			mx = mouseX;
-			my = mouseY;
-		}
+			if(type == 'pencil'){
+				drawline();
+			} else if(type == 'eraser'){
+				erasering();
+			}
+
+		} 
 	}
 	canvasObj.onmouseup = function(e){
 		isDraw = false;
@@ -48,6 +75,24 @@ $(document).ready(function(){
 	var myDraw = new Draw(mycanvas);
 	myDraw.setlineWidth(4);
 
+	//选择工具
+	$(".tool li").each(function(i){
+		$(this).click(function(){
+			switch(i){
+				case 0:
+					myDraw.settype('pencil');
+					break;
+				case 1:
+					myDraw.settype("eraser");
+					break;
+				case 2:
+					myDraw.emptyCanvas();
+					break;
+
+			}
+		});
+	});
+	//选择画笔大小
 	$(".pencil li").each(function(i){
 		$(this).click(function(){
 			switch(i){
@@ -60,10 +105,13 @@ $(document).ready(function(){
 				case 2:
 					myDraw.setlineWidth(6);
 					break;
+				case 3:
+					myDraw.setlineWidth(10);
 
 			}
 		});
 	});
+	//选择颜色
 	$(".color li").each(function(i){
 		$(this).click(function(){
 			switch(i){

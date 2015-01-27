@@ -1,0 +1,9 @@
+创建项目：express -e test 初始化组件：npm install
+安装调试器：npm install -g node-inspector
+指定调试器的新端口号：node-inspector –web-port=7777
+访问路径：http://localhost:3000/
+调试路径：http://127.0.0.1:8080/debug?port=5858
+安装debug工具：npm install -g supervisor
+node debug模式启动：supervisor ./bin/www
+
+启动数据库：D:\mongodb\bin>net start mongodb
