@@ -17,28 +17,57 @@ ul{
 	margin:0 auto;
 	width:1000px;
 }
-#mycanvas{
-	width:400;
-	height:400;
+.drawarea #mycanvas{
+	width:400px;
+	height:200px;
 	border:1px solid #ccc;
 	cursor: default;
 }
-.pencil li{
+.drawarea ul li{
 	float:left;
-	padding:10px 20px;
-	cursor: pointer;
+	cursor:pointer;
+	padding:0 5px;
 }
-.color{
+.drawarea ul li em{
+	display: inline-block;
+	width:26px;
+	height: 26px;	
+	background: url("../images/canvas.png") no-repeat;
+	border:1px solid #ccc;
+}
+
+.drawarea .pencil li:nth-child(1) em{
+	background-position: -123px -22px;
+}
+.drawarea .pencil li:nth-child(2) em{
+	background-position: -92px -21px;
+}
+.drawarea .pencil li:nth-child(3) em{
+	background-position: -59px -20px;
+}
+.drawarea .pencil li:nth-child(4) em{
+	background-position: -18px -23px;
+}
+.drawarea .tool li em.pencil{
+	background-position: -51px -66px;
+}
+.drawarea .tool li em.eraser{
+	background-position: -14px -64px;
+}
+.drawarea .tool li em.trash{
+	background-position: -128px -71px;
+}
+
+
+.drawarea .color{
 	width:175px;
 }
-.color li{
+.drawarea .color li{
 	float:left;
 	width:25px;
 	height:25px;
+	padding:0;
 }
-
-
-
 
 
 
