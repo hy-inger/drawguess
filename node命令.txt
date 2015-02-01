@@ -1,9 +1,22 @@
+/*安装过程*/
+安装nodejs：http://nodejs.org/download/
+在快速启动处打开 Nodejs command prompt 进入nodejs安装目录 如 F:\nodejs
+安装express ：键入 npm install -g express -generator
+安装debug工具：npm install -g supervisor
+
+安装mongodb ：http://www.mongodb.org/downloads
+进入到mongodb bin目录下。如：F:\Mongodb\bin
+指定数据库存放目录：F:\Mongodb\data 在data目录下建立log和db两个文件夹
+将mongodb安装为window服务：mongod --logpath "F:\MongoDB\data\log\mongodb.log" --logappend --dbpath "F:\MongoDB\data\db" --directoryperdb --serviceName "MongoDB" --serviceDisplayName "MongoDB" --install
+然后就可以启动mongdb了：D:\mongodb\bin>net start mongodb
+
+
+
+/*创建项目*/
 创建项目：express -e test 初始化组件：npm install
 安装调试器：npm install -g node-inspector
 指定调试器的新端口号：node-inspector –web-port=7777
 访问路径：http://localhost:3000/
 调试路径：http://127.0.0.1:8080/debug?port=5858
-安装debug工具：npm install -g supervisor
 node debug模式启动：supervisor ./bin/www
 
-启动数据库：D:\mongodb\bin>net start mongodb

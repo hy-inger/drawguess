@@ -1,0 +1,73 @@
+用户名：huangying312 邮箱：jssy010@126.com 密码：yingh30403
+安装使用详细教程：http://www.woiweb.net/github-gitshell-tutorial.html
+一、配置SSH公钥：
+	1、设置git的user name和email
+		git config --global user.name "huangying312"
+		git config --global user.email "jssy010@126.com"
+	2、生成ssh密钥
+		(1).查看是否已经有了ssh密钥：cd ~/.ssh
+		 如果没有密钥则不会有此文件夹，有则备份删除
+		(2).生成密钥：
+			$ ssh-keygen -t rsa -C “haiyan.xu.vip@gmail.com”
+			按3个回车，密码为空。
+
+			Your identification has been saved in /home/tekkub/.ssh/id_rsa.
+			Your public key has been saved in /home/tekkub/.ssh/id_rsa.pub.
+			The key fingerprint is:
+			………………
+			最后得到了两个文件：id_rsa和id_rsa.pub
+		（3）在githut上添加密钥。
+			打开setting--SSH keys--add SSH key，将id_rsa.pub”里面的公钥复制过去。title可随意填写。
+		（4）测试：ssh git@github.com
+			Warning: Permanently added 'github.com,192.30.252.128' (RSA) to the list of know
+			n hosts.
+			PTY allocation request failed on channel 0
+			Hi huangying312! You've successfully authenticated, but GitHub does not provide
+			shell access.(有这一句即配置成功。)
+			Connection to github.com closed.
+二、如何在window下把项目提交到github
+	在这里使用的是git shell
+	主要是在git上创建仓库后，https://github.com/huangying312/drawguess.git
+	进入到项目目录中，
+	首先 touch README.md，然后git init，表示在当前的项目目录中生成本地的git管理。
+	然后git add . 添加所有文件，git commit -m "首次commit"
+	git remote add origin https://github.com/huangying312/drawguess.git（为项目创建的仓库）。
+	git push origin master.
+	由于有设置公钥，因此在git操作中可不输入密码。
+	参考资料：http://michaelye1988.iteye.com/blog/1637951
+	
+	
+	
+	
+	
+	
+	
+	
+	
+----------------------------------------------------------------------------------------
+canva参考书签：
+http://perfectionkills.com/exploring-canvas-drawing-techniques/
+http://bbs.9ria.com/thread-190696-1-1.html
+
+
+————————————————————————————————————————————————————————————————————————————————
+进入mongodb：F:\Mongodb\bin
+启动mongodb数据库：net start MongoDB
+进入drawguess项目：F:\nodejs\project\drawguess
+启动express debug模式：supervisor bin/www
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
