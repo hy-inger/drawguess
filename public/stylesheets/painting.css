@@ -18,8 +18,6 @@ ul{
 	width:1000px;
 }
 .drawarea #mycanvas{
-	width:400px;
-	height:200px;
 	border:1px solid #ccc;
 	cursor: default;
 }

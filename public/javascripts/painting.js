@@ -6,7 +6,6 @@ function Draw(canvasObj){
 	ctx.shadowBlur = 3;
 	ctx.lineJoin = ctx.lineCap = "round";//线条末端样式
 	console.log(canvasObj.offsetLeft+" "+canvasObj.offsetTop);
-	console.log(canvasObj.offsetWidth+" "+canvasObj.offsetHeight);
 	this.setlineWidth = function(lw){
 		ctx.lineWidth = lw;
 	}
@@ -22,9 +21,10 @@ function Draw(canvasObj){
 	}
 	//获取鼠标click或move的坐标
 	var coordinate = function(e){
-		mouseX = e.clientX - canvasObj.offsetLeft;
-		mouseY = e.clientY - canvasObj.offsetTop;
-
+		var rect = canvasObj.getBoundingClientRect();
+		console.log(rect);
+		mouseX = e.pageX - rect.left;
+		mouseY = e.pageY - rect.top;
 	}
 	//画笔功能，绘制路径。
 	var drawline = function(){
@@ -73,7 +73,7 @@ $(document).ready(function(){
 	var mycanvas = document.getElementById('mycanvas');
 	var mycontext = mycanvas.getContext('2d');
 	var myDraw = new Draw(mycanvas);
-	myDraw.setlineWidth(4);
+	myDraw.setlineWidth(2);
 
 	//选择工具
 	$(".tool li").each(function(i){
