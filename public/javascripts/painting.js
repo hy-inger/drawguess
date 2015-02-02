@@ -5,7 +5,6 @@ function Draw(canvasObj){
 	var type = "pencil";
 	ctx.shadowBlur = 3;
 	ctx.lineJoin = ctx.lineCap = "round";//线条末端样式
-	console.log(canvasObj.offsetLeft+" "+canvasObj.offsetTop);
 	this.setlineWidth = function(lw){
 		ctx.lineWidth = lw;
 	}
@@ -21,10 +20,8 @@ function Draw(canvasObj){
 	}
 	//获取鼠标click或move的坐标
 	var coordinate = function(e){
-		var rect = canvasObj.getBoundingClientRect();
-		console.log(rect);
-		mouseX = e.pageX - rect.left;
-		mouseY = e.pageY - rect.top;
+		mouseX = e.pageX - canvasObj.offsetLeft;
+		mouseY = e.pageY - canvasObj.offsetTop;
 	}
 	//画笔功能，绘制路径。
 	var drawline = function(){
