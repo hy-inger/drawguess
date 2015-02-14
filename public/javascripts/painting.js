@@ -3,6 +3,52 @@ function Draw(canvasObj){
 	var isDraw = false;
 	var ctx = canvasObj.getContext('2d');
 	var type = "pencil";
+	var begin = {};
+	socket = io.connect('ws://localhost',{
+ 		transports: ['websocket'],
+ 		"try multiple transports": false,
+ 		reconnect: true
+ 	});
+	socket.on('open',function(){
+	  console.log('连接成功');
+	});
+	  socket.on('message',function(json){
+	    console.log(json);
+	  });
+	  socket.emit("my event","huangying connect!");
+	socket.on('begin',function(data){
+		begin.mx = data.mx;
+		begin.my = data.my;
+	});
+	socket.on('drawing',function(data){
+		mouseX = data.mouseX;
+		mouseY = data.mouseY;
+		type = data.type;
+		ctx.lineWidth = data.linewidth;
+		ctx.shadowColor = ctx.strokeStyle = data.color;
+		ctx.shadowBlur = 1;
+		ctx.globalCompositeOperation = 'source-over';
+		ctx.save();
+		ctx.beginPath();
+		ctx.moveTo(begin.mx,begin.my);
+		ctx.lineTo(mouseX,mouseY);
+		ctx.closePath();
+		ctx.stroke();
+		begin.mx = mouseX;
+		begin.my = mouseY;
+	});
+	socket.on('earse',function(data){
+		ctx.globalCompositeOperation = 'destination-out';
+		ctx.save();
+		ctx.beginPath();
+		ctx.arc(data.mouseX,data.mouseY,10,0,2*Math.PI);
+		ctx.fill();
+		ctx.restore();
+	});
+	socket.on('empty',function(data){
+		console.log(data);
+		ctx.clearRect(0,0,canvasObj.width,canvasObj.height);
+	});
 	ctx.shadowBlur = 3;
 	ctx.lineJoin = ctx.lineCap = "round";//线条末端样式
 	this.setlineWidth = function(lw){
@@ -49,15 +95,29 @@ function Draw(canvasObj){
 		coordinate(e);
 		mx = mouseX;
 		my = mouseY;
+		socket.send({'mx':mx,'my':my});
 	}
 	canvasObj.onmousemove = function(e){
 		coordinate(e);
+		
 		if(isDraw){
 			if(type == 'pencil'){
 				drawline();
+				socket.send({				//将数据发送到服务端。
+					'mouseX':mouseX,
+					'mouseY':mouseY,
+					'linewidth':ctx.lineWidth,
+					'color':ctx.strokeStyle,
+					'type':type
+				});
 			} else if(type == 'eraser'){
 				erasering();
-			}
+				socket.send({
+					'mouseX':mouseX,
+					'mouseY':mouseY,
+					'type':type
+				});
+			} 
 
 		} 
 	}
@@ -84,6 +144,7 @@ $(document).ready(function(){
 					break;
 				case 2:
 					myDraw.emptyCanvas();
+					socket.send({'type':'empty'});
 					break;
 
 			}
@@ -143,6 +204,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-
+	
 	
 });
