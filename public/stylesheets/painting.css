@@ -3,8 +3,9 @@
 	padding:0;
 }
 body {
-  
+  background:url('../images/login/bg.png') no-repeat;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width:100%;
 }
 a{
 	text-decoration: none;
@@ -17,6 +18,141 @@ ul{
 	margin:0 auto;
 	width:1000px;
 }
+
+
+.index{
+	width:500px;
+	height:520px;	
+	position: absolute;
+	top:50%;
+	left:50%;
+	margin-top: -254px;
+	margin-left: -250px;
+}
+.index h3{
+	position: absolute;
+	background: url('../images/login/welcome.png') no-repeat;
+	width:140px;
+	height:45px;
+	top:95px;
+	left:200px;
+}
+.index em.rope{
+	position: absolute;
+	width:80px;
+	height:167px;
+	background: url('../images/login/rope.png') no-repeat;
+	top:-115px;
+	left:45%;
+ }
+.index form{
+	position: absolute;
+	width:100%;
+	left:50%;
+	top:50%;
+	margin-left: -250px;
+	margin-top:-110px;
+	text-align: center;
+}
+.index form em{
+	width:25px;
+	height:25px;
+	position: absolute;
+	margin-left: 5px;
+	
+}
+.index form em.user{
+	top:24px;
+	background: url('../images/login/user.png') no-repeat;
+}
+.index form em.pw{
+	top:26px;
+	background: url('../images/login/pw.png') no-repeat;
+}
+.index form input{
+	margin:17px 0;
+	height:38px;
+	width:250px;
+	border-width:1px;
+	font-size: 16px;
+	background:none;
+	color:#BAAF3D;
+	padding-left:34px;
+	border-radius: 5px;
+}
+
+.index form .submit a{
+	background:rgba(145,196,108,0.3);
+	padding:12px 80px;
+	border-radius: 5px;
+	height:auto;
+	font-size: 22px;
+	color:#BAAF3D;
+	cursor: pointer;
+
+}
+.index form div{
+	position: relative;
+}
+.index form .error{
+	position: absolute;
+	color:#f84747;
+	font-size: 12px;
+	left:165px;
+	top:59px;
+	display: none;
+}
+/*登录页面*/
+.login{
+	background:url('../images/login/loginbg.png') no-repeat;
+}
+.login form .submit{
+	margin-top: 32px;
+}
+.login form .error{
+	left:111px;
+	top:66px;
+}
+/*注册页面*/
+.register{
+	background:url('../images/login/register.png') no-repeat 
+} 
+.register form{
+	
+	margin-top: -195px;
+}
+.register form span{
+	width:15%;
+	display: inline-block;
+	text-align: left;
+	color:#52A33C;
+}
+.register form input{
+	padding-left: 5px;
+	margin:13px 0;
+}
+.register form input[type='radio']{
+	width:15px;
+	height:15px;
+	margin-left:20px;
+	margin-right:5px;
+}
+.register form .sex{
+	text-align: left;
+	margin-left: 83px;
+}
+.register form input[type='submit']{
+	margin-top:0;
+}
+.register form div{
+	position: relative;
+}
+.register form .error{
+	left:165px;
+	top:59px;
+}
+
+/*房间页面*/
 .drawarea #mycanvas{
 	border:1px solid #ccc;
 	cursor: default;

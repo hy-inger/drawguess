@@ -2,28 +2,23 @@
 <html>
   <head>
     <title><%= title %></title>
-	
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel='stylesheet' href='/stylesheets/painting.css' />
   </head>
   <body>
-  <a href="add">增加sss</a>
+    <div class="container">
+      <div class='index login'>
+        <h3></h3>
+        <em class='rope'></em>
+        <form>
+          <div><em class='user'></em><input name='user' type = 'text' value='' placeholder=''/><p class='error'>用户名不存在</p></div>
+          <div><em class="pw"></em><input name='pw' type = 'password' value = '' placeholder=''/><p class='error'>密码不正确</p></div>
+          <div class="submit"><a>login</a></div>
+        </form>
+      </div>
+    </div>
   </body>
   <script type="text/javascript" src = "/javascripts/jquery-1.10.2.min.js"></script>
   <script type="text/javascript" src = "/javascripts/socket.io.js"></script>
-  <script type="text/javascript">
-    socket = io.connect('http://localhost');
-  socket.on('open',function(){
-    console.log('连接成功');
-  });
-  socket.on('system',function(json){
-
-  });
-  socket.on('message',function(json){
-    console.log(json);
-  });
-  socket.send("test");
-  setTimeout(function(){
-  	socket.disconnect();
-  	 console.log('断开连接');
-  },3000);
-  </script>
+  <script type="text/javascript" src = "/javascripts/login.js"></script>
 </html>

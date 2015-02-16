@@ -1,0 +1,19 @@
+1、使用express接收文件需要时，需要安装中间件multer。
+	打开项目目录，输入 npm install multer，
+	使用：	var express = require('express')
+			var multer  = require('multer')
+			var app = express()
+			app.use(multer({ dest: './uploads/'}));
+		获取数据：console.log(req.body);console.log(req.files)
+	参考网址：	https://github.com/expressjs/multer
+				http://www.bkjia.com/webzh/918501.html
+2、	req.query：我用来接收GET方式提交参数
+
+　　req.body：我用来接收POST提交的参数
+
+　　req.params：两种都能接收到
+3、express访问uploads需要挂载路径。
+	app.use(express.static(path.join(__dirname , 'uploads')));//挂载路径
+4、path must be absolute or specify root to res.sendFile解决办法：绝对路径，即加入/
+	res.sendFile(path,{ root: __dirname + '/..' });
+	res.sendFile(__dirname+'/..' + path);

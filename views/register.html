@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel='stylesheet' href='/stylesheets/painting.css' />
+  </head>
+  <body>
+    <div class="container">
+      <div class='index register'>
+        <em class='rope'></em>
+        <form id='register'>
+          <div><span>用户名：</span><input name='name' type = 'text' value='' placeholder='长度为2-64个字符'/><p class='error'>用户名已存在</p></div>
+          <div><span>密码：</span><input name="password" type = 'password' value = '' placeholder='长度为6-64个字符'/><p class='error'>密码长度不准确</p></div>
+          <div><span>确认密码：</span><input name='ackn_pw' type = 'password' value = '' placeholder='长度为6-64个字符'/><p class='error'>密码不一致</p></div>
+          <div><span>年龄：</span><input name='age' type = 'text' value = '' /></div>
+          <div class='sex'><span>性别 ：</span>
+            <input type = 'radio' name='sex' value='male' id= 'male'checked/><label for='male' >男</label>
+            <input type='radio' name='sex' value='female' id ='female'/><label for='female'>女</label>
+          </div>   
+          <div><span>头像：</span><input name='headimg' id='file' type = 'file'></div>
+          <div class="submit"><a>Register</a></div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src = "/javascripts/jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src = "/javascripts/jquery-form.js"></script>
+  <script type="text/javascript" src = "/javascripts/socket.io.js"></script>
+  <script type="text/javascript" src = "/javascripts/login.js"></script>
+</html>

@@ -10,7 +10,7 @@ var users = require('./routes/users');
 
 var ejs = require('ejs');
 var app = express();
-
+var multer  = require('multer');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html',ejs.__express); 
@@ -23,6 +23,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname , 'uploads')));//挂载路径
+app.use(multer({ dest: './uploads'}))
 
 app.use('/', routes);
 app.use('/users', users);

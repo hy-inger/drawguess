@@ -7,12 +7,63 @@ var io = require('socket.io').listen(server);
 io.set('transports', [ 'websocket','flashsocket','htmlfile','xhr-polling','jsonp-polling','polling']);
 /* GET home page. */
 router.get('/', function(req, res) {
-	User.find(function(err,docs){//查询数据库的数据
+	/*User.find(function(err,docs){//查询数据库的数据
 		res.render('index', { title: 'index' ,user:docs});
-	});
-　　
+	});*/
+　　res.render('index', { title: 'index'});
+});
+/*注册页面*/
+router.get('/register',function(req,res){
+	res.render('register',{ title: 'index'});
+});
+router.get('/uploads',function(req,res){
+	res.redirect('uploads/temp.png')
 });
 
+router.get('/register/user',function(req,res){
+	var name = req.query.name;
+	User.find({'name':name},function(err,docs){
+		if(docs.length){
+			res.jsonp({'message':'exist'});
+		} else {
+			res.jsonp({'message':'ok'});
+		}
+	});
+});
+router.post('/register/action',function(req,res){
+	var  regis_user = new User({
+		name : req.body.name,
+		password : req.body.password,
+		age : req.body.age,
+		sex : req.body.sex,
+		headimg : req.files.headimg.path
+	});
+	regis_user.save(function(err,docs){
+		//res.status(200).sendFile(req.files.headimg.path,{ root: __dirname + '/..' });
+		if(err)
+			res.jsonp({'message':'error'});
+		else res.jsonp({'message':'success','headimg':req.files.headimg.name});
+	});
+});
+/*登录页面*/
+router.post('/login',function(req,res){
+	var name = req.body.name;
+	var pw = req.body.pw;
+	User.find({'name':name},function(err,docs){
+		if(docs.length){
+			if(docs[0].password == pw)
+				res.jsonp({'message':'ok'});
+			else
+				res.jsonp({'message':'pwerror'});
+		} else {
+			res.jsonp({'message':'nouser'});
+		}
+	});
+});
+/*hall*/
+router.get('/room/hall',function(req,res){
+	res.render('room/hall');
+});
 /*room*/
 router.get('/room/painting', function(req, res) {
 　　res.render('room/painting');
