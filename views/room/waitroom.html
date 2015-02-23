@@ -6,73 +6,112 @@
   </head>
   <body>
     <div class="container">
-      <div class="world_hall main clearfix">
+      <div class="main clearfix">
       	<div class="header">
       		<img src="/images/logo.png">
       		<a class="logout">退 出</a>
       	</div>
-		<div class="left room_list">
-			<div class="room_info">
-				<ul class="about_room clearfix">
-					<%for(var i=0;i<item.length;i++){%>
+		<div class="left player_list">
+			<div class='top'>
+				<h1>001</h1>
+				<div class="action">
+					<a class='begin'>立即开始</a>
+					<p><a class='addtime'>加&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时</a><a class='invite'>广播邀请</a></p>
+				</div>
+				<div class="countdown">60</div>
+				<div class='clear'></div>
+				<div class='roompass'>
+					<input type='checkbox'/>
+					<span>密码：</span>
+					<span class='pass'></span>
+					<p>
+						<input type='text' value='' maxlength="4" />
+						<a class='certain'>确定</a><a class='cancel'>取消</a>
+					</p>
+				</div>
+			</div>
+			<div class='players clearfix'>
+				<ul>
 					<li>
-						<div class="roomid clearfix">
-							<img src=''/>
-							<em class="lock"></em>
-							<h1><%= item[i].roomid%></h1>
-							<span class='ellipsis'><%=item[i].user[0].name%></span>
-							<em class="sex <%=item[i].user[0].sex%>"></em>
-						</div>
-						<div class="online">
-							<ul class="clearfix">
-								<%for (var j = 0;j<item[i].user.length;j++){%>
-								<%if (!!item[i].user[j]){%>	
-								<li>
-									<img src='<%= item[i].user[j].headimg%>'/>
-									<div class="per_info">
-										<img src='<%= item[i].user[j].headimg%>'/>
-										<h4 class='ellipsis'><%= item[i].user[j].name%></h4>
-										<em class="sex <%= item[i].user[j].sex%>"></em>
-										<em class="hi"></em>
-										<b></b>
-										<div>
-											<p class="score">积 分：<span><%= item[i].user[j].score%></span></p>
-											<p class="flower">鲜 花：<span><%= item[i].user[j].flower%></span></p>
-											<p class="popular">人 气：<span><%= item[i].user[j].flower%></span></p>
-										</div>
-									</div>
-								</li>
-								<%}else{%>
-								<li></li>
-								<%}%>								
-								<%}%>
-							</ul>
-						</div>
-						<div class='join_button <%if(!!item[i].user[6]){%>unjoin<%}%>'>加 入</div>
+						<p class='owner'><em></em>房主</p>
+						<img src = ''/>
+						<span>等待玩家</span>
+						<h4>莺儿新兰一生推</h4>					
 					</li>
-					<%}%>																		
+					<li>
+						<p class='owner'><em></em>房主</p>
+						<img class='temp' src = '../temp.jpg'/>
+						<h4>莺儿新兰一生推</h4>	
+						<div class="per_info">
+							<img src='../temp.jpg'/>
+							<h4>sssss</h4>
+							<em class="sex female"></em>
+							<em class="hi"></em>
+							<b></b>
+							<div>
+								<p class="score">积 分：<span>0</span></p>
+								<p class="flower">鲜 花：<span>0</span></p>
+								<p class="popular">人 气：<span>0</span></p>
+							</div>
+						</div>					
+					</li>
+					<li>
+						<p class='owner'><em></em>房主</p>
+						<img src = '../temp.jpg'/>
+						<h4 class='ellipsis'>莺儿新兰一生推ssssss</h4>	
+						<div class="per_info">
+							<img src='../temp.jpg'/>
+							<h4>sssss</h4>
+							<em class="sex female"></em>
+							<em class="hi"></em>
+							<b></b>
+							<div>
+								<p class="score">积 分：<span>0</span></p>
+								<p class="flower">鲜 花：<span>0</span></p>
+								<p class="popular">人 气：<span>0</span></p>
+							</div>
+						</div>						
+					</li>
+					<li>
+						<p class='owner'><em></em>房主</p>
+						<img src = '../temp.jpg'/>
+						<h4>莺儿新兰一生推</h4>	
+						<div class="per_info">
+							<img src='../temp.jpg'/>
+							<h4 class='ellipsis'>莺儿新兰一生推</h4>
+							<em class="sex female"></em>
+							<em class="hi"></em>
+							<b></b>
+							<div>
+								<p class="score">积 分：<span>0</span></p>
+								<p class="flower">鲜 花：<span>0</span></p>
+								<p class="popular">人 气：<span>0</span></p>
+							</div>
+						</div>						
+					</li>
+					<li>
+						<p class='owner'><em></em>房主</p>
+						<img src = '../temp.jpg'/>
+						<h4>莺儿新兰一生推</h4>						
+					</li>
+					<li>
+						<p class='owner'><em></em>房主</p>
+						<img class='forbid' src = ''/>
+						<h4>莺儿新兰一生推</h4>						
+					</li>
+					<li>
+						<p class='owner'><em></em>房主</p>
+						<img class='forbid' src = ''/>
+						<h4>莺儿新兰一生推</h4>						
+					</li>
+					<li>
+						<img src = ''/>
+						<h4>莺儿新兰一生推</h4>						
+					</li>
 				</ul>
 			</div>
-			<div class='operate'>
-				<a href="#">快速开始</a>
-				<input type='text' value=''/>
-				<span class="join">加 入</span>
-				<span class="waiting">等待房间</span>
-				<span class="create">创建房间</span>
-				<em class="prev" _page='1' _type='1'></em><em class="next" _page='1' _type='2'></em>
-			</div>
 		</div>
-        <div class="world_chat">
-        	<%if(!!user){%>
-        	<div class="user_info clearfix" _sex='<%=user.sex%>'>
-				<div class="info_left"><img src ='../<%=user.headimg%>'/><h4 class="ellipsis"><%=user.name%></h4></div>
-				<div class="info_right">
-					<p class="score"><em></em>积分：<span><%=user.score%></span></p>
-					<p class="flower"><em></em>鲜花：<span><%=user.flower%></span></p>
-					<p class="popular"><em></em>人气：<span><%=user.popular%></span></p>
-				</div>
-        	</div>
-        	<%} else {%>
+        <div class="world_chat">       	
         	<div class="user_info clearfix" _sex=''>
 				<div class="info_left"><img src ='/images/logohead.png'/><h4 class="ellipsis">你画我猜</h4></div>
 				<div class="info_right">
@@ -81,7 +120,6 @@
 					<p class="popular"><em></em>人气：<span>0</span></p>
 				</div>
         	</div>
-        	<%}%>
         	<div class="chat_area">
         		<div class="chat">
 	        		<ul>
@@ -102,7 +140,7 @@
   <script type="text/javascript" src = "/javascripts/jquery-1.10.2.min.js"></script>
   <script type="text/javascript" src = "/javascripts/socket.io.js"></script>
   <script type="text/javascript" src = "/javascripts/template.js"></script>
-  <script type="text/javascript" src = "/javascripts/hall.js"></script>
+  <script type="text/javascript" src = "/javascripts/waitroom.js"></script>
   <script id = 'room_list' type='text/html'>
    {{each list as room i}}   
   	<li>
@@ -147,7 +185,7 @@
 		<img src='{{headimg}}'/>
 		<div class="per_info">
 			<img src='{{headimg}}'/>
-			<h4 class='ellipsis'>{{name}}</h4>
+			<h4>{{name}}</h4>
 			<em class="sex {{sex}}"></em>
 			<em class="hi"></em>
 			<b></b>
@@ -166,7 +204,7 @@
 			<span>{{name}}</span> 说：
 			<div class="per_info">
 				<img src='{{headimg}}'/>
-				<h4 class='ellipsis'>{{name}}</h4>
+				<h4>{{name}}</h4>
 				<em class="sex {{sex}}"></em>
 				<em class="hi"></em>
 				<b></b>

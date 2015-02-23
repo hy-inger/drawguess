@@ -127,7 +127,7 @@ router.get('/room/switchList',function(req,res){
 	}
 
 });
-/*用户进入房间，数据加入房间数据库*/
+/*用户进入等待房间，数据加入房间数据库*/
 router.get('/room/playerEnter',function(req,res){
 	var roomid = req.query.roomid;
 	Room.find({'roomid':roomid},function(err,docs){
@@ -147,6 +147,10 @@ router.get('/room/playerEnter',function(req,res){
 	});
 
 });
+/*等待房间*/
+router.get('/room/waitroom',function(req,res){
+	res.render('room/waitroom');
+})
 /*room*/
 router.get('/room/painting', function(req, res) {
 　　res.render('room/painting');
@@ -156,8 +160,11 @@ router.get('/room/painting', function(req, res) {
 /*与客户端通信传送消息*/
 io.sockets.on('connection',function(socket){
 	socket.emit('open');
-	socket.on('playerenter',function(msg){
+	socket.on('playerenter',function(msg){		//用户进入房间广播
 		socket.broadcast.emit('playEnter',msg);
+	});
+	socket.on('sendMess',function(msg){			//用户发送聊天消息广播
+		socket.broadcast.emit('receiveMess',msg);
 	});
 	socket.on('message',function(msg){		//收到客户端发送来的消息。msg为数据。
 		console.log(msg);

@@ -27,3 +27,5 @@
 		event.stopPropagation();
 	});
 6、鼠标事情绑定到动态添加的元素上时，hover无反应，用mouseenter和mouseleave。
+7、正则表达式匹配中文：
+	var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;

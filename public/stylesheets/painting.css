@@ -169,17 +169,17 @@ ul{
 	top:59px;
 }
 /*大厅页面*/
-.world_hall {
+.main {
 	background: url('../images/hall_bg.png');
 }
-.world_hall .header{
+.main .header{
 	height:80px;
 	width:inherit;
 	text-align: center;
 	padding:10px;
 	position: relative;
 }
-.world_hall .header a.logout{
+.main .header a.logout{
 	color:#FFF;
 	position: absolute;
 	right:20px;
@@ -187,17 +187,16 @@ ul{
 	font-size: 13px;
 	cursor: pointer;
 }
-.world_hall .header a.logout:hover{
+.main .header a.logout:hover{
 	text-decoration: underline;
 }
-.world_hall .room_list{
+.main .left{
 	float:left;
 	width:661px;
 	background: rgba(255,255,255,0.5);
 }
 .world_hall .room_list .room_info{
 	height: 578px;
-	overflow: hidden;
 }	
 .world_hall .room_list ul li{
 	width:300px;
@@ -285,105 +284,7 @@ ul{
 	width:45px;
 	height:40px;
 }
-.world_hall .room_list ul li .online ul li:first-child .per_info{
-	top:-7px;
-	left:70px;
-}
-.world_hall .world_chat .chat_area .chat ul li .per_info{
-	top:-3px;
-	left:31px;
-}
-.world_hall .world_chat .chat_area .chat ul li:last-child .per_info{
-	top:-160px;
-}
-.world_hall .per_info{
-	position: absolute;
-	z-index: 2;
-	background:url('../images/info_bg.png') no-repeat;
-	padding:10px 10px;
-	color:#802432; 
-	top:-31px;
-	left:50px;
-	box-shadow:3px 4px 5px #6EB35F;
-	border-radius: 5px;
-	display: none;
-}
-.world_hall .room_list ul li .online ul li:nth-child(6) .per_info,
-.world_hall .room_list ul li .online ul li:nth-child(7) .per_info{
-	left:-125px;
-}
 
-.world_hall .room_list ul li.li_bottom .online ul li .per_info{
-	top:-95px;
-} 
-.world_hall .per_info b{
-	position: absolute;
-	width:0px;
-	height:0px;  
-	border-width:10px; 
-	border-style:solid; 
-	border-color:transparent  #3C7E25 transparent transparent;
-	font-size:0; line-height:0;
-	left:-20px;
-	top:40px;
-}
-.world_hall .world_chat .chat_area .chat ul li .per_info b{
-	border-color:transparent;
-}
-.world_hall .room_list ul li .online ul li:nth-child(6) .per_info b,
-.world_hall .room_list ul li .online ul li:nth-child(7) .per_info b{
-	border-color:transparent  transparent transparent #3C7E25;
-	left:120px;
-}
-.world_hall .room_list ul li.li_bottom .online ul li .per_info b{
-	top:106px;
-} 
-.world_hall .room_list ul li .online ul li .per_info img,
-.world_hall .world_chat .chat_area .chat ul li .per_info img{
-	width:100px;
-	height:90px;
-	border-radius: 5px;
-}
-.world_hall .per_info h4{
-	max-width:85px;
-
-}
-.world_hall .room_list ul li .online ul li .per_info em.sex,
-.world_hall .per_info em.sex{
-	position: absolute;
-	width:16px;
-	height:16px;
-	z-index: 3;
-	left:94px;
-	top:103px;
-}
-.world_hall .per_info em.hi{
-	position: absolute;
-	width:32px;
-	height:32px;
-	background: url('../images/hi.png') no-repeat;
-	z-index: 3;
-	left:80px;
-	top:140px;
-	cursor: pointer;
-}
-.world_hall .per_info div{
-	margin-top: 10px;
-	line-height: 20px;
-	font-size: 12px;
-
-}
-.world_hall .world_chat .chat_area .chat ul li .per_info p{
-	font-size: 13px;
-	margin-top: 0;
-}
-.world_hall .room_list ul li .online ul li .per_info span,
-.world_hall .chat_area .chat ul li .per_info span{
-	margin:0;
-	width:55px;
-	color:#150702;
-	font-size: 13px;
-}
 .world_hall .room_list ul li .join_button{
 	background: url('../images/join_button.png') no-repeat;
 	height:43px;
@@ -460,21 +361,21 @@ ul{
 	background: url('../images/next.png') no-repeat;
 	right:12px;
 }
-.world_hall .world_chat{
+.main .world_chat{
 	float:left;
 	width:319px;
 	background: rgba(255,255,255,0.5);
 	height:100%;
 	padding:10px 10px;
 }
-.world_hall .world_chat .user_info div{
+.main .world_chat .user_info div{
 	float:left;
 }
-.world_hall .world_chat .user_info .info_left{
+.main .world_chat .user_info .info_left{
 	width:200px;
 	margin-right:20px;
 }
-.world_hall .world_chat .user_info h4{
+.main .world_chat .user_info h4{
 	width:100px;
 	margin-left: 10px;
 	display: inline-block;
@@ -482,79 +383,89 @@ ul{
 	line-height: 70px;
 	color:#E48383;
 }
-.world_hall .world_chat .user_info img{
+.main .world_chat .user_info img{
 	width:70px;
 	height:70px;
 	border-radius: 35px;
 
 }
 
-.world_hall .world_chat .user_info p{
+.main .world_chat .user_info p{
 	position: relative;
 	padding-left: 30px;
 	height:25px;
 	line-height: 25px;
 	color:#FFF;
 }
-.world_hall .world_chat .user_info p span{
+.main .world_chat .user_info p span{
 	color:#F76CA1;
 }
-.world_hall .world_chat .user_info p em{
+.main .world_chat .user_info p em{
 	width:24px;
 	height:24px;
 	position: absolute;
 	left:0px;
 }
-.world_hall .world_chat .user_info p.score em{
+.main .world_chat .user_info p.score em{
 	background: url('../images/score.png') no-repeat;
 	
 }
-.world_hall .world_chat .user_info p.flower em{
+.main .world_chat .user_info p.flower em{
 	background: url('../images/flower.png') no-repeat;
 }
-.world_hall .world_chat .user_info p.popular em{
+.main .world_chat .user_info p.popular em{
 	background: url('../images/popular.png') no-repeat;
 }
-.world_hall .world_chat .chat_area .chat{
+.main .world_chat .chat_area .chat{
 	height:467px;
 	margin-bottom: 40px;
 	margin-top:5px;
 	overflow: auto;
 }
-.world_hall .world_chat .chat_area .chat ul li{
+.main .world_chat .chat_area .chat ul {
+	min-height: 200px;
+	height:auto;
+}
+.main .world_chat .chat_area .chat ul li{
 	padding:5px 0;
 }
-.world_hall .world_chat .chat_area .chat ul li .sender{
+.main .world_chat .chat_area .chat ul li .sender{
 	position: relative;
 }
-.world_hall .world_chat .chat_area .chat ul li .sender span{
+.main .world_chat .chat_area .chat ul li .sender span{
 	margin-left: 10px;
 	font-size: 15px;
 	color:#492A2A;
 }
-.world_hall .world_chat .chat_area .chat ul li p{
+.main .world_chat .chat_area .chat ul li p{
 	font-size: 15px;
 	color:#420606;
 	margin-top:6px;
 }
-.world_hall .world_chat .chat_area .chat ul li img{
+.main .world_chat .chat_area .chat ul li p img{
+	width:19px;
+	height:19px;
+	margin:0 5px;
+}
+.main .world_chat .chat_area .chat ul li img{
 	width:30px;
 	height:30px;
 }
-.world_hall .world_chat .chat_area .send{
+.main .world_chat .chat_area .send{
 	height:41px;
 	position: relative;
 }
-.world_hall .world_chat .chat_area .send input{
+.main .world_chat .chat_area .send input{
 	height:25px;
-	width:240px;
+	width:218px;
 	border-radius: 5px;
 	font-size: 15px;
 	color:#492A2A;
-	padding:0 5px;
+	padding-left: 31px;
+	padding-right: 5px;
 	border:1px solid #ccc;
 }
-.world_hall .world_chat .chat_area .send a{
+.main .world_chat .chat_area .send a{
 	color:#492A2A;
 	font-size: 16px;
 	padding:13px 27px;
@@ -562,16 +473,16 @@ ul{
 	cursor:pointer;
 	background: url('../images/send.png') no-repeat;
 }
-.world_hall .world_chat .chat_area .send em{
+.main .world_chat .chat_area .send em{
 	width:24px;
 	height:24px;
 	position: absolute;
 	background: url('../images/emosion.png') no-repeat ;
-	right:70px;
+	left:5px;
 	top:2px;
 	cursor: pointer;
 }
-.world_hall .world_chat .chat_area .send ul{
+.main .world_chat .chat_area .send ul{
 	width:300px;
 	height:165px;
 	overflow: auto;
@@ -584,13 +495,157 @@ ul{
 	box-shadow: 1px 3px 6px #251503;
 	display: none;
 }
-.world_hall .world_chat .chat_area .send ul li{
+.main .world_chat .chat_area .send ul li{
 	width:20px;
 	height:20px;
 	border:1px solid #ccc;
 	float:left;
 	padding:3px;
 	cursor: pointer;
+
+}
+/*大厅页面end*/
+.player_list{
+	padding-top:30px;
+	padding-bottom:88px;
+}
+.player_list .top{
+	padding-bottom: 10px;
+	border-bottom:3px solid #6B3F3F;
+}
+.player_list .top h1{
+	font-style: oblique;
+	font-size:54px;
+	color:#76CA7D;
+	float:left;
+	text-shadow:-4px 1px 4px #4FB04D;
+	height:57px;
+	line-height: 57px;
+	padding-left: 20px;
+	margin-top: 12px;
+
+}
+.player_list .top .action{
+	float:left;
+	text-align: center;
+	margin:0 80px;
+}
+.player_list .top .action a{
+	color:#130202;
+	cursor:pointer;
+	font-weight: bold;
+	padding:10px 20px;
+}
+.player_list .top .action a.begin{
+	background: url('../images/getting_start.png') no-repeat;
+	
+}
+.player_list .top .action p {
+	margin-top: 30px;
+}
+.player_list .top .action p a{
+	margin:0 10px;
+	background: url('../images/addtime.png') no-repeat;
+}
+.player_list .top .action p a.invite{
+	background: url('../images/invite.png') no-repeat;
+}
+.player_list .top .countdown{
+	float:left;
+	width:135px;
+	height:87px;
+	background: url('../images/countdown.png') no-repeat;
+	margin-right: 20px;
+	font-size: 43px;
+	color:#FA1A1A;
+	text-align: center;
+	line-height: 92px;
+
+}
+.player_list .top .roompass{
+	padding-left: 20px;
+	font-size: 13px;
+	color:#640F0F;
+	position: relative;
+	height:25px;
+}
+.player_list .top .roompass input[type='checkbox']{
+	margin:5px;
+}
+.player_list .top .roompass p{
+	display: inline-block;
+	display: none;
+}
+.player_list .top .roompass input[type='text']{
+	width:38px;
+	padding:0 5px;
+	height:20px;
+}
+.player_list .top .roompass span.pass{
+	position: absolute;
+	padding:6px 10px;
+	cursor: pointer;
+	display: none;
+}
+.player_list .top .roompass a{
+	padding:5px 10px;
+	cursor: pointer;
+}
+.player_list .top .roompass a:hover{
+	text-decoration: underline;
+}
+.player_list .players{
+	padding:0 30px;
+}
+.player_list .players ul li{
+	float: left;
+	margin:0 15px;
+	margin-top: 60px;
+	position: relative;
+}
+.player_list .players ul li .owner{
+	position: absolute;
+	color:#942F4E;
+	font-weight: bold;
+	font-size:16px;
+	left:54px;
+	top:-21px;
+}
+.player_list .players ul li .owner em{
+	position: absolute;
+	width:16px;
+	height:16px;
+	background: url('../images/pointer.png') no-repeat;
+	left:-18px;
+	top:3px;
+}
+.player_list .players ul li img{
+	width:120px;
+	height:120px;	
+	border-width:0px;
+	background: #ddc9a8;
+}
+.player_list .players ul li img.forbid{
+	background: #ddc9a8 url('../images/forbid1.png') no-repeat;
+}
+.player_list .players ul li:nth-child(8) img{
+	background: #ad8666 url('../images/forbid3.png') no-repeat;
+}
+.player_list .players ul li h4{
+	color:#802432;
+	font-size: 13px;
+	width:120px;
+	margin-top: 5px;
+	text-align: center;
+
+}
+.player_list .players ul li span {
+	position: absolute;
+	top:50%;
+	left:50%;
+	margin-left: -26px;
+	margin-top: -16px;
+	font-size: 13px;
 
 }
 /*房间页面*/
@@ -644,11 +699,116 @@ ul{
 	padding:0;
 }
 
+/*hover用户头像时展示的个人信息*/
+.per_info{
+	position: absolute;
+	z-index: 2;
+	background:url('../images/info_bg.png') no-repeat;
+	padding:10px 10px;
+	color:#802432; 
+	top:-31px;
+	left:50px;
+	box-shadow:3px 4px 5px #6EB35F;
+	border-radius: 5px;
+	display: none;
+}
+.world_hall .world_chat .chat_area .chat ul li .per_info{
+	top:-3px;
+	left:31px;
+}
+.player_list .players ul li .per_info{
+	top:0px;
+	left:75px;
+}
+.per_info b{
+	position: absolute;
+	width:0px;
+	height:0px;  
+	border-width:10px; 
+	border-style:solid; 
+	border-color:transparent  #3C7E25 transparent transparent;
+	font-size:0; line-height:0;
+	left:-20px;
+	top:40px;
+}
+.world_hall .world_chat .chat_area .chat ul li .per_info b{
+	border-color:transparent;
+}
+.world_hall .room_list ul li .online ul li .per_info img,
+.world_hall .world_chat .chat_area .chat ul li .per_info img,
+.player_list .players ul li .per_info img{
+	width:100px;
+	height:90px;
+	border-radius: 5px;
+}
+.per_info h4{
+	max-width:85px;
+	font-size: 13px;
+}
+.player_list .players ul li .per_info h4{
+	margin-top:0;
+}
+.per_info em.sex,
+.world_hall .room_list ul li .online ul li .per_info em.sex,
+.world_hall .per_info em.sex{
+	position: absolute;
+	width:16px;
+	height:16px;
+	z-index: 3;
+	left:94px;
+	top:103px;
+}
+.per_info em.male{
+	background: url('../images/male.png') no-repeat;
+}
+.per_info em.female{
+	background: url('../images/female.png') no-repeat;
+}
+.per_info em.hi{
+	position: absolute;
+	width:32px;
+	height:32px;
+	background: url('../images/hi.png') no-repeat;
+	z-index: 3;
+	left:80px;
+	top:140px;
+	cursor: pointer;
+}
+.per_info div{
+	margin-top: 10px;
+	line-height: 20px;
+	font-size: 12px;
+
+}
+.per_info span{
+	margin:0;
+	width:55px;
+	color:#150702;
+	font-size: 13px;
+}
+.world_hall .world_chat .chat_area .chat ul li .per_info p{
+	font-size: 13px;
+	margin-top: 0;
+}
+.player_list .players ul li .per_info span{
+	position: static;
+	margin-left:0;
+}
+.world_hall .room_list ul li .online ul li .per_info span,
+.world_hall .chat_area .chat ul li .per_info span{
+	margin:0;
+	width:55px;
+	color:#150702;
+	font-size: 13px;
+}
 
 .ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.clear{
+	clear: both;
 }
 .clearfix:after {
   content: ".";
