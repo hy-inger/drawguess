@@ -7,14 +7,17 @@
   </head>
   <body>
     <div class="container">
-      <div class='index login'>
-        <h3></h3>
+      <div class='index login'>       
         <em class='rope'></em>
         <form>
-          <div><em class='user'></em><input name='user' type = 'text' value='' placeholder=''/><p class='error'>用户名不存在</p></div>
-          <div><em class="pw"></em><input name='pw' type = 'password' value = '' placeholder=''/><p class='error'>密码不正确</p></div>
-          <div class="submit"><a>login</a></div>
+          <div><span>用户名：</span><em class='user'></em><input name='user' type = 'text' value='' placeholder=''/><p class='error'>用户名不存在</p></div>
+          <div><span>密 码：</span><em class="pw"></em><input name='pw' type = 'password' value = '' placeholder=''/><p class='error'>密码不正确</p></div>
+          <div class="submit"><a>登录</a></div>
         </form>
+        <div class="button">
+          <a>忘记密码</a>
+          <a href='/register'>注册</a>
+        </div>
       </div>
     </div>
   </body>

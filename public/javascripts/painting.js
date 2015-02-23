@@ -12,10 +12,10 @@ function Draw(canvasObj){
 	socket.on('open',function(){
 	  console.log('连接成功');
 	});
-	  socket.on('message',function(json){
-	    console.log(json);
-	  });
-	  socket.emit("my event","huangying connect!");
+	socket.on('message',function(json){
+	  console.log(json);
+	});
+	socket.emit("my event","huangying connect!");
 	socket.on('begin',function(data){
 		begin.mx = data.mx;
 		begin.my = data.my;
@@ -131,7 +131,6 @@ $(document).ready(function(){
 	var mycontext = mycanvas.getContext('2d');
 	var myDraw = new Draw(mycanvas);
 	myDraw.setlineWidth(2);
-
 	//选择工具
 	$(".tool li").each(function(i){
 		$(this).click(function(){

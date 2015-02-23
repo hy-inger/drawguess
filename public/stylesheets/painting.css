@@ -29,14 +29,14 @@ ul{
 	margin-top: -254px;
 	margin-left: -250px;
 }
-.index h3{
+/*.index h3{
 	position: absolute;
 	background: url('../images/login/welcome.png') no-repeat;
 	width:140px;
 	height:45px;
 	top:95px;
 	left:200px;
-}
+}*/
 .index em.rope{
 	position: absolute;
 	width:80px;
@@ -49,10 +49,16 @@ ul{
 	position: absolute;
 	width:100%;
 	left:50%;
-	top:50%;
+	top:35%;
 	margin-left: -250px;
 	margin-top:-110px;
 	text-align: center;
+}
+.index form span{
+	width:15%;
+	display: inline-block;
+	text-align: left;
+	color:#52A33C;
 }
 .index form em{
 	width:25px;
@@ -82,12 +88,12 @@ ul{
 }
 
 .index form .submit a{
-	background:rgba(145,196,108,0.3);
-	padding:12px 80px;
+	background:rgba(62, 163, 104, 0.5);
+	padding:12px 40px;
 	border-radius: 5px;
 	height:auto;
 	font-size: 22px;
-	color:#BAAF3D;
+	color:#18170A;
 	cursor: pointer;
 
 }
@@ -108,10 +114,26 @@ ul{
 }
 .login form .submit{
 	margin-top: 32px;
+	text-align: left;
+	margin-left: 145px;
 }
 .login form .error{
-	left:111px;
+	left:148px;
 	top:66px;
+}
+.login .button{
+	position: absolute;
+	bottom:125px;
+	width:478px;
+	margin-left: 24px;
+}
+.login .button a{
+	color:#614141;
+	font-size: 16px;
+	padding:13px 94px;
+	background: rgba(168,149,149,0.4);
+	cursor: pointer;
+	box-shadow: 1px 2px 3px #906E6E;
 }
 /*注册页面*/
 .register{
@@ -119,14 +141,9 @@ ul{
 } 
 .register form{
 	
-	margin-top: -195px;
+	
 }
-.register form span{
-	width:15%;
-	display: inline-block;
-	text-align: left;
-	color:#52A33C;
-}
+
 .register form input{
 	padding-left: 5px;
 	margin:13px 0;
@@ -151,7 +168,431 @@ ul{
 	left:165px;
 	top:59px;
 }
+/*大厅页面*/
+.world_hall {
+	background: url('../images/hall_bg.png');
+}
+.world_hall .header{
+	height:80px;
+	width:inherit;
+	text-align: center;
+	padding:10px;
+	position: relative;
+}
+.world_hall .header a.logout{
+	color:#FFF;
+	position: absolute;
+	right:20px;
+	bottom:11px;
+	font-size: 13px;
+	cursor: pointer;
+}
+.world_hall .header a.logout:hover{
+	text-decoration: underline;
+}
+.world_hall .room_list{
+	float:left;
+	width:661px;
+	background: rgba(255,255,255,0.5);
+}
+.world_hall .room_list .room_info{
+	height: 578px;
+	overflow: hidden;
+}	
+.world_hall .room_list ul li{
+	width:300px;
+	border:1px solid #ccc;
+	position: relative;
+	padding:10px 10px;
+	float:left;
+}
+.world_hall .room_list ul li img{
+	width:60px;
+	height:60px;
+	
+}
+.world_hall .room_list ul li h1{
+	font-style: oblique;
+	font-size:54px;
+	color:#76CA7D;
+	position: absolute;
+	text-shadow:-4px 1px 4px #4FB04D;
+	height:57px;
+	line-height: 57px;
+	right: 18px;
+	top:0;
+}
+.world_hall .room_list ul li span{
+	float:right;
+	margin-top: 50px;
+	font-size: 12px;
+	color:#F05428;
+	position: relative;
+	width:98px;
+}
+.world_hall .room_list ul li em.lock{
+	position: absolute;
+	width: 24px;
+	height:24px;
+	background: url('../images/lock.png') no-repeat;
+	left:68px;
+	top:7px;
+}
+.world_hall .room_list ul li em.sex{
+	position: absolute;
+	width:24px;
+	height:24px;
+	background:url('../images/female.png') no-repeat;
+	left:193px;
+	top:58px;
+}
+.world_hall .room_list ul li em.female,
+.world_hall .per_info em.female{
+	background:url('../images/female.png') no-repeat;
+}
+.world_hall .room_list ul li em.male,
+.world_hall .per_info em.male{
+	background:url('../images/male.png') no-repeat;
+}
+.world_hall .room_list ul li .online ul{
+	margin-top: 13px;
+}
 
+.world_hall .room_list ul li .online ul li{
+	position: relative;
+	float:left;
+	width:45px;
+	height:40px;
+	padding:0;
+	border:0;
+	margin-right:5px;
+	background:url('../images/noimg.png');
+	cursor: pointer;
+}
+.world_hall .room_list ul li .online ul li:first-child{
+	position: absolute!important;
+	width:60px;
+	height:60px;
+	z-index: 1;
+	top:10px;
+	left:10px;
+}
+.world_hall .room_list ul li .online ul li:first-child img{
+	width: 60px;
+	height:60px;
+}
+.world_hall .room_list ul li .online ul li img{
+	width:45px;
+	height:40px;
+}
+.world_hall .room_list ul li .online ul li:first-child .per_info{
+	top:-7px;
+	left:70px;
+}
+.world_hall .world_chat .chat_area .chat ul li .per_info{
+	top:-3px;
+	left:31px;
+}
+.world_hall .world_chat .chat_area .chat ul li:last-child .per_info{
+	top:-160px;
+}
+.world_hall .per_info{
+	position: absolute;
+	z-index: 2;
+	background:url('../images/info_bg.png') no-repeat;
+	padding:10px 10px;
+	color:#802432; 
+	top:-31px;
+	left:50px;
+	box-shadow:3px 4px 5px #6EB35F;
+	border-radius: 5px;
+	display: none;
+}
+.world_hall .room_list ul li .online ul li:nth-child(6) .per_info,
+.world_hall .room_list ul li .online ul li:nth-child(7) .per_info{
+	left:-125px;
+}
+
+.world_hall .room_list ul li.li_bottom .online ul li .per_info{
+	top:-95px;
+} 
+.world_hall .per_info b{
+	position: absolute;
+	width:0px;
+	height:0px;  
+	border-width:10px; 
+	border-style:solid; 
+	border-color:transparent  #3C7E25 transparent transparent;
+	font-size:0; line-height:0;
+	left:-20px;
+	top:40px;
+}
+.world_hall .world_chat .chat_area .chat ul li .per_info b{
+	border-color:transparent;
+}
+.world_hall .room_list ul li .online ul li:nth-child(6) .per_info b,
+.world_hall .room_list ul li .online ul li:nth-child(7) .per_info b{
+	border-color:transparent  transparent transparent #3C7E25;
+	left:120px;
+}
+.world_hall .room_list ul li.li_bottom .online ul li .per_info b{
+	top:106px;
+} 
+.world_hall .room_list ul li .online ul li .per_info img,
+.world_hall .world_chat .chat_area .chat ul li .per_info img{
+	width:100px;
+	height:90px;
+	border-radius: 5px;
+}
+.world_hall .per_info h4{
+	max-width:85px;
+
+}
+.world_hall .room_list ul li .online ul li .per_info em.sex,
+.world_hall .per_info em.sex{
+	position: absolute;
+	width:16px;
+	height:16px;
+	z-index: 3;
+	left:94px;
+	top:103px;
+}
+.world_hall .per_info em.hi{
+	position: absolute;
+	width:32px;
+	height:32px;
+	background: url('../images/hi.png') no-repeat;
+	z-index: 3;
+	left:80px;
+	top:140px;
+	cursor: pointer;
+}
+.world_hall .per_info div{
+	margin-top: 10px;
+	line-height: 20px;
+	font-size: 12px;
+
+}
+.world_hall .world_chat .chat_area .chat ul li .per_info p{
+	font-size: 13px;
+	margin-top: 0;
+}
+.world_hall .room_list ul li .online ul li .per_info span,
+.world_hall .chat_area .chat ul li .per_info span{
+	margin:0;
+	width:55px;
+	color:#150702;
+	font-size: 13px;
+}
+.world_hall .room_list ul li .join_button{
+	background: url('../images/join_button.png') no-repeat;
+	height:43px;
+	line-height: 43px;
+	text-align: center;
+	font-size: 20px;
+	color:#89351C;
+	font-weight: bolder;
+	margin-top: 5px;
+	cursor: pointer;
+}
+.world_hall .room_list ul li .unjoin{
+	background: url('../images/unjoin.png') no-repeat;
+}
+.world_hall .room_list .operate{
+	padding:0px 10px 10px;
+	position: relative;
+	
+}
+.world_hall .room_list .operate a{
+	display: inline-block;
+	color:#89351C;
+	background: url('../images/begin.png') no-repeat;
+	width:160px;
+	height:60px;
+	line-height: 60px;
+	font-weight: bold;
+	text-align: center;
+	font-size: 25px;
+	margin-right: 8px;
+}
+.world_hall .room_list .operate input{
+	width:40px;
+	height:20px;
+	padding:0 3px;
+}
+.world_hall .room_list .operate span.join{
+	color:#552764;
+	width:55px;
+	height:30px;
+	line-height: 30px;
+	display: inline-block;
+	text-align: center;
+	font-size: 13px;
+	background: url('../images/join.png');
+	cursor: pointer;
+}
+.world_hall .room_list .operate span.waiting,
+.world_hall .room_list .operate span.create{
+	display: inline-block;
+	width:95px;
+	height:35px;
+	line-height: 35px;
+	text-align: center;
+	background: url('../images/waiting.png');
+	color:#FFF;
+	font-weight: bold;
+	margin-left: 8px;
+	cursor: pointer;
+}
+
+.world_hall .room_list .operate em{
+	position: absolute;
+	width:30px;
+	height:35px;
+	top:18px;
+	cursor:pointer;
+}
+.world_hall .room_list .operate em.prev{
+	background: url('../images/prev.png') no-repeat;
+	right:76px;
+}
+.world_hall .room_list .operate em.next{
+	background: url('../images/next.png') no-repeat;
+	right:12px;
+}
+.world_hall .world_chat{
+	float:left;
+	width:319px;
+	background: rgba(255,255,255,0.5);
+	height:100%;
+	padding:10px 10px;
+}
+.world_hall .world_chat .user_info div{
+	float:left;
+}
+.world_hall .world_chat .user_info .info_left{
+	width:200px;
+	margin-right:20px;
+}
+.world_hall .world_chat .user_info h4{
+	width:100px;
+	margin-left: 10px;
+	display: inline-block;
+	height:70px;
+	line-height: 70px;
+	color:#E48383;
+}
+.world_hall .world_chat .user_info img{
+	width:70px;
+	height:70px;
+	border-radius: 35px;
+
+}
+
+.world_hall .world_chat .user_info p{
+	position: relative;
+	padding-left: 30px;
+	height:25px;
+	line-height: 25px;
+	color:#FFF;
+}
+.world_hall .world_chat .user_info p span{
+	color:#F76CA1;
+}
+.world_hall .world_chat .user_info p em{
+	width:24px;
+	height:24px;
+	position: absolute;
+	left:0px;
+}
+.world_hall .world_chat .user_info p.score em{
+	background: url('../images/score.png') no-repeat;
+	
+}
+.world_hall .world_chat .user_info p.flower em{
+	background: url('../images/flower.png') no-repeat;
+}
+.world_hall .world_chat .user_info p.popular em{
+	background: url('../images/popular.png') no-repeat;
+}
+.world_hall .world_chat .chat_area .chat{
+	height:467px;
+	margin-bottom: 40px;
+	margin-top:5px;
+	overflow: auto;
+}
+.world_hall .world_chat .chat_area .chat ul li{
+	padding:5px 0;
+}
+.world_hall .world_chat .chat_area .chat ul li .sender{
+	position: relative;
+}
+.world_hall .world_chat .chat_area .chat ul li .sender span{
+	margin-left: 10px;
+	font-size: 15px;
+	color:#492A2A;
+}
+.world_hall .world_chat .chat_area .chat ul li p{
+	font-size: 15px;
+	color:#420606;
+	margin-top:6px;
+}
+.world_hall .world_chat .chat_area .chat ul li img{
+	width:30px;
+	height:30px;
+}
+.world_hall .world_chat .chat_area .send{
+	height:41px;
+	position: relative;
+}
+.world_hall .world_chat .chat_area .send input{
+	height:25px;
+	width:240px;
+	border-radius: 5px;
+	font-size: 15px;
+	color:#492A2A;
+	padding:0 5px;
+	border:1px solid #ccc;
+}
+.world_hall .world_chat .chat_area .send a{
+	color:#492A2A;
+	font-size: 16px;
+	padding:13px 27px;
+	margin-left: 5px;
+	cursor:pointer;
+	background: url('../images/send.png') no-repeat;
+}
+.world_hall .world_chat .chat_area .send em{
+	width:24px;
+	height:24px;
+	position: absolute;
+	background: url('../images/emosion.png') no-repeat ;
+	right:70px;
+	top:2px;
+	cursor: pointer;
+}
+.world_hall .world_chat .chat_area .send ul{
+	width:300px;
+	height:165px;
+	overflow: auto;
+	position: absolute;
+	bottom:47px;
+	right:70px;
+	background: #fff;
+	border:1px solid #251503;
+	border-radius: 5px;
+	box-shadow: 1px 3px 6px #251503;
+	display: none;
+}
+.world_hall .world_chat .chat_area .send ul li{
+	width:20px;
+	height:20px;
+	border:1px solid #ccc;
+	float:left;
+	padding:3px;
+	cursor: pointer;
+
+}
 /*房间页面*/
 .drawarea #mycanvas{
 	border:1px solid #ccc;
@@ -204,7 +645,11 @@ ul{
 }
 
 
-
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .clearfix:after {
   content: ".";
   display: block;

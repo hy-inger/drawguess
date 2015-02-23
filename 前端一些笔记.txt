@@ -17,3 +17,13 @@
 4、path must be absolute or specify root to res.sendFile解决办法：绝对路径，即加入/
 	res.sendFile(path,{ root: __dirname + '/..' });
 	res.sendFile(__dirname+'/..' + path);
+5、点击其他区域隐藏。
+	$(document).click(function(event){
+		var e = window.event || event; 
+		var obj = $(e.srcElement || e.target);
+		console.log(obj);
+		if(obj.attr('class')!= 'per_info')
+			console.log($('.world_hall .room_list ul li .online ul li .per_info').hide());
+		event.stopPropagation();
+	});
+6、鼠标事情绑定到动态添加的元素上时，hover无反应，用mouseenter和mouseleave。

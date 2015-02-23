@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../database/db').user;
+var User = require('../database/db').user;//用户表
+var Room = require('../database/db').room;//房间表
 var server = require('http').createServer(router);
 server.listen(80);
 var io = require('socket.io').listen(server);
@@ -36,13 +37,20 @@ router.post('/register/action',function(req,res){
 		password : req.body.password,
 		age : req.body.age,
 		sex : req.body.sex,
-		headimg : req.files.headimg.path
+		headimg : req.files.headimg.name,
+		score : '0',
+		flower: '0',
+		popular: '0'
 	});
 	regis_user.save(function(err,docs){
 		//res.status(200).sendFile(req.files.headimg.path,{ root: __dirname + '/..' });
 		if(err)
 			res.jsonp({'message':'error'});
-		else res.jsonp({'message':'success','headimg':req.files.headimg.name});
+		else {
+			req.session.user = req.body.name;
+			res.jsonp({'message':'success','headimg':req.files.headimg.name});
+			
+		}
 	});
 });
 /*登录页面*/
@@ -51,8 +59,10 @@ router.post('/login',function(req,res){
 	var pw = req.body.pw;
 	User.find({'name':name},function(err,docs){
 		if(docs.length){
-			if(docs[0].password == pw)
+			if(docs[0].password == pw){
+				req.session.user = name;
 				res.jsonp({'message':'ok'});
+			}
 			else
 				res.jsonp({'message':'pwerror'});
 		} else {
@@ -60,9 +70,82 @@ router.post('/login',function(req,res){
 		}
 	});
 });
-/*hall*/
+router.get('/logout',function(req,res){
+	req.session.user = null;
+	res.jsonp({'message':'ok'});
+});
+/*进入世界大厅获取各房间信息*/
+router.get('/room/hall',checkLogin);
 router.get('/room/hall',function(req,res){
-	res.render('room/hall');
+	var name = req.session.user;
+	var user;
+	User.find({'name':name},function(err,docs){
+		user = {
+			'name':docs[0].name,
+			'headimg':docs[0].headimg,
+			'sex':docs[0].sex,
+			'score':docs[0].score,
+			'flower':docs[0].flower,
+			'popular':docs[0].popular
+		};
+	});	
+	Room.find(function(err,docs){
+		if(docs.length){
+			docs.sort({"_id":1});
+			docs = docs.slice(0,6);
+			for(var i = 0 ;i < docs.length; i++){
+				if(docs[i].user.length < 7);
+					docs[i].user.length = 7;
+			}
+			res.render('room/hall',{'item':docs,'user':user});
+		}
+	});
+
+});
+//用户切换房间列表
+router.get('/room/switchList',function(req,res){
+	var page = parseInt(req.query.page);
+	var operate = req.query.operate;
+	if(operate == '2'){					//向后翻页
+		var num = page*6; 		
+		Room.find(function(err,docs){
+			if(docs.length){
+				docs.sort({"_id":1});
+				docs = docs.slice(num,num+6);
+				res.jsonp(docs);
+			}
+		});
+	} else {							//operate = 1，向前翻页。
+		var num = (page-2)*6; 		
+		Room.find(function(err,docs){
+			if(docs.length){
+				docs.sort({"_id":1});
+				docs = docs.slice(num,num+6);
+				res.jsonp(docs);
+			}
+		});
+	}
+
+});
+/*用户进入房间，数据加入房间数据库*/
+router.get('/room/playerEnter',function(req,res){
+	var roomid = req.query.roomid;
+	Room.find({'roomid':roomid},function(err,docs){
+		var user = docs[0].user;
+		var data = {
+			name:req.query.name,
+			sex:req.query.sex,
+			headimg:req.query.headimg,
+			score:req.query.score,
+			flower:req.query.flower,
+			popular:req.query.popular
+		};
+		//user.push(data);
+		Room.update({'roomid':roomid},{'$push':{'user':data}},function(err,docs){
+			res.jsonp({'message':'success'});
+		});
+	});
+
 });
 /*room*/
 router.get('/room/painting', function(req, res) {
@@ -73,11 +156,9 @@ router.get('/room/painting', function(req, res) {
 /*与客户端通信传送消息*/
 io.sockets.on('connection',function(socket){
 	socket.emit('open');
-	var client = {
-		socket:socket,
-		name:'huangying',
-		color:'red'
-	};
+	socket.on('playerenter',function(msg){
+		socket.broadcast.emit('playEnter',msg);
+	});
 	socket.on('message',function(msg){		//收到客户端发送来的消息。msg为数据。
 		console.log(msg);
 		if(msg.mx)
@@ -94,13 +175,15 @@ io.sockets.on('connection',function(socket){
 		console.log(msg);
 	});
 	socket.on('disconnect',function(){
-		console.log(client.name+':disconnect');
+		console.log(':disconnect');
 	});
 });
 
-var getTime=function(){
-  var date = new Date();
-  return date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+function checkLogin(req,res,next){
+	if(!req.session.user){
+		return res.redirect('/');
+	}
+	next();
 }
 
 module.exports = router;

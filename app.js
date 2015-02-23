@@ -2,8 +2,10 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var MongoStore = require('connect-mongo')(session);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -25,6 +27,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname , 'uploads')));//挂载路径
 app.use(multer({ dest: './uploads'}))
+app.use(session({
+  secret: 'keyboard cat',
+  name : 'userlogin',
+  cookie: {secure: false},//30 days
+  store: new MongoStore({
+    db: 'drawguess',
+    host:'localhost',
+    port:27017
+  })
+}));
 
 app.use('/', routes);
 app.use('/users', users);

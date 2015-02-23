@@ -8,6 +8,7 @@ $(document).ready(function(){
 			url:'/login',
 			type:'POST',
 			data:{"name":name,"pw":pw},
+			async:false,
 			success:function(data){
 				var message = data.message;
 				switch(message){
@@ -20,6 +21,7 @@ $(document).ready(function(){
 						break;
 					case 'ok':
 						$('.login').find('.error').hide();
+						window.location.href = 'http://localhost:3000/room/hall';
 						break;
 				}
 			}
@@ -66,15 +68,20 @@ $(document).ready(function(){
 		}
 	});
 	
-	//console.log(reg.exec(temp));
 	$('.register form .submit a').click(function(){
 		if(mark.length == 2){
 			$('#register').ajaxSubmit({
 				type:'POST',
 				url:'/register/action',
+				async:false,
 				success:function(data){
-					var headimg = data.headimg;
-					
+					if(data.message == 'success'){
+						window.location.href = 'http://localhost:3000/room/hall';					
+					}
+										
+				},
+				error:function(data){
+					alert('注册失败，请稍后再试。');
 				}
 			});
 		}
