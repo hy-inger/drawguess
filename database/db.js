@@ -22,6 +22,8 @@ exports.user = db.model('users', userScheMa); // 与users集合关联
 
 var roomScheMa = new mongoose.Schema({
 	roomid:String,
+	roompw:String,
+	playernum:String,
 	user:Array
 });
 exports.room = db.model('rooms',roomScheMa);

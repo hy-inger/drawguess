@@ -29,3 +29,33 @@
 6、鼠标事情绑定到动态添加的元素上时，hover无反应，用mouseenter和mouseleave。
 7、正则表达式匹配中文：
 	var reg = /[\u4E00-\u9FA5\uF900-\uFA2D]/;
+8、mongodb嵌套文档的查询和修改。
+	mongodb对嵌套文档的匹配是精确匹配，所以要使用模糊匹配关键字。$elemMatch。
+	示例：
+	{ _id: 1, results: [ { product: "abc", score: 10 }, { product: "xyz", score: 5 } ] }
+	{ _id: 2, results: [ { product: "abc", score: 8 }, { product: "xyz", score: 7 } ] }
+	{ _id: 3, results: [ { product: "abc", score: 7 }, { product: "xyz", score: 8 } ] }
+
+	db.survey.find({ results: { $elemMatch: { product: "xyz", score: { $gte: 8 } } } });
+	db.survey.find({ results: { $elemMatch: { product: "xyz" } } });
+9、socketio要对特定用户发送消息，要使用join。
+	即socket.join('roomid');
+	  socket.leave('roomid')
+10、禁止浏览器后退按钮
+	(1):可用window.location.replace()替换url，使url不保存到浏览历史中。
+	(2)：直接可用，可根据需要修改。
+		if (window.history && window.history.pushState) {
+			$(window).on('popstate', function () {
+				alert(1);
+				var hashLocation = location.hash;
+				var hashSplit = hashLocation.split("#!/");
+				var hashName = hashSplit[1];
+				if (hashName !== '') {
+					var hash = window.location.hash;
+					if (hash === '') {
+						alert("Back button isn't supported. You are leaving this application on next clicking the back button");
+					}
+				}
+			});
+			window.history.pushState('forward', null, './#forward');
+		}

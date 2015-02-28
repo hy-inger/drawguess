@@ -21,7 +21,7 @@ $(document).ready(function(){
 						break;
 					case 'ok':
 						$('.login').find('.error').hide();
-						window.location.href = 'http://localhost:3000/room/hall';
+						window.location.replace('http://localhost:3000/room/hall');
 						break;
 				}
 			}
@@ -76,7 +76,7 @@ $(document).ready(function(){
 				async:false,
 				success:function(data){
 					if(data.message == 'success'){
-						window.location.href = 'http://localhost:3000/room/hall';					
+						window.location.replace('http://localhost:3000/room/hall');				
 					}
 										
 				},

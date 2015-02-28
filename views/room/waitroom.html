@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel='stylesheet' href='/stylesheets/painting.css' />
   </head>
+  
   <body>
     <div class="container">
       <div class="main clearfix">
@@ -13,105 +14,129 @@
       	</div>
 		<div class="left player_list">
 			<div class='top'>
-				<h1>001</h1>
+				<h1><%=user.roomid%></h1>
 				<div class="action">
+				<%if(user.owner){%>
 					<a class='begin'>立即开始</a>
 					<p><a class='addtime'>加&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时</a><a class='invite'>广播邀请</a></p>
+				<%}%>
 				</div>
+				
 				<div class="countdown">60</div>
 				<div class='clear'></div>
 				<div class='roompass'>
-					<input type='checkbox'/>
+					<%if(user.owner){%>
+					<%if(user.roompw){%>
+					<input type='checkbox' checked/>
 					<span>密码：</span>
-					<span class='pass'></span>
+					<span class='pass' style='display:inline-block'><%=user.roompw%></span>
 					<p>
 						<input type='text' value='' maxlength="4" />
 						<a class='certain'>确定</a><a class='cancel'>取消</a>
 					</p>
+					<%} else {%>
+					<input type='checkbox'/>
+					<span>密码：</span>
+					<span class='pass'>user.roompw</span>
+					<p>
+						<input type='text' value='' maxlength="4" />
+						<a class='certain'>确定</a><a class='cancel'>取消</a>
+					</p>
+					<%}%>
+					<%}%>
 				</div>
 			</div>
-			<div class='players clearfix'>
-				<ul>
+			<div class='players'>
+				<ul class="clearfix">
+					<%if(user.owner){%>
 					<li>
 						<p class='owner'><em></em>房主</p>
-						<img src = ''/>
+						<img src = '../<%=user.headimg%>'/>
+						<h4 class='ellipsis'><%=user.name%></h4>
+						<div class="per_info">
+							<img src='../<%=user.headimg%>'/>
+							<h4 class='ellipsis'><%=user.name%></h4>
+							<em class="sex <%=user.sex%>"></em>
+							<em class="hi"></em>
+							<b></b>
+							<div>
+								<p class="score">积 分：<span><%=user.score%></span></p>
+								<p class="flower">鲜 花：<span><%=user.flower%></span></p>
+								<p class="popular">人 气：<span><%=user.popular%></span></p>
+							</div>
+						</div>						
+					</li>			
+					<%for(var i=0;i<(parseInt(user.num)-1);i++){%>					
+					<li>
+						<img class='waiting' src = ''/>
 						<span>等待玩家</span>
-						<h4>莺儿新兰一生推</h4>					
+						<h4></h4>						
 					</li>
+					<%}%>	
+					<%for(var i=0;i<7-parseInt(user.num);i++){%>						
 					<li>
-						<p class='owner'><em></em>房主</p>
-						<img class='temp' src = '../temp.jpg'/>
-						<h4>莺儿新兰一生推</h4>	
+						<img class='forbid' src = ''/>	
+						<span>等待玩家</span>					
+					</li>
+					<%}%>
+					<li>
+						<img src = ''/>						
+					</li>	
+					<%} else {%>
+					<%for(var i = 0;i < players.length;i++){%>
+					<li>
+						<%if(players[i].owner){%><p class='owner'><em></em>房主</p><%}%>
+						<img src = '../<%=players[i].headimg%>'/>
+						<h4 class='ellipsis'><%=players[i].name%></h4>
 						<div class="per_info">
-							<img src='../temp.jpg'/>
-							<h4>sssss</h4>
-							<em class="sex female"></em>
+							<img src='../<%=players[i].headimg%>'/>
+							<h4 class='ellipsis'><%=players[i].name%></h4>
+							<em class="sex <%=players[i].sex%>"></em>
 							<em class="hi"></em>
 							<b></b>
 							<div>
-								<p class="score">积 分：<span>0</span></p>
-								<p class="flower">鲜 花：<span>0</span></p>
-								<p class="popular">人 气：<span>0</span></p>
-							</div>
-						</div>					
-					</li>
-					<li>
-						<p class='owner'><em></em>房主</p>
-						<img src = '../temp.jpg'/>
-						<h4 class='ellipsis'>莺儿新兰一生推ssssss</h4>	
-						<div class="per_info">
-							<img src='../temp.jpg'/>
-							<h4>sssss</h4>
-							<em class="sex female"></em>
-							<em class="hi"></em>
-							<b></b>
-							<div>
-								<p class="score">积 分：<span>0</span></p>
-								<p class="flower">鲜 花：<span>0</span></p>
-								<p class="popular">人 气：<span>0</span></p>
+								<p class="score">积 分：<span><%=players[i].score%></span></p>
+								<p class="flower">鲜 花：<span><%=players[i].flower%></span></p>
+								<p class="popular">人 气：<span><%=players[i].popular%></span></p>
 							</div>
 						</div>						
 					</li>
+					<%}%>	
+					<%for(var i = 0;i<user.num-players.length;i++){%>
 					<li>
-						<p class='owner'><em></em>房主</p>
-						<img src = '../temp.jpg'/>
-						<h4>莺儿新兰一生推</h4>	
-						<div class="per_info">
-							<img src='../temp.jpg'/>
-							<h4 class='ellipsis'>莺儿新兰一生推</h4>
-							<em class="sex female"></em>
-							<em class="hi"></em>
-							<b></b>
-							<div>
-								<p class="score">积 分：<span>0</span></p>
-								<p class="flower">鲜 花：<span>0</span></p>
-								<p class="popular">人 气：<span>0</span></p>
-							</div>
-						</div>						
+						<img class='waiting' src = ''/>
+						<span>等待玩家</span>
+						<h4></h4>						
 					</li>
+					<%}%>
+					<%for(var i=0;i<7-user.num;i++){%>						
 					<li>
-						<p class='owner'><em></em>房主</p>
-						<img src = '../temp.jpg'/>
-						<h4>莺儿新兰一生推</h4>						
+						<img class='forbid' src = ''/>	
+						<span>等待玩家</span>					
 					</li>
+					<%}%>
 					<li>
-						<p class='owner'><em></em>房主</p>
-						<img class='forbid' src = ''/>
-						<h4>莺儿新兰一生推</h4>						
+						<img src = ''/>						
 					</li>
-					<li>
-						<p class='owner'><em></em>房主</p>
-						<img class='forbid' src = ''/>
-						<h4>莺儿新兰一生推</h4>						
-					</li>
-					<li>
-						<img src = ''/>
-						<h4>莺儿新兰一生推</h4>						
-					</li>
+					<%}%>	
 				</ul>
+			</div>
+			<div class='leaveroom'>
+				<em></em>
+				离开房间
 			</div>
 		</div>
         <div class="world_chat">       	
+        	<%if(!!user){%>
+        	<div class="user_info clearfix" _sex='<%=user.sex%>'>
+				<div class="info_left"><img src ='../<%=user.headimg%>'/><h4 class="ellipsis"><%=user.name%></h4></div>
+				<div class="info_right">
+					<p class="score"><em></em>积分：<span><%=user.score%></span></p>
+					<p class="flower"><em></em>鲜花：<span><%=user.flower%></span></p>
+					<p class="popular"><em></em>人气：<span><%=user.popular%></span></p>
+				</div>
+        	</div>
+        	<%} else {%>
         	<div class="user_info clearfix" _sex=''>
 				<div class="info_left"><img src ='/images/logohead.png'/><h4 class="ellipsis">你画我猜</h4></div>
 				<div class="info_right">
@@ -120,18 +145,19 @@
 					<p class="popular"><em></em>人气：<span>0</span></p>
 				</div>
         	</div>
+        	<%}%>
         	<div class="chat_area">
         		<div class="chat">
 	        		<ul>
 	        		</ul>
 	        	</div>
-        		<div class="send">
+        		<!--<div class="send">
         			<em class="emosion"></em>
         			<input type="text" value=""/>
         			<a></a>
         			<ul class="clearfix"><li _text="[s微笑]" _tag=":)" _id="_sys_0001_" title="微笑"><img _src="/images/sys/1.gif" src="/images/sys/1.gif"></li><li _text="[s开怀笑]" _tag=":D" _id="_sys_0002_" title="开怀笑"><img _src="/images/sys/2.gif" src="/images/sys/2.gif"></li><li _text="[s眨眼]" _tag=";)" _id="_sys_0003_" title="眨眼"><img _src="/images/sys/3.gif" src="/images/sys/3.gif"></li><li _text="[s惊讶]" _tag=":O" _id="_sys_0004_" title="惊讶"><img _src="/images/sys/4.gif" src="/images/sys/4.gif"></li><li _text="[s吐舌笑脸]" _tag=":P" _id="_sys_0005_" title="吐舌笑脸"><img _src="/images/sys/5.gif" src="/images/sys/5.gif"></li><li _text="[s得意的笑]" _tag=":}" _id="_sys_0006_" title="得意的笑"><img _src="/images/sys/6.gif" src="/images/sys/6.gif"></li><li _text="[s生气]" _tag=":@" _id="_sys_0007_" title="生气"><img _src="/images/sys/7.gif" src="/images/sys/7.gif"></li><li _text="[s怕怕]" _tag=":S" _id="_sys_0008_" title="怕怕"><img _src="/images/sys/8.gif" src="/images/sys/8.gif"></li><li _text="[s尴尬]" _tag=":$" _id="_sys_0009_" title="尴尬"><img _src="/images/sys/9.gif" src="/images/sys/9.gif"></li><li _text="[s难过]" _tag=":(" _id="_sys_0010_" title="难过"><img _src="/images/sys/10.gif" src="/images/sys/10.gif"></li><li _text="[s哭泣]" _tag=":'(" _id="_sys_0011_" title="哭泣"><img _src="/images/sys/11.gif" src="/images/sys/11.gif"></li><li _text="[s失望]" _tag=":|" _id="_sys_0012_" title="失望"><img _src="/images/sys/12.gif" src="/images/sys/12.gif"></li><li _text="[s困了]" _tag="(Z)" _id="_sys_0013_" title="困了"><img _src="/images/sys/13.gif" src="/images/sys/13.gif"></li><li _text="[s好好笑]" _tag=":B" _id="_sys_0014_" title="好好笑"><img _src="/images/sys/14.gif" src="/images/sys/14.gif"></li><li _text="[s啵]" _tag="(BO)" _id="_sys_0015_" title="啵"><img _src="/images/sys/15.gif" src="/images/sys/15.gif"></li><li _text="[s电到了]" _tag="(R)" _id="_sys_0016_" title="电到了"><img _src="/images/sys/16.gif" src="/images/sys/16.gif"></li><li _text="[s汗]" _tag=":Q" _id="_sys_0017_" title="汗"><img _src="/images/sys/17.gif" src="/images/sys/17.gif"></li><li _text="[s流口水了]" _tag="(!)" _id="_sys_0018_" title="流口水了"><img _src="/images/sys/18.gif" src="/images/sys/18.gif"></li><li _text="[s真困啊]" _tag="(S)" _id="_sys_0019_" title="真困啊"><img _src="/images/sys/19.gif" src="/images/sys/19.gif"></li><li _text="[s我吐]" _tag="(V)" _id="_sys_0020_" title="我吐"><img _src="/images/sys/20.gif" src="/images/sys/20.gif"></li><li _text="[s疑问]" _tag="(?)" _id="_sys_0021_" title="疑问"><img _src="/images/sys/21.gif" src="/images/sys/21.gif"></li><li _text="[s嘘...]" _tag="(X)" _id="_sys_0022_" title="嘘..."><img _src="/images/sys/22.gif" src="/images/sys/22.gif"></li><li _text="[s砸死你]" _tag="(P)" _id="_sys_0023_" title="砸死你"><img _src="/images/sys/23.gif" src="/images/sys/23.gif"></li><li _text="[s不说]" _tag="(-)" _id="_sys_0024_" title="不说"><img _src="/images/sys/24.gif" src="/images/sys/24.gif"></li><li _text="[s坏]" _tag=":;" _id="_sys_0025_" title="坏"><img _src="/images/sys/25.gif" src="/images/sys/25.gif"></li><li _text="[s色迷迷]" _tag="(SS)" _id="_sys_0026_" title="色迷迷"><img _src="/images/sys/26.gif" src="/images/sys/26.gif"></li><li _text="[s教训]" _tag="(@)" _id="_sys_0027_" title="教训"><img _src="/images/sys/27.gif" src="/images/sys/27.gif"></li><li _text="[s可爱]" _tag="(##)" _id="_sys_0028_" title="可爱"><img _src="/images/sys/28.gif" src="/images/sys/28.gif"></li><li _text="[sYEAH]" _tag="(YY)" _id="_sys_0029_" title="YEAH"><img _src="/images/sys/29.gif" src="/images/sys/29.gif"></li><li _text="[s崩溃]" _tag="(&gt;&lt;)" _id="_sys_0030_" title="崩溃"><img _src="/images/sys/30.gif" src="/images/sys/30.gif"></li><li _text="[s鄙视你]" _tag="(-.-)" _id="_sys_0031_" title="鄙视你"><img _src="/images/sys/31.gif" src="/images/sys/31.gif"></li><li _text="[s开心]" _tag="(~~)" _id="_sys_0032_" title="开心"><img _src="/images/sys/32.gif" src="/images/sys/32.gif"></li><li _text="[s仰慕你]" _tag="(**)" _id="_sys_0033_" title="仰慕你"><img _src="/images/sys/33.gif" src="/images/sys/33.gif"></li><li _text="[s晕]" _tag="(@@)" _id="_sys_0034_" title="晕"><img _src="/images/sys/34.gif" src="/images/sys/34.gif"></li><li _text="[s挖鼻孔]" _tag="(``)" _id="_sys_0035_" title="挖鼻孔"><img _src="/images/sys/35.gif" src="/images/sys/35.gif"></li><li _text="[s撒娇]" _tag="(%%)" _id="_sys_0036_" title="撒娇"><img _src="/images/sys/36.gif" src="/images/sys/36.gif"></li><li _text="[s鼓掌]" _tag="(AA)" _id="_sys_0037_" title="鼓掌"><img _src="/images/sys/37.gif" src="/images/sys/37.gif"></li><li _text="[s害羞]" _tag="(sy)" _id="_sys_0038_" title="害羞"><img _src="/images/sys/38.gif" src="/images/sys/38.gif"></li><li _text="[s老大]" _tag="(smo)" _id="_sys_0039_" title="老大"><img _src="/images/sys/39.gif" src="/images/sys/39.gif"></li><li _text="[s欠揍]" _tag="(hit" _id="_sys_0040_" title="欠揍"><img _src="/images/sys/40.gif" src="/images/sys/40.gif"></li><li _text="[s飞吻]" _tag="(kiss" _id="_sys_0041_" title="飞吻"><img _src="/images/sys/41.gif" src="/images/sys/41.gif"></li><li _text="[s工作忙]" _tag="(busy" _id="_sys_0042_" title="工作忙"><img _src="/images/sys/42.gif" src="/images/sys/42.gif"></li><li _text="[s大哭]" _tag="(cry" _id="_sys_0043_" title="大哭"><img _src="/images/sys/43.gif" src="/images/sys/43.gif"></li><li _text="[s偷偷笑]" _tag="(DD)" _id="_sys_0044_" title="偷偷笑"><img _src="/images/sys/44.gif" src="/images/sys/44.gif"></li><li _text="[s送花给你]" _tag="(i$)" _id="_sys_0045_" title="送花给你"><img _src="/images/sys/45.gif" src="/images/sys/45.gif"></li><li _text="[s来，亲一个]" _tag="(GK)" _id="_sys_0046_" title="来，亲一个"><img _src="/images/sys/46.gif" src="/images/sys/46.gif"></li><li _text="[s拍桌子]" _tag="(desk" _id="_sys_0047_" title="拍桌子"><img _src="/images/sys/47.gif" src="/images/sys/47.gif"></li><li _text="[s拜拜]" _tag="(bye" _id="_sys_0048_" title="拜拜"><img _src="/images/sys/48.gif" src="/images/sys/48.gif"></li><li _text="[s玫瑰]" _tag="(F)" _id="_sys_0060_" title="玫瑰"><img _src="/images/sys/60.gif" src="/images/sys/60.gif"></li><li _text="[s好爱你]" _tag="(L)" _id="_sys_0061_" title="好爱你"><img _src="/images/sys/61.gif" src="/images/sys/61.gif"></li><li _text="[s心碎了]" _tag="(U)" _id="_sys_0062_" title="心碎了"><img _src="/images/sys/62.gif" src="/images/sys/62.gif"></li><li _text="[sYES]" _tag="(Y)" _id="_sys_0065_" title="YES"><img _src="/images/sys/65.gif" src="/images/sys/65.gif"></li><li _text="[sNO]" _tag="(N)" _id="_sys_0064_" title="NO"><img _src="/images/sys/64.gif" src="/images/sys/64.gif"></li><li _text="[s握个手]" _tag="(H)" _id="_sys_0066_" title="握个手"><img _src="/images/sys/66.gif" src="/images/sys/66.gif"></li><li _text="[s睫毛弯弯]" _tag="(88)" _id="_sys_0098_" title="睫毛弯弯"><img _src="/images/sys/98.gif" src="/images/sys/98.gif"></li><li _text="[s嗷嗷嗷]" _tag="(oo)" _id="_sys_0055_" title="嗷嗷嗷"><img _src="/images/sys/55.gif" src="/images/sys/55.gif"></li><li _text="[s秀一下]" _tag="(xx)" _id="_sys_0050_" title="秀一下"><img _src="/images/sys/50.gif" src="/images/sys/50.gif"></li><li _text="[s扭捏]" _tag="(--)" _id="_sys_0054_" title="扭捏"><img _src="/images/sys/54.gif" src="/images/sys/54.gif"></li><li _text="[s阿弥陀佛]" _tag="(fo)" _id="_sys_0051_" title="阿弥陀佛"><img _src="/images/sys/51.gif" src="/images/sys/51.gif"></li><li _text="[s摸摸]" _tag="(mo)" _id="_sys_0097_" title="摸摸"><img _src="/images/sys/97.gif" src="/images/sys/97.gif"></li><li _text="[s抓狂]" _tag="(o.o)" _id="_sys_0053_" title="抓狂"><img _src="/images/sys/53.gif" src="/images/sys/53.gif"></li><li _text="[s啾啾]" _tag="(`3`)" _id="_sys_0095_" title="啾啾"><img _src="/images/sys/95.gif" src="/images/sys/95.gif"></li><li _text="[s耍酷]" _tag="(vo)" _id="_sys_0096_" title="耍酷"><img _src="/images/sys/96.gif" src="/images/sys/96.gif"></li><li _text="[s叹气]" _tag="(sigh" _id="_sys_0094_" title="叹气"><img _src="/images/sys/94.gif" src="/images/sys/94.gif"></li><li _text="[s飘阿飘]" _tag="(ii)" _id="_sys_0049_" title="飘阿飘"><img _src="/images/sys/49.gif" src="/images/sys/49.gif"></li><li _text="[s气呼呼]" _tag="(/)" _id="_sys_0056_" title="气呼呼"><img _src="/images/sys/56.gif" src="/images/sys/56.gif"></li><li _text="[s很得意]" _tag="(,)" _id="_sys_0057_" title="很得意"><img _src="/images/sys/57.gif" src="/images/sys/57.gif"></li><li _text="[s无辜]" _tag="(^^)" _id="_sys_0052_" title="无辜"><img _src="/images/sys/52.gif" src="/images/sys/52.gif"></li><li _text="[s亲亲]" _tag="(K)" _id="_sys_0063_" title="亲亲"><img _src="/images/sys/63.gif" src="/images/sys/63.gif"></li><li _text="[s我是男生]" _tag="(G)" _id="_sys_0058_" title="我是男生"><img _src="/images/sys/58.gif" src="/images/sys/58.gif"></li><li _text="[s我是女生]" _tag="(M)" _id="_sys_0059_" title="我是女生"><img _src="/images/sys/59.gif" src="/images/sys/59.gif"></li><li _text="[s到点了]" _tag="(O)" _id="_sys_0067_" title="到点了"><img _src="/images/sys/67.gif" src="/images/sys/67.gif"></li><li _text="[s音乐]" _tag="(music" _id="_sys_0068_" title="音乐"><img _src="/images/sys/68.gif" src="/images/sys/68.gif"></li><li _text="[sCALL我]" _tag="(T)" _id="_sys_0069_" title="CALL我"><img _src="/images/sys/69.gif" src="/images/sys/69.gif"></li><li _text="[s带血的刀]" _tag="(kill" _id="_sys_0070_" title="带血的刀"><img _src="/images/sys/70.gif" src="/images/sys/70.gif"></li><li _text="[s炸弹]" _tag="(O')" _id="_sys_0071_" title="炸弹"><img _src="/images/sys/71.gif" src="/images/sys/71.gif"></li><li _text="[s有了]" _tag="(I)" _id="_sys_0072_" title="有了"><img _src="/images/sys/72.gif" src="/images/sys/72.gif"></li><li _text="[s好晚了]" _tag="(E)" _id="_sys_0073_" title="好晚了"><img _src="/images/sys/73.gif" src="/images/sys/73.gif"></li><li _text="[s吸血蝙蝠]" _tag=":[" _id="_sys_0074_" title="吸血蝙蝠"><img _src="/images/sys/74.gif" src="/images/sys/74.gif"></li><li _text="[s便便]" _tag="(BB)" _id="_sys_0075_" title="便便"><img _src="/images/sys/75.gif" src="/images/sys/75.gif"></li><li _text="[s干一杯]" _tag="(D)" _id="_sys_0076_" title="干一杯"><img _src="/images/sys/76.gif" src="/images/sys/76.gif"></li><li _text="[s抽烟]" _tag="(SK)" _id="_sys_0077_" title="抽烟"><img _src="/images/sys/77.gif" src="/images/sys/77.gif"></li><li _text="[s打电话]" _tag="(tel" _id="_sys_0078_" title="打电话"><img _src="/images/sys/78.gif" src="/images/sys/78.gif"></li><li _text="[s家]" _tag="(home" _id="_sys_0079_" title="家"><img _src="/images/sys/79.gif" src="/images/sys/79.gif"></li><li _text="[s车子]" _tag="(car" _id="_sys_0080_" title="车子"><img _src="/images/sys/80.gif" src="/images/sys/80.gif"></li><li _text="[s礼物]" _tag="(gift" _id="_sys_0081_" title="礼物"><img _src="/images/sys/81.gif" src="/images/sys/81.gif"></li><li _text="[s金钱]" _tag="($)" _id="_sys_0082_" title="金钱"><img _src="/images/sys/82.gif" src="/images/sys/82.gif"></li><li _text="[s太阳]" _tag="(sun" _id="_sys_0083_" title="太阳"><img _src="/images/sys/83.gif" src="/images/sys/83.gif"></li><li _text="[s下雨]" _tag="(rain" _id="_sys_0084_" title="下雨"><img _src="/images/sys/84.gif" src="/images/sys/84.gif"></li><li _text="[s猪猪]" _tag="(W)" _id="_sys_0085_" title="猪猪"><img _src="/images/sys/85.gif" src="/images/sys/85.gif"></li><li _text="[s小猫]" _tag="(cat" _id="_sys_0086_" title="小猫"><img _src="/images/sys/86.gif" src="/images/sys/86.gif"></li><li _text="[s小狗]" _tag="(dog" _id="_sys_0087_" title="小狗"><img _src="/images/sys/87.gif" src="/images/sys/87.gif"></li><li _text="[s骨头]" _tag="(8)" _id="_sys_0088_" title="骨头"><img _src="/images/sys/88.gif" src="/images/sys/88.gif"></li><li _text="[s喝水]" _tag="(C)" _id="_sys_0089_" title="喝水"><img _src="/images/sys/89.gif" src="/images/sys/89.gif"></li><li _text="[s汉堡]" _tag="(HB)" _id="_sys_0090_" title="汉堡"><img _src="/images/sys/90.gif" src="/images/sys/90.gif"></li><li _text="[s包子]" _tag="(BZ)" _id="_sys_0091_" title="包子"><img _src="/images/sys/91.gif" src="/images/sys/91.gif"></li><li _text="[s西瓜]" _tag="(XG)" _id="_sys_0092_" title="西瓜"><img _src="/images/sys/92.gif" src="/images/sys/92.gif"></li><li _text="[s约会]" _tag="(YI)" _id="_sys_0093_" title="约会"><img _src="/images/sys/93.gif" src="/images/sys/93.gif"></li></ul>
         			
-        		</div>
+        		</div>-->
         	</div>
         </div>
       </div>
@@ -141,51 +167,14 @@
   <script type="text/javascript" src = "/javascripts/socket.io.js"></script>
   <script type="text/javascript" src = "/javascripts/template.js"></script>
   <script type="text/javascript" src = "/javascripts/waitroom.js"></script>
-  <script id = 'room_list' type='text/html'>
-   {{each list as room i}}   
-  	<li>
-		<div class="roomid clearfix">
-			<img src=''/>
-			<em class="lock"></em>
-			<h1>{{room.roomid}}</h1>
-			<span class='ellipsis'>{{room.user[0].name}}</span>
-			<em class="sex {{room.user[0].sex}}"></em>
-		</div>
-		<div class="online">
-			<ul class="clearfix">	
-			{{each room.user as user i}}
-			{{if user}}
-			<li>
-				<img src='{{user.headimg}}'/>
-				<div class="per_info">
-					<img src='{{user.headimg}}'/>
-					<h4>{{user.name}}</h4>
-					<em class="sex {{user.sex}}"></em>
-					<em class="hi"></em>
-					<b></b>
-					<div>
-						<p class="score">积 分：<span>{{user.score}}</span></p>
-						<p class="flower">鲜 花：<span>{{user.flower}}</span></p>
-						<p class="popular">人 气：<span>{{user.popular}}</span></p>
-					</div>
-				</div>
-			</li>
-			{{else}}
-			<li></li>
-			{{/if}}
-			{{/each}}
-			</ul>
-		</div>
-		<div class='join_button'>加 入</div>
-	</li>
-	{{/each}}
-  </script>
+
   <script id = 'player_list' type='text/html'>
 	<li>
-		<img src='{{headimg}}'/>
+		<img src = '../{{headimg}}'/>
+		<h4 class='ellipsis'>{{name}}</h4>
 		<div class="per_info">
-			<img src='{{headimg}}'/>
-			<h4>{{name}}</h4>
+			<img src='../{{headimg}}'/>
+			<h4 class='ellipsis'>{{name}}</h4>
 			<em class="sex {{sex}}"></em>
 			<em class="hi"></em>
 			<b></b>
@@ -194,7 +183,7 @@
 				<p class="flower">鲜 花：<span>{{flower}}</span></p>
 				<p class="popular">人 气：<span>{{popular}}</span></p>
 			</div>
-		</div>
+		</div>						
 	</li>
   </script>
   <script id='chat_list' type = 'text/html'>

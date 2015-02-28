@@ -30,7 +30,7 @@ app.use(multer({ dest: './uploads'}))
 app.use(session({
   secret: 'keyboard cat',
   name : 'userlogin',
-  cookie: {secure: false},//30 days
+  cookie: {secure: false},
   store: new MongoStore({
     db: 'drawguess',
     host:'localhost',

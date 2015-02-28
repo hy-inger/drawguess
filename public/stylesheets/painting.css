@@ -237,6 +237,9 @@ ul{
 	left:68px;
 	top:7px;
 }
+.world_hall .room_list ul li em.lock.hide{
+	display: none;
+}
 .world_hall .room_list ul li em.sex{
 	position: absolute;
 	width:24px;
@@ -507,11 +510,12 @@ ul{
 /*大厅页面end*/
 .player_list{
 	padding-top:30px;
-	padding-bottom:88px;
+	padding-bottom:77px;
 }
 .player_list .top{
 	padding-bottom: 10px;
 	border-bottom:3px solid #6B3F3F;
+	width:661px;
 }
 .player_list .top h1{
 	font-style: oblique;
@@ -528,7 +532,9 @@ ul{
 .player_list .top .action{
 	float:left;
 	text-align: center;
-	margin:0 80px;
+	margin:0 70px;
+	width:240px;
+	height:62px;
 }
 .player_list .top .action a{
 	color:#130202;
@@ -602,6 +608,8 @@ ul{
 	margin:0 15px;
 	margin-top: 60px;
 	position: relative;
+	cursor: pointer;
+	height:143px;
 }
 .player_list .players ul li .owner{
 	position: absolute;
@@ -628,6 +636,9 @@ ul{
 .player_list .players ul li img.forbid{
 	background: #ddc9a8 url('../images/forbid1.png') no-repeat;
 }
+.player_list .players ul li img.forbid + span{
+	display: none;
+}
 .player_list .players ul li:nth-child(8) img{
 	background: #ad8666 url('../images/forbid3.png') no-repeat;
 }
@@ -647,6 +658,23 @@ ul{
 	margin-top: -16px;
 	font-size: 13px;
 
+}
+.player_list .leaveroom{
+	color:#942F4E;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	margin-top: 10px;
+	cursor: pointer;
+	position: relative;
+}
+.player_list .leaveroom em{
+	position: absolute;
+	width:32px;
+	height:32px;
+	background: url('../images/return.png') no-repeat;
+	left:260px;
+	top:-6px;
 }
 /*房间页面*/
 .drawarea #mycanvas{
@@ -801,7 +829,86 @@ ul{
 	color:#150702;
 	font-size: 13px;
 }
-
+/*弹窗提示*/
+.poptip{
+	position: absolute;
+	background: #fff;
+	top:50%;
+	left:50%;
+	margin-left: -150px;
+	margin-top: -92px;
+	z-index: 4;
+	width:240px;
+	height:125px;
+	padding:30px 30px;
+	background: url('../images/tipbg.png');
+	display: none; 
+}
+.poptip h4{
+	text-align: center;
+	color:#5A2020;
+	font-size: 13px;
+	font-weight: normal;
+}
+.poptip ul {
+	margin:0 16px;
+	line-height: 42px;
+}
+.poptip ul li{
+	float:left;
+	font-size: 22px;
+	color:#131212;
+	padding:5px 10px;
+	cursor: pointer;
+}
+.poptip ul li.current{
+	color:rgb(219, 18, 18);
+	font-size: 28px;
+	font-weight: bold;
+}
+.poptip p {
+	font-size: 13px;
+	margin-top: 3px;
+	text-align: right;
+}
+.poptip p input[type='text']{
+	width:35px;
+	height:20px;
+	padding:0 5px;
+}
+.poptip p span{
+	margin:0 5px;
+}
+.poptip .enterpw {
+	text-align: center;
+}
+.poptip .enterpw input{
+	height:22px;
+	margin-top: 20px;
+	padding:0 5px;
+}
+.poptip .button{
+	position: absolute;
+	width:300px;
+	height:50px;
+	background:rgba(221,146,76,0.8);
+	bottom:0;
+	right:0;
+}
+.poptip .button a{
+	float:left;
+	margin:8px 24px;
+	color:#5A2020;
+	padding:10px 35px;
+	font-weight: bold;
+	cursor: pointer;
+}
+.poptip .button a.certain{
+	background: url('../images/addtime.png') no-repeat;
+}
+.poptip .button a.cancel{
+	background: url('../images/waiting.png') no-repeat;
+}
 .ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
