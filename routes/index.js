@@ -312,8 +312,13 @@ io.sockets.on('connection',function(socket){
 		}
 		
 	});
-	socket.on('sendMess',function(msg){			//用户发送聊天消息广播
-		socket.broadcast.emit('receiveMess',msg);
+	socket.on('sendInRoom',function(msg){			//用户发送聊天消息房间内广播
+		console.log(msg.roomid);
+		socket.broadcast.to(msg.roomid).emit('receiveInRoom',msg);
+	});
+	socket.on('sendInHall',function(msg){			//用户发送聊天消息大厅广播
+		console.log(msg.roomid);
+		socket.broadcast.emit('receiveInHall',msg);
 	});
 	socket.on('AddPlayer',function(msg){			//用户更改房间游戏人数广播
 		socket.broadcast.to(msg.roomid).emit('AddInRoom',msg);

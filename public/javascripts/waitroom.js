@@ -27,11 +27,6 @@ $(document).ready(function(){
 		roomid = $('.player_list .top h1').text();
 		roompw = $('.player_list .top .roompass input[type="checkbox"]').prop('checked') || false;
 		num = $('.player_list .players').attr('_num');
-	socket = io.connect('ws://localhost',{
- 		transports: ['websocket'],
- 		"try multiple transports": false,
- 		reconnect: true
- 	});
  	//用户进入等待房间，给服务端发送实时消息。
  	var player_data = {
 			'roomid':roomid,
@@ -46,6 +41,7 @@ $(document).ready(function(){
 			'num':num
 		};
  	socket.emit('joinWaitRoom',player_data);
+
 	$('.player_list .top .roompass input[type="checkbox"]').click(function(){
 		if($(this).prop('checked')){
 			var random = parseInt(Math.random()*10000);
@@ -78,10 +74,6 @@ $(document).ready(function(){
 		if(time > 60)
 			time = 60;
 		 $('.player_list .top .countdown').text(time);
-	});
-	$(document).on('mouseenter mouseleave','.player_list .players ul li',function(event){
-		$(this).find('.per_info').toggle();
-		event.stopPropagation();
 	});
 	//改变房间可进入人数。
 	$('.player_list .players ul li').click(function(){
@@ -139,10 +131,13 @@ $(document).ready(function(){
 	//用户加入房间广播
 	socket.on('joinWaitRoom',function(data){
 		$('.player_list .players ul li').each(function(){
-			if($(this).find('.per_info').length <= 0){
+			if($(this).find('.per_info').length <= 0){	
+				console.log(data);			
 				var html = template('player_list',data);
 				$(this).before(html);
 				$(this).remove();
+				data.sendmess = '大家好。我来啦。(进入房间)。';
+				$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
 				return false;
 			}
 		});
@@ -156,8 +151,11 @@ $(document).ready(function(){
 		players_li.each(function(i){
 			if($(this).children('h4').text()  == name){
 				//$(this).replaceWith('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
+				var html = template('player_list',data);
 				$(this).before('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
 				$(this).remove();
+				data.sendmess = '大家再见。我走啦。(进入房间)。';
+				$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
 				return false;
 			}
 		});
@@ -170,7 +168,11 @@ $(document).ready(function(){
 			}
 		}
 	});
-	
+	//用户接受聊天消息广播
+	socket.on('receiveInRoom',function(data){
+		console.log(data);
+		$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
+	});
 	var countdown = setInterval(function(){
 		var time = $('.player_list .top .countdown').text();
 		time = parseInt(time);

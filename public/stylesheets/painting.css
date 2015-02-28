@@ -510,7 +510,7 @@ ul{
 /*大厅页面end*/
 .player_list{
 	padding-top:30px;
-	padding-bottom:77px;
+	padding-bottom:58px;
 }
 .player_list .top{
 	padding-bottom: 10px;
@@ -763,7 +763,7 @@ ul{
 	border-color:transparent;
 }
 .world_hall .room_list ul li .online ul li .per_info img,
-.world_hall .world_chat .chat_area .chat ul li .per_info img,
+.world_chat .chat_area .chat ul li .per_info img,
 .player_list .players ul li .per_info img{
 	width:100px;
 	height:90px;
