@@ -26,6 +26,7 @@ $(document).ready(function(){
 		popular = user_info.find('.popular span').text(),
 		roomid = $('.player_list .top h1').text();
 		roompw = $('.player_list .top .roompass input[type="checkbox"]').prop('checked') || false;
+		num = $('.player_list .players').attr('_num');
 	socket = io.connect('ws://localhost',{
  		transports: ['websocket'],
  		"try multiple transports": false,
@@ -41,7 +42,8 @@ $(document).ready(function(){
 			'flower':flower,
 			'popular':popular,
 			'owner':owner,
-			'roompw':roompw
+			'roompw':roompw,
+			'num':num
 		};
  	socket.emit('joinWaitRoom',player_data);
 	$('.player_list .top .roompass input[type="checkbox"]').click(function(){
@@ -86,9 +88,41 @@ $(document).ready(function(){
 		var img = $(this).children('img');
 		if(img.hasClass('forbid')){
 			img.css('background','#ddc9a8').removeClass('forbid').addClass('waiting').siblings('span').show();
+			$.ajax({
+				url:'AddPlayer',
+				type:'GET',
+				data:{'roomid':roomid},
+				success:function(data){
+					socket.emit('AddPlayer',{roomid:roomid});
+				}
+			});
 		} else if(img.hasClass('waiting')){
 			img.css('background-image','url("../images/forbid1.png")').removeClass('waiting').addClass('forbid').siblings('span').hide();
+			$.ajax({
+				url:'ReducePlayer',
+				type:'GET',
+				data:{'roomid':roomid},
+				success:function(data){
+					socket.emit('ReducePlayer',{roomid:roomid});
+				}
+			});
 		}
+	});
+	socket.on('AddInRoom',function(msg){
+		$('.player_list .players ul li').each(function(){
+			if($(this).children('img').hasClass('forbid')){
+				$(this).children('img').css('background','#ddc9a8').removeClass('forbid').addClass('waiting').siblings('span').show();
+				return false;
+			}
+		});
+	});
+	socket.on('ReduceInRoom',function(msg){
+		$('.player_list .players ul li').each(function(){
+			if($(this).children('img').hasClass('waiting')){
+				$(this).children('img').css('background-image','url("../images/forbid1.png")').removeClass('waiting').addClass('forbid').siblings('span').hide();
+				return false;
+			}
+		});
 	});
 	/*用户离开房间*/
 	$('.player_list .leaveroom').click(function(){

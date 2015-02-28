@@ -83,9 +83,10 @@ $(document).ready(function(){
 			data:player_data,
 			async:false,
 			success:function(data){
+				var length = $this.siblings('.online').find('ul li').length-1;
 				$this.siblings('.online').find('ul li').each(function(i){
 					if($(this).text()==''){
-						if(i == 6)
+						if(i == length)
 							$this.addClass('unjoin');					
 						window.location.replace('/room/waitroom?roomid=' + roomid);
 						return false;
@@ -108,6 +109,7 @@ $(document).ready(function(){
 				var roomid = $(this).find('.roomid h1').text();
 				if(in_roomid == roomid){
 					var html = template('player_list',data);
+					var length = $this.find('.online ul li').length -1;
 					$this.find('.online ul li').each(function(i){
 						if(!$(this).text()){
 							$(this).before(html);
@@ -116,13 +118,14 @@ $(document).ready(function(){
 							return false;
 						}
 					});
-					if(index == 6)
+					if(index == length)
 						$this.find('.join_button').addClass('unjoin'); 
 					return false;
 				}
 			});
 		} else {
 			if($('.world_hall .room_list ul.about_room>li').length < 6){
+				var num = parseInt(data.num);
 				var data = {
 					'list':{
 						'roomid' :　data.roomid,
@@ -137,7 +140,8 @@ $(document).ready(function(){
 						}]
 					}
 				};
-				data.list.user.length = 7;
+				
+				data.list.user.length = num;
 				var html = template('room_list',{'list':data});
 				$('.world_hall .room_list ul.about_room').append(html);
 			}
@@ -163,8 +167,25 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
-
+	/*用户更改房间游戏人数广播给世界其他用户*/
+	socket.on('ReduceInHall',function(data){
+		var roomid = data.roomid;
+		$('.room_list ul li').each(function(){
+			console.log($(this).find('.roomid h1').text());
+			if(roomid == $(this).find('.roomid h1').text()){
+				var length = $(this).find('.online ul li').length - 1;
+				$(this).find('.online ul li').eq(length).remove();
+			}
+		});
+	});
+	socket.on('AddInHall',function(data){
+		var roomid = data.roomid;
+		$('.room_list ul li').each(function(){
+			if(roomid == $(this).find('.roomid h1').text()){
+				$(this).find('.online ul').append('<li></li>');
+			}
+		});
+	});
 	//世界公屏聊天消息。
 	function sendMess(obj,val){
 		var reg = /\[s([\u4E00-\u9FA5\uF900-\uFA2D]|\w)+\]/g,

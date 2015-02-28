@@ -108,8 +108,9 @@ router.get('/room/hall',function(req,res){
 				docs.sort({"_id":1});
 				docs = docs.slice(0,6);
 				for(var i = 0 ;i < docs.length; i++){
-					if(docs[i].user.length < 7);
-						docs[i].user.length = 7;
+					var num = parseInt(docs[i].playernum);
+					if(docs[i].user.length < num);
+						docs[i].user.length = num;
 				}
 				
 			}
@@ -222,7 +223,7 @@ router.get('/room/waitroom',function(req,res){
 					'owner' : owner
 				};
 
-				res.render('room/waitroom',{user:user,players:players});
+				res.render('room/waitroom',{user:user,players:players,num:num});
 				
 			});
 		} else {
@@ -261,6 +262,29 @@ router.post('/room/leave',function(req,res){
 	});
 	
 });
+/*房主改变房间可进入人数*/
+router.get('/room/AddPlayer',function(req,res){
+	var roomid = req.query.roomid;
+	Room.find({roomid:roomid},function(err,docs){
+		var num = docs[0].playernum;
+		num = parseInt(num);
+		num ++;
+		Room.update({'roomid':roomid},{'$set':{playernum:num}},function(err,docs){
+			res.jsonp({'message':num});
+		});
+	});
+});
+router.get('/room/ReducePlayer',function(req,res){
+	var roomid = req.query.roomid;
+	Room.find({roomid:roomid},function(err,docs){
+		var num = docs[0].playernum;
+		num = parseInt(num);
+		num --;
+		Room.update({'roomid':roomid},{'$set':{playernum:num}},function(err,docs){
+			res.jsonp({'message':num});
+		});
+	});
+});
 /*room*/
 router.get('/room/painting', function(req, res) {
 　　res.render('room/painting');
@@ -291,11 +315,20 @@ io.sockets.on('connection',function(socket){
 	socket.on('sendMess',function(msg){			//用户发送聊天消息广播
 		socket.broadcast.emit('receiveMess',msg);
 	});
+	socket.on('AddPlayer',function(msg){			//用户更改房间游戏人数广播
+		socket.broadcast.to(msg.roomid).emit('AddInRoom',msg);
+		socket.broadcast.emit('AddInHall',msg);
+	});
+	socket.on('ReducePlayer',function(msg){
+		socket.broadcast.to(msg.roomid).emit('ReduceInRoom',msg);
+		socket.broadcast.emit('ReduceInHall',msg);
+	})
 	socket.on('leaveRoom',function(msg){		//用户离开房间消息广播。
 		socket.leave(msg.roomid);	
 		socket.broadcast.to(msg.roomid).emit('leaveRoom',msg);
 		socket.broadcast.emit('leaveRoomToHall',msg);
 	});
+
 	socket.on('message',function(msg){		//收到客户端发送来的消息。msg为数据。
 		if(msg.mx)
 			socket.broadcast.emit('begin',msg);
