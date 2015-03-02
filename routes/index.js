@@ -372,8 +372,6 @@ io.sockets.on('connection',function(socket){
 			
 			socket.join().id = msg.joinid;
 		}
-		console.log('leave');
-		console.log(msg);
 		socket.broadcast.to(msg.roomid).emit('leaveInRoom',msg);
 		socket.broadcast.emit('leaveRoomToHall',msg);
 		socket.leave(msg.roomid); 

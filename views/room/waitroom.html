@@ -48,41 +48,7 @@
 			</div>
 			<div class='players' _num = '<%=num%>'>
 				<ul class="clearfix">
-					<%if(user.owner){%>
-					<li>
-						<p class='owner'><em></em>房主</p>
-						<img src = '../<%=user.headimg%>'/>
-						<h4 class='ellipsis'><%=user.name%></h4>
-						<div class="per_info">
-							<img src='../<%=user.headimg%>'/>
-							<h4 class='ellipsis'><%=user.name%></h4>
-							<em class="sex <%=user.sex%>"></em>
-							<em class="hi"></em>
-							<b></b>
-							<div>
-								<p class="score">积 分：<span><%=user.score%></span></p>
-								<p class="flower">鲜 花：<span><%=user.flower%></span></p>
-								<p class="popular">人 气：<span><%=user.popular%></span></p>
-							</div>
-						</div>						
-					</li>			
-					<%for(var i=0;i<(parseInt(user.num)-1);i++){%>					
-					<li>
-						<img class='waiting' src = ''/>
-						<span>等待玩家</span>
-						<h4></h4>						
-					</li>
-					<%}%>	
-					<%for(var i=0;i<7-parseInt(user.num);i++){%>						
-					<li>
-						<img class='forbid' src = ''/>	
-						<span>等待玩家</span>					
-					</li>
-					<%}%>
-					<li>
-						<img src = ''/>						
-					</li>	
-					<%} else {%>
+					
 					<%for(var i = 0;i < players.length;i++){%>
 					<li>
 						<%if(players[i].owner){%><p class='owner'><em></em>房主</p><%}%>
@@ -118,7 +84,7 @@
 					<li>
 						<img src = ''/>						
 					</li>
-					<%}%>	
+						
 				</ul>
 			</div>
 			<div class='leaveroom'>
