@@ -66,8 +66,22 @@ function Draw(canvasObj){
 	}
 	//获取鼠标click或move的坐标
 	var coordinate = function(e){
-		mouseX = e.pageX - canvasObj.offsetLeft;
-		mouseY = e.pageY - canvasObj.offsetTop;
+		function getTop(e){
+		    var offset = e.offsetTop;
+		    if (e.offsetParent != null)
+		        offset += getTop(e.offsetParent);
+		    return offset;
+		}
+		function getLeft(e){
+		    var offset = e.offsetLeft;
+		    if (e.offsetParent != null)
+		        offset += getLeft(e.offsetParent);
+		    return offset;
+		}
+		canvasLeft = getLeft(canvasObj);
+		canvasTop = getTop(canvasObj)
+		mouseX = e.pageX - canvasLeft;
+		mouseY = e.pageY - canvasTop;
 	}
 	//画笔功能，绘制路径。
 	var drawline = function(){

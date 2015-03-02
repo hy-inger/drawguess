@@ -1,6 +1,4 @@
 $(document).ready(function(){
-	
- 	console.log(document.cookie);
  	var user_info = $('.world_chat .user_info'),
  		name = user_info.find('h4').text(),
 		headimg = user_info.find('img').attr('src'),
@@ -15,16 +13,7 @@ $(document).ready(function(){
 		$(this).siblings('ul').hide();
 	});
 	
-	/*用户退出账号，清除session记录*/
-	$('.logout').click(function(){
-		$.ajax({
-			url:'/logout',
-			type:'GET',
-			success:function(data){
-				window.location.replace('/');
-			}
-		});
-	});
+	
 	/*世界大厅上下页切换*/
 	$('.world_hall .room_list .operate em').click(function(){
 		var $this = $(this);
@@ -55,36 +44,104 @@ $(document).ready(function(){
 		});
 
 	});
-	
+
+	//用户创建房间
+	var create = false,
+		enterroom = '';
+	$('.poptip ul li').click(function(){
+		if(!$(this).hasClass('current')){
+			$(this).addClass('current').siblings('li').removeClass('current');
+		}
+	});
+	$('.poptip .button .cancel').click(function(){
+		$(this).parents('.poptip').slideUp('fast');
+		create = false;
+	});	
+	$('.world_hall .operate .create').click(function(){
+		$('.poptip').slideDown('fast').find('.create').show();
+		create = true;
+	});
+	$('.poptip .certain').click(function(){
+		if(create){
+			var poptip = $(this).parents('.poptip'),
+				num = $('.poptip ul li.current').text(),
+				pw='';
+			if(poptip.find('p input[type="checkbox"]').prop('checked')){
+				pw = poptip.find('p input[type="text"]').val();
+			}
+			ownerdata = {
+				'num':num,
+				'pw':pw,				
+			};
+			$.ajax({
+				url:'/room/create',
+				type:'POST',
+				data:ownerdata,
+				async:false,
+				success:function(data){
+					poptip.hide();
+					window.location.replace('/room/waitroom?roomid=' + data.roomid +'&num=' + num);
+				}
+			});
+		} else {
+			var roompw = $('.poptip .enterpw input').val();
+			var player_data = {
+				'roomid' : enterroom,
+				'roompw' : roompw
+			}
+			$.ajax({
+				url:'/room/playerEnter',
+				type:'GET',
+				data:player_data,
+				async:false,
+				success:function(data){
+					if(data.message == 'pwerror'){
+						$('.poptip .enterpw p').show();
+					} else if(data.message == 'success'){
+						$('.poptip .enterpw p').hide();
+						window.location.replace('/room/waitroom?roomid=' + enterroom);
+					}											
+				}	
+
+			});
+		}
+	});
 	/*用户加入房间*/
 	$(document).on('click','.world_hall .room_list ul li .join_button',function(event){
 		var $this = $(this);
 		if($this.hasClass('unjoin'))
 			return;
+
 		var roomid = $this.siblings('.roomid').find('h1').text();
 		var player_data = {
 			'roomid':roomid,			
 		};
-		$.ajax({
-			url:'/room/playerEnter',
-			type:'GET',
-			data:player_data,
-			async:false,
-			success:function(data){
-				var length = $this.siblings('.online').find('ul li').length-1;
-				$this.siblings('.online').find('ul li').each(function(i){
-					if($(this).text()==''){
-						if(i == length)
-							$this.addClass('unjoin');					
-						window.location.replace('/room/waitroom?roomid=' + roomid);
-						return false;
-					}
-					
-				});
-					
-			}	
+		enterroom = roomid;
+		if(!$this.siblings('.roomid').find('.lock').hasClass('hide')){	//房间有密码时需验证密码
+			$('.poptip').slideDown('fast').find('.enterpw').show();
+			create = false;
+		} else{
+			$.ajax({
+				url:'/room/playerEnter',
+				type:'GET',
+				data:player_data,
+				async:false,
+				success:function(data){
+					var length = $this.siblings('.online').find('ul li').length-1;
+					$this.siblings('.online').find('ul li').each(function(i){
+						if($(this).text()==''){
+							if(i == length)
+								$this.addClass('unjoin');					
+							window.location.replace('/room/waitroom?roomid=' + roomid);
+							return false;
+						}
+						
+					});
+						
+				}	
 
-		});
+			});
+		}
 		event.stopPropagation();
 	});
 	/*用户加入房间时广播给世界大厅其他用户*/
@@ -141,6 +198,7 @@ $(document).ready(function(){
 			roomid = data.roomid;
 		$('.room_list ul li').each(function(){
 			if(roomid == $(this).find('.roomid h1').text()){
+				console.log($(this).find('.online ul li').eq(1).text());
 				if(!$(this).find('.online ul li').eq(1).text()){
 					$(this).remove();
 				} else {				
@@ -175,44 +233,7 @@ $(document).ready(function(){
 		});
 	});
 	
-	//用户创建房间
-	$('.poptip ul li').click(function(){
-		if(!$(this).hasClass('current')){
-			$(this).addClass('current').siblings('li').removeClass('current');
-		}
-	});
-	$('.poptip .button .cancel').click(function(){
-		$(this).parents('.poptip').slideUp('fast');
-	});
-	var create = false;
-	$('.world_hall .operate .create').click(function(){
-		$('.poptip').slideDown('fast').find('.create').show();
-		create = true;
-	});
-	$('.poptip .certain').click(function(){
-		if(create){
-			var poptip = $(this).parents('.poptip'),
-				num = $('.poptip ul li.current').text(),
-				pw='';
-			if(poptip.find('p input[type="checkbox"]').prop('checked')){
-				pw = poptip.find('p input[type="text"]').val();
-			}
-			ownerdata = {
-				'num':num,
-				'pw':pw,				
-			};
-			$.ajax({
-				url:'/room/create',
-				type:'POST',
-				data:ownerdata,
-				async:false,
-				success:function(data){
-					poptip.hide();
-					window.location.replace('/room/waitroom?roomid=' + data.roomid +'&num=' + num);
-				}
-			});
-		}
-	});
+	
 	//用户接收广播聊天消息
 	socket.on('receiveInHall',function(data){
 		$('.world_chat .chat_area .chat ul').append(template('chat_list',data));

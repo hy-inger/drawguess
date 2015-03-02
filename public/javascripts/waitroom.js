@@ -131,8 +131,7 @@ $(document).ready(function(){
 	//用户加入房间广播
 	socket.on('joinWaitRoom',function(data){
 		$('.player_list .players ul li').each(function(){
-			if($(this).find('.per_info').length <= 0){	
-				console.log(data);			
+			if($(this).find('.per_info').length <= 0){			
 				var html = template('player_list',data);
 				$(this).before(html);
 				$(this).remove();
@@ -143,7 +142,7 @@ $(document).ready(function(){
 		});
 	});
 	//用户离开房间广播
-	socket.on('leaveRoom',function(data){
+	socket.on('leaveInRoom',function(data){
 		console.log(data);
 		var name = data.name,
 			owner = data.owner,
@@ -151,10 +150,11 @@ $(document).ready(function(){
 		players_li.each(function(i){
 			if($(this).children('h4').text()  == name){
 				//$(this).replaceWith('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
+				console.log(name);
 				var html = template('player_list',data);
 				$(this).before('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
 				$(this).remove();
-				data.sendmess = '大家再见。我走啦。(进入房间)。';
+				data.sendmess = '大家再见。我走啦。(退出房间)。';
 				$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
 				return false;
 			}
@@ -181,4 +181,9 @@ $(document).ready(function(){
 		if(time <= 0)
 			clearInterval(countdown);
 	},1000);
+	//进入游戏房间，开始游戏
+	$('.player_list .top .action a.begin').click(function(){
+		socket.emit('gameBegin',{roomid:roomid});
+		window.location.replace('/room/painting?roomid='+roomid);
+	});	
 });

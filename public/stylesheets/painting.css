@@ -517,7 +517,8 @@ ul{
 	border-bottom:3px solid #6B3F3F;
 	width:661px;
 }
-.player_list .top h1{
+.player_list .top h1,
+.drawarea .top h1{
 	font-style: oblique;
 	font-size:54px;
 	color:#76CA7D;
@@ -556,7 +557,8 @@ ul{
 .player_list .top .action p a.invite{
 	background: url('../images/invite.png') no-repeat;
 }
-.player_list .top .countdown{
+.player_list .top .countdown,
+.drawarea .top .countdown{
 	float:left;
 	width:135px;
 	height:87px;
@@ -676,10 +678,50 @@ ul{
 	left:260px;
 	top:-6px;
 }
-/*房间页面*/
+/*游戏房间页面*/
+.drawarea{
+	position: relative;
+}
+.drawarea .top img{
+	width:50px;
+	height:50px;
+	float: left;
+	margin:0 20px;
+	margin-top: 17px;
+}
+.drawarea .top .painting{
+	float: left;
+	width:300px;
+	text-align: center;
+	margin-top: 25px;
+	display: none;
+}
+.drawarea .top .painting p {
+	margin-bottom: 8px;
+}
+.drawarea .top .painting p span{
+	color:#BD2026;
+	font-size: 18px;
+}
+.drawarea .top .painting a{
+	color:#942F4E;
+	cursor: pointer;
+}
+.drawarea .top .guessing{
+	float: left;
+	width:300px;
+	text-align: center;
+	margin-top: 35px;
+	
+}
+.drawarea .top .guessing span{
+	color:#BD2026;
+	font-size: 18px;
+}
 .drawarea #mycanvas{
 	border:1px solid #ccc;
 	cursor: default;
+	background: #fff;
 }
 .drawarea ul li{
 	float:left;
@@ -693,7 +735,15 @@ ul{
 	background: url("../images/canvas.png") no-repeat;
 	border:1px solid #ccc;
 }
-
+.drawarea .painter{
+	position: absolute;
+	bottom: 110px;
+}
+.drawarea .painter ul {
+	float: left;
+	margin:0 10px;
+	line-height: 68px;
+}
 .drawarea .pencil li:nth-child(1) em{
 	background-position: -123px -22px;
 }
@@ -726,7 +776,26 @@ ul{
 	height:25px;
 	padding:0;
 }
-
+.drawarea .riddler ul{
+	margin:0 40px;
+}
+.drawarea .riddler ul li{
+	float: left;
+	position: relative;
+	margin:0 5px;
+}
+.drawarea .riddler ul li>img{
+	width:60px;
+	height:60px;
+}
+.drawarea .riddler ul li>h4{
+	text-align: center;
+	color:#802432;
+}
+.drawarea .riddler ul li>p{
+	text-align: center;
+	color:#802432;
+}
 /*hover用户头像时展示的个人信息*/
 .per_info{
 	position: absolute;
@@ -748,6 +817,9 @@ ul{
 	top:0px;
 	left:75px;
 }
+.riddler ul li .per_info{
+	top:-108px;
+}
 .per_info b{
 	position: absolute;
 	width:0px;
@@ -762,9 +834,13 @@ ul{
 .world_hall .world_chat .chat_area .chat ul li .per_info b{
 	border-color:transparent;
 }
+.riddler ul li .per_info b {
+	top:135px;
+}
 .world_hall .room_list ul li .online ul li .per_info img,
 .world_chat .chat_area .chat ul li .per_info img,
-.player_list .players ul li .per_info img{
+.player_list .players ul li .per_info img,
+.riddler ul li .per_info img{
 	width:100px;
 	height:90px;
 	border-radius: 5px;
@@ -886,6 +962,12 @@ ul{
 	height:22px;
 	margin-top: 20px;
 	padding:0 5px;
+}
+.poptip .enterpw p {
+	color:#CA0E0E;
+	text-align: center;
+	margin-top: 10px;
+	display: none;
 }
 .poptip .button{
 	position: absolute;
