@@ -13,8 +13,8 @@
           </div>
           <div class="left drawarea">
             <div class='top clearfix'>
-              <h1>000</h1>
-              <img src='../<%=user.headimg%>'/>
+              <h1><%=roomid%></h1>
+              <img src='../<%=ownerimg%>'/>
               <div class='painting'>
                 <p>题目：<span>duangduang</span></p>
                 <a>放弃</a>
@@ -44,119 +44,25 @@
             </div>
             <div class='riddler'>
               <ul class='clearfix'>
+                <%for(var i = 0;i < players.length;i++){%>
                 <li>
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
+                  <h4 class="ellipsis"><%=players[i].name%></h4>
+                  <img src="../<%=players[i].headimg%>">
                   <p class='score'>10</p>
                   <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
+                    <img src="../<%=players[i].headimg%>">
+                    <h4 class="ellipsis"><%=players[i].name%></h4>
+                    <em class="sex <%=players[i].sex%>"></em>
                     <em class="hi"></em>
                     <b></b>
                     <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
+                      <p class="score">积 分：<span><%=players[i].score%></span></p>
+                      <p class="flower">鲜 花：<span><%=players[i].flower%></span></p>
+                      <p class="popular">人 气：<span><%=players[i].popular%></span></p>
                     </div>
                   </div>            
-                </li>
-                <li>    
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                  <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
-                    <em class="hi"></em>
-                    <b></b>
-                    <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
-                    </div>
-                  </div>            
-                </li> 
-                <li>    
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                  <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
-                    <em class="hi"></em>
-                    <b></b>
-                    <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
-                    </div>
-                  </div>            
-                </li>
-                <li>    
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                  <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
-                    <em class="hi"></em>
-                    <b></b>
-                    <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
-                    </div>
-                  </div>            
-                </li>
-                <li>    
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                  <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
-                    <em class="hi"></em>
-                    <b></b>
-                    <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
-                    </div>
-                  </div>            
-                </li>
-                <li>    
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                  <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
-                    <em class="hi"></em>
-                    <b></b>
-                    <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
-                    </div>
-                  </div>            
-                </li>
-                <li>    
-                  <h4 class="ellipsis">ying</h4>
-                  <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                  <div class="per_info" style="display: none;">
-                    <img src="../../46dfdd2bd7c95af870e1c4fb0355a417.jpeg">
-                    <h4 class="ellipsis">ying</h4>
-                    <em class="sex female"></em>
-                    <em class="hi"></em>
-                    <b></b>
-                    <div>
-                      <p class="score">积 分：<span>0</span></p>
-                      <p class="flower">鲜 花：<span>0</span></p>
-                      <p class="popular">人 气：<span>0</span></p>
-                    </div>
-                  </div>            
-                </li>               
+                </li>  
+                <%}%>           
               </ul>
             </div>
           </div>

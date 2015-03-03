@@ -294,21 +294,29 @@ router.get('/room/ReducePlayer',function(req,res){
 router.get('/room/painting',checkLogin);
 router.get('/room/painting', function(req, res) {
 	var name = req.session.user.name,
-		roomid = req.query.roomid;
+		ownername = req.query.ownername,
+		roomid = req.query.roomid,
+		players,ownerimg;
 	Room.find({'roomid':roomid},function(err,docs){
-
+		players = docs[0].user;
+		for(var i = 0;i < players.length; i++){
+			if(players[i].owner){
+				ownerimg = players[i].headimg;
+			}
+		}
+		User.find({'name':name},function(err,docs){
+			user = {
+				'name':docs[0].name,
+				'headimg':docs[0].headimg,
+				'sex':docs[0].sex,
+				'score':docs[0].score,
+				'flower':docs[0].flower,
+				'popular':docs[0].popular
+			};
+			res.render('room/painting',{roomid:roomid,user:user,players:players,ownerimg:ownerimg});
+		});
 	});
-	User.find({'name':name},function(err,docs){
-		user = {
-			'name':docs[0].name,
-			'headimg':docs[0].headimg,
-			'sex':docs[0].sex,
-			'score':docs[0].score,
-			'flower':docs[0].flower,
-			'popular':docs[0].popular
-		};
-		res.render('room/painting',{user:user});
-	});
+	
 　　
 });
 

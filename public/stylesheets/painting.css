@@ -791,6 +791,7 @@ ul{
 .drawarea .riddler ul li>h4{
 	text-align: center;
 	color:#802432;
+	width:60px;
 }
 .drawarea .riddler ul li>p{
 	text-align: center;

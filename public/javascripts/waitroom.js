@@ -183,7 +183,7 @@ $(document).ready(function(){
 	},1000);
 	//进入游戏房间，开始游戏
 	$('.player_list .top .action a.begin').click(function(){
-		socket.emit('gameBegin',{roomid:roomid});
-		window.location.replace('/room/painting?roomid='+roomid);
+		socket.emit('gameBegin',{roomid:roomid,ownername:name});
+		window.location.replace('/room/painting?roomid=' + roomid + '&ownername=' + name);
 	});	
 });
