@@ -45,9 +45,10 @@ router.post('/register/action',function(req,res){
 	regis_user.save(function(err,docs){
 		//res.status(200).sendFile(req.files.headimg.path,{ root: __dirname + '/..' });
 		if(err)
-			res.jsonp({'message':'error'});
+			console.log(err);
 		else {
-			var user = docs[0];
+			var user = docs;
+			console.log(docs);
 			req.session.user = {};
 			req.session.user.name = user.name;
 			req.session.user.headimg = user.headimg;
