@@ -4,18 +4,19 @@ function Draw(canvasObj){
 	var ctx = canvasObj.getContext('2d');
 	var type = "pencil";
 	var begin = {};
+	var drawer = false;
 	socket = io.connect('ws://localhost',{
  		transports: ['websocket'],
  		"try multiple transports": false,
  		reconnect: true
  	});
+ 	socket.emit('GameRoom',{roomid:roomid,name:name});
 	socket.on('open',function(){
 	  console.log('连接成功');
 	});
 	socket.on('message',function(json){
 	  console.log(json);
 	});
-	socket.emit("my event","huangying connect!");
 	socket.on('begin',function(data){
 		begin.mx = data.mx;
 		begin.my = data.my;
@@ -64,6 +65,9 @@ function Draw(canvasObj){
 	this.emptyCanvas = function(){
 		ctx.clearRect(0,0,canvasObj.width,canvasObj.height);
 	}
+	this.setDrawer = function(isDrawer){
+		drawer = isDrawer;
+	}
 	//获取鼠标click或move的坐标
 	var coordinate = function(e){
 		function getTop(e){
@@ -104,8 +108,9 @@ function Draw(canvasObj){
 		ctx.fill();
 		ctx.restore();
 	}
-	canvasObj.onmousedown = function(e){		
-		isDraw = true;	
+	canvasObj.onmousedown = function(e){
+		if(drawer)		
+			isDraw = true;		//非当前作画者不能作画
 		coordinate(e);
 		mx = mouseX;
 		my = mouseY;
@@ -141,10 +146,19 @@ function Draw(canvasObj){
 }
 
 $(document).ready(function(){
+	$('.cover').height($('.container').height());
 	var mycanvas = document.getElementById('mycanvas');
-	var mycontext = mycanvas.getContext('2d');
+	var owner = document.cookie;
+	owner = owner.split('=')[1];
 	var myDraw = new Draw(mycanvas);
 	myDraw.setlineWidth(2);
+	var drawer = false;
+	if(owner == 'true'){
+		myDraw.setDrawer(true);
+		drawer = true;
+	} else {
+		myDraw.setDrawer(false);
+	}
 	//选择工具
 	$(".tool li").each(function(i){
 		$(this).click(function(){
@@ -217,6 +231,93 @@ $(document).ready(function(){
 			}
 		});
 	});
+	//用户接受聊天消息广播
+	socket.on('receiveInRoom',function(data){
+		console.log(data);
+		$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
+	});
+	var count = setInterval(function(){
+		var time = $('.count').text();
+		time = parseInt(time);
+		time -- ;
+		$('.count').text(time);
+		if(time <= 0){
+			clearInterval(count);
+			$('.count').hide();
+			$('.cover').hide();
+		}
+	},1000);
+	//倒计时逻辑
+	draw_time();
+	function ans_time(){
+		var ans_time = setInterval(function(){
+			var time = $('.poptip .answer div span').text();
+			time = parseInt(time);
+			time--;
+			$('.poptip .answer div span').text(time);
+			if(time <= 0){
+				clearInterval(ans_time);
+				$('.poptip').hide();
+				var li_current = $('.drawarea ul li.current');
+				if(li_current.next().length){
+					var drawer_name = li_current.next().addClass('current').children('h4').text();
+					li_current.removeClass('current');
+					$('.drawarea .top img').attr('src',li_current.next().children('img').attr('src'));
+					$('.drawarea .top .countdown').text('60');
+					$('.poptip .answer div span').text('8');
+					if(drawer){
+						drawer = false;
+						myDraw.setDrawer(false);
+						$('.drawarea .top .painting').before('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>').remove();
+						$('.drawarea .painter').hide();
+					} else {
+						if(drawer_name == name){
+							var new_current = $('.drawarea ul li.current');
+							$('.drawarea .top .guessing').before('<div class="painting"><p>题目：<span>duangduang</span></p><a>放弃</a></div>').remove();
+							drawer = true;
+							myDraw.setDrawer(true);
+							$('.drawarea .painter').show();
+						} else {
+							$('.drawarea .top .guessing').html('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>');
+						}
+					}
+					draw_time();
+				}
+			}
+		},1000);
+	}
+	function draw_time(){
+		var countdown = setInterval(function(){
+			var time = $('.top .countdown').text();
+			time = parseInt(time);
+			time--;
+			$('.top .countdown').text(time);
+			if (time == 50) {
+				$('.drawarea .top .guessing').html('提示:'+'<span>2个字</span>');		
+			}
+			if (time == 40) {
+				$('.drawarea .top .guessing span').text($('.drawarea .top .guessing span').text()+',成龙');		
+			}
+			if(time <= 0){
+				clearInterval(countdown);
+				if(drawer){
+					$('.poptip').show().find('ul').hide();
+					var answer = $('.top .painting span').text();
+					var correct_num = $('.drawarea .riddler ul li.correct').length;
+					$('.poptip').find('.answer p span').text('【'+answer+'】');
+					$('.poptip').find('h5').text(correct_num+'人猜对');
+					socket.emit('answer',{roomid:roomid,answer:answer,correct:correct_num});
+					ans_time();
+				}
+			}
+		},1000);
+	}
 	
-	
+	socket.on('getAnswer',function(data){
+		console.log(data);
+		$('.poptip').show().find('ul').show();
+		$('.poptip').find('.answer p span').text('【'+data.answer+'】');
+		$('.poptip').find('h5').text(data.correct+'人猜对');
+		ans_time();
+	});
 });

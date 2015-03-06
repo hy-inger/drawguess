@@ -297,7 +297,8 @@ router.get('/room/painting', function(req, res) {
 	var name = req.session.user.name,
 		ownername = req.query.ownername,
 		roomid = req.query.roomid,
-		players,ownerimg;
+		first_drawer = false;
+		players = [],ownerimg = '';
 	Room.find({'roomid':roomid},function(err,docs){
 		players = docs[0].user;
 		for(var i = 0;i < players.length; i++){
@@ -305,6 +306,9 @@ router.get('/room/painting', function(req, res) {
 				ownerimg = players[i].headimg;
 			}
 		}
+		if(ownername == name){
+			first_drawer = true;
+		}		
 		User.find({'name':name},function(err,docs){
 			user = {
 				'name':docs[0].name,
@@ -314,7 +318,14 @@ router.get('/room/painting', function(req, res) {
 				'flower':docs[0].flower,
 				'popular':docs[0].popular
 			};
-			res.render('room/painting',{roomid:roomid,user:user,players:players,ownerimg:ownerimg});
+			res.render('room/painting',{
+				roomid:roomid,
+				user:user,
+				players:players,
+				ownerimg:ownerimg,
+				painter:ownername,
+				first:first_drawer
+			});
 		});
 	});
 	
@@ -377,13 +388,27 @@ io.sockets.on('connection',function(socket){
 			if(joinRoom[j].id == ('room'+socket.id))
 				joinRoom.splice(j,1);
 		}
-		if(msg.joinid){
-			
+		if(msg.joinid){	
 			socket.join().id = msg.joinid;
 		}
 		socket.broadcast.to(msg.roomid).emit('leaveInRoom',msg);
 		socket.broadcast.emit('leaveRoomToHall',msg);
 		socket.leave(msg.roomid); 
+	});
+	//游戏开始
+	socket.on('gameBegin',function(msg){
+		socket.broadcast.emit('gameBeginInRoom',msg);
+		socket.emit('gameBeginInRoom',msg);
+	});
+	//进入游戏房间
+	socket.on('GameRoom',function(msg){
+		socket.broadcast.emit('reload',{name:msg.name});
+		socket.join(msg.roomid);
+	});
+	//游戏结束，显示答案
+	socket.on('answer',function(msg){
+		console.log(msg);
+		socket.broadcast.to(msg.roomid).emit('getAnswer',msg);
 	});
 	socket.on('message',function(msg){    //收到客户端发送来的消息。msg为数据。
 	if(msg.mx)
@@ -399,7 +424,6 @@ io.sockets.on('connection',function(socket){
 	socket.on('disconnect',function(msg){
 		console.log(':disconnect');
 		linknum -- ;
-		//console.log(linknum);
 		for(var i = 0;i < joinRoom.length;i++){
 			if(joinRoom[i].id == ('room'+socket.id)){
 				console.log('dis');
@@ -409,9 +433,7 @@ io.sockets.on('connection',function(socket){
 			}
 		}
 	});
-	socket.on('closeToRemove',function(msg){
-		console.log('close:'+msg);
-	})
+	
 });
 
 function checkLogin(req,res,next){

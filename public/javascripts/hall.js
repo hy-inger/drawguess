@@ -1,11 +1,11 @@
 $(document).ready(function(){
- 	var user_info = $('.world_chat .user_info'),
+ 	/*var user_info = $('.world_chat .user_info'),
  		name = user_info.find('h4').text(),
 		headimg = user_info.find('img').attr('src'),
 		sex = user_info.attr('_sex'),
 		score = user_info.find('.score span').text(),
 		flower = user_info.find('.flower span').text(),
-		popular = user_info.find('.popular span').text();
+		popular = user_info.find('.popular span').text();*/
 	$('.emosion').click(function(){
 		$(this).siblings('ul').toggle();
 	});

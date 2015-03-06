@@ -12,7 +12,7 @@
 		score = user_info.find('.score span').text(),
 		flower = user_info.find('.flower span').text(),
 		popular = user_info.find('.popular span').text();
-		roomid = $('.player_list .top h1').text() || '';
+		roomid = $('.top h1').text() || '';
 	$(document).on('mouseenter mouseleave','.world_hall .room_list ul li .online ul li,.world_chat .chat_area .chat ul li .sender img,.player_list .players ul li,.riddler ul li',function(event){
 		if($(this).parent('.sender').length){
 			$(this).siblings('.per_info').toggle();
@@ -71,6 +71,7 @@
 			$(this).val('');
 		}
 	});
+
 	/*用户退出账号，清除session记录*/
 	$('.logout').click(function(){
 		$.ajax({
@@ -106,7 +107,6 @@
 					}
 				});
 			}
-		},3000);
-		
+		},3000);		
 	});
 	

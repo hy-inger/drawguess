@@ -15,17 +15,18 @@ $(document).ready(function(){
 		});
 		window.history.pushState('forward', null, './#forward');
 	}*/
+	console.log(roomid);
 	var owner = document.cookie;
 	owner = owner.split('=')[1];
-	var user_info = $('.world_chat .user_info'),
+	 	/*user_info = $('.world_chat .user_info'),
  		name = user_info.find('h4').text(),
 		headimg = user_info.find('img').attr('src'),
 		sex = user_info.attr('_sex'),
 		score = user_info.find('.score span').text(),
 		flower = user_info.find('.flower span').text(),
 		popular = user_info.find('.popular span').text(),
-		roomid = $('.player_list .top h1').text();
-		roompw = $('.player_list .top .roompass input[type="checkbox"]').prop('checked') || false;
+		//roomid = $('.player_list .top h1').text();*/
+	var	roompw = $('.player_list .top .roompass input[type="checkbox"]').prop('checked') || false;
 		num = $('.player_list .players').attr('_num');
  	//用户进入等待房间，给服务端发送实时消息。
  	var player_data = {
@@ -173,17 +174,24 @@ $(document).ready(function(){
 		console.log(data);
 		$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
 	});
+	//房间倒计时
 	var countdown = setInterval(function(){
-		var time = $('.player_list .top .countdown').text();
+		var time = $('.top .countdown').text();
 		time = parseInt(time);
 		time--;
-		$('.player_list .top .countdown').text(time);
-		if(time <= 0)
+		$('.top .countdown').text(time);
+		if(time <= 0){
+			//socket.emit('gameBegin',{roomid:roomid,ownername:name});
+			//window.location.replace('/room/painting?roomid=' + roomid + '&ownername=' + name);
 			clearInterval(countdown);
+		}
 	},1000);
 	//进入游戏房间，开始游戏
 	$('.player_list .top .action a.begin').click(function(){
 		socket.emit('gameBegin',{roomid:roomid,ownername:name});
-		window.location.replace('/room/painting?roomid=' + roomid + '&ownername=' + name);
+		//window.location.replace('/room/painting?roomid=' + roomid + '&ownername=' + name + '&ownerimg' + headimg);
 	});	
+	socket.on('gameBeginInRoom',function(data){
+		window.location.replace('/room/painting?roomid=' + data.roomid + '&ownername=' + data.ownername);
+	});
 });
