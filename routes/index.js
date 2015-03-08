@@ -397,8 +397,9 @@ io.sockets.on('connection',function(socket){
 	});
 	//游戏开始
 	socket.on('gameBegin',function(msg){
-		socket.broadcast.emit('gameBeginInRoom',msg);
+		socket.broadcast.to(msg.roomid).emit('gameBeginInRoom',msg);
 		socket.emit('gameBeginInRoom',msg);
+		socket.broadcast.emit('gameBeginInHall',msg);
 	});
 	//进入游戏房间
 	socket.on('GameRoom',function(msg){

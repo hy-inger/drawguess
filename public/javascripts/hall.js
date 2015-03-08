@@ -233,9 +233,17 @@ $(document).ready(function(){
 		});
 	});
 	
-	
 	//用户接收广播聊天消息
 	socket.on('receiveInHall',function(data){
 		$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
+	});
+	//房间开始游戏时房间变为不可进入状态
+	socket.on('gameBeginInHall',function(data){
+		var roomid = data.roomid;
+		$('.room_list ul li').each(function(){
+			if(roomid == $(this).find('.roomid h1').text()){
+				$(this).find('.join_button').addClass('unjoin');
+			}
+		});
 	});
 });

@@ -242,6 +242,7 @@ $(document).ready(function(){
 		time -- ;
 		$('.count').text(time);
 		if(time <= 0){
+			$('.main .world_chat .chat_area .chat ul').append('<li>********回合开始********</li>');
 			clearInterval(count);
 			$('.count').hide();
 			$('.cover').hide();
@@ -282,6 +283,7 @@ $(document).ready(function(){
 						}
 					}
 					draw_time();
+					$('.main .world_chat .chat_area .chat ul').append('<li>********回合开始********</li>');
 				}
 			}
 		},1000);
@@ -309,6 +311,7 @@ $(document).ready(function(){
 					socket.emit('answer',{roomid:roomid,answer:answer,correct:correct_num});
 					ans_time();
 				}
+				$('.main .world_chat .chat_area .chat ul').append('<li>--------回合结束--------</li>');
 			}
 		},1000);
 	}
