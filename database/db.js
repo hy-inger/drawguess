@@ -27,3 +27,10 @@ var roomScheMa = new mongoose.Schema({
 	user:Array
 });
 exports.room = db.model('rooms',roomScheMa);
+
+var wordScheMa = new mongoose.Schema({
+	word:String,
+	tip1:String,
+	tip2:String
+});
+exports.word = db.model('words',wordScheMa);

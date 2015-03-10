@@ -6,12 +6,7 @@ $(document).ready(function(){
 		score = user_info.find('.score span').text(),
 		flower = user_info.find('.flower span').text(),
 		popular = user_info.find('.popular span').text();*/
-	$('.emosion').click(function(){
-		$(this).siblings('ul').toggle();
-	});
-	$('.world_chat .chat_area .send input').click(function(){
-		$(this).siblings('ul').hide();
-	});
+	
 	
 	
 	/*世界大厅上下页切换*/

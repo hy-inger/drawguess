@@ -826,6 +826,9 @@ ul{
 	width:60px;
 	height:60px;
 	border-radius: 5px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; 
+	-webkit-box-sizing:border-box;
 }
 .drawarea .riddler ul li.current>img{
 	border:3px solid red;
@@ -841,6 +844,10 @@ ul{
 .drawarea .riddler ul li>p{
 	text-align: center;
 	color:#802432;
+}
+.main .world_chat .chat_area .chat ul li.correct span{
+	color:#747AD5;
+	font-size: 16px;
 }
 /*hover用户头像时展示的个人信息*/
 .per_info{

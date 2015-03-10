@@ -59,3 +59,25 @@
 			});
 			window.history.pushState('forward', null, './#forward');
 		}
+11、chrome不支持font-size<12的字体的解决办法：
+	目前改用  -webkit-transform 的方式來達到，
+	使用 transform 要視情況以 display:inline-block 來進行
+
+	<div style="font-size:12px; "> 12px 字型大小</div>
+	<div style="font-size:11px; -webkit-transform:scale(0.91); display:inline-block"> 11px 字型大小</div>
+	<div style="font-size:10px; -webkit-transform:scale(0.83); display:inline-block"> 10px 字型大小</div>
+	<div style="font-size:9px; -webkit-transform:scale(0.75); display:inline-block"> 9px 字型大小</div>
+	<div style="font-size:8px; -webkit-transform:scale(0.66); display:inline-block"> 8px 字型大小</div>
+
+12、使用canvas时不要使用css设置宽高，否则画布上的内容会被缩放。
+	canvas默认宽高为300*150，该标签有width和heigh属性，因此使用这两个属性来设置画布的大小则画布上的内容不会被缩放扭曲。
+13、canvas画笔宽度为奇数时，如1px、3px、5px，线条会模糊不清晰。所以最好就用偶数来设置啦。
+	或者解决办法：
+		如果画横线，就在y值上+0.5；如果画竖线，就在x值上+0.5。
+14、移动web开发
+	动态获取域名host时，ios下不会自动添加http:// ，需要手动添加进去。
+	Android会自动添加http://。
+	
+15、手机横屏竖屏显示。
+	横屏@media screen and (orientation:landscape) {	} 
+	竖屏@media screen and (orientation:portrait) and (max-width: 720px)  {}

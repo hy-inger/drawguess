@@ -11,7 +11,7 @@
         <div class='answer'>
           <h5>2人猜对</h5>
           <div>倒计时：<span>8</span></div>
-          <p>答案<span>【葫芦丝】</span></p>
+          <p>答案<span></span></p>
           <ul class='clearfix'>
             <li></li>
             <li></li>
@@ -34,7 +34,7 @@
               <img src='../<%=ownerimg%>'/>
               <%if(first){%>
               <div class='painting'>
-                <p>题目：<span>duangduang</span></p>
+                <p>题目：<span><%=word%></span></p>
                 <a>放弃</a>
               </div>
               <%} else {%>
@@ -42,7 +42,7 @@
                 现在由<span><%=painter%></span>作画
               </div>
               <%}%>
-              <div class="countdown">5</div>
+              <div class="countdown">65</div>
             </div>
             <canvas id="mycanvas" width="660px" height="461px">抱歉！您的浏览器不支持HTML5！</canvas>           
             <div class='painter clearfix <%if(!first){%>hide<%}%>'>
@@ -65,12 +65,12 @@
             <div class='riddler'>
               <ul class='clearfix'>
                 <%for(var i = 0;i < players.length;i++){%>
-                <li class='<%if(players[i].owner){%>current<%}%>'>
+                <li class='<%if(players[i].owner){%>current<%}%>' _name = '<%=players[i].name%>'>
                   <h4 class="ellipsis"><%=players[i].name%></h4>
                   <img src="../<%=players[i].headimg%>">
                   <p class='score'>10</p>
                   <div class="per_info" style="display: none;">
-                    <img src="../<%=players[i].headimg%>">
+                    <img src="../<%=players[i].headimg%>"/>
                     <h4 class="ellipsis"><%=players[i].name%></h4>
                     <em class="sex <%=players[i].sex%>"></em>
                     <em class="hi"></em>

@@ -11,8 +11,10 @@
 		sex = user_info.attr('_sex'),
 		score = user_info.find('.score span').text(),
 		flower = user_info.find('.flower span').text(),
-		popular = user_info.find('.popular span').text();
-		roomid = $('.top h1').text() || '';
+		popular = user_info.find('.popular span').text(),
+		roomid = $('.top h1').text() || '',
+		gameroom = false,
+		drawer = false;
 	$(document).on('mouseenter mouseleave','.world_hall .room_list ul li .online ul li,.world_chat .chat_area .chat ul li .sender img,.player_list .players ul li,.riddler ul li',function(event){
 		if($(this).parent('.sender').length){
 			$(this).siblings('.per_info').toggle();
@@ -39,17 +41,25 @@
 			'score' : score,
 			'flower' : flower,
 			'popular' : popular,
-			'sendmess' : val,
+			'sendmess' : val
 		};		
 		obj.parents('.chat_area').find('.chat ul').append(template('chat_list',data));
 		emosion = [];
 		if(roomid){
 			data.roomid = roomid;
+			data.gameroom = gameroom;
+			data.drawer = drawer;
 			socket.emit('sendInRoom',data);
 		} else {
 			socket.emit('sendInHall',data);
 		}
 	}
+	$('.emosion').click(function(){
+		$(this).siblings('ul').toggle();
+	});
+	$('.world_chat .chat_area .send input').click(function(){
+		$(this).siblings('ul').hide();
+	});
 	var emosion = [];
 	$('.world_chat .chat_area .send ul li').click(function(){	//选择表情
 		var text = $(this).attr('_text'),
@@ -63,6 +73,7 @@
 		var	sendmess = $(this).siblings('input').val();
 		sendMess($(this),sendmess);
 		$(this).siblings('input').val('');
+		console.log(gameroom);
 	});
 	$('.world_chat .chat_area .send input').keyup(function(event){
 		if(event.keyCode == 13){

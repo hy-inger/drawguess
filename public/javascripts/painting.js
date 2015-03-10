@@ -146,13 +146,15 @@ function Draw(canvasObj){
 }
 
 $(document).ready(function(){
+	gameroom = true;
 	$('.cover').height($('.container').height());
 	var mycanvas = document.getElementById('mycanvas');
+	
 	var owner = document.cookie;
 	owner = owner.split('=')[1];
 	var myDraw = new Draw(mycanvas);
 	myDraw.setlineWidth(2);
-	var drawer = false;
+	
 	if(owner == 'true'){
 		myDraw.setDrawer(true);
 		drawer = true;
@@ -233,8 +235,21 @@ $(document).ready(function(){
 	});
 	//用户接受聊天消息广播
 	socket.on('receiveInRoom',function(data){
-		console.log(data);
-		$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
+		if(data.correct){
+			$('.world_chat .chat_area .chat ul').append('<li class="correct"><span>'+data.name+'</span>回答正确！</li>');
+			if(!$('.drawarea .riddler ul li.correct').length){
+				$('.world_chat .chat_area .chat ul').append('<li>有人回答正确。游戏将在25S内结束。</li>');
+				$('.drawarea .top .countdown').text('25');
+			}
+			$('.drawarea .riddler ul li').each(function(){
+				if($(this).attr('_name') == data.name){
+					$(this).addClass('correct');
+				}
+			});
+
+		} else {
+			$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
+		}
 	});
 	var count = setInterval(function(){
 		var time = $('.count').text();
@@ -249,7 +264,7 @@ $(document).ready(function(){
 		}
 	},1000);
 	//倒计时逻辑
-	draw_time();
+	//draw_time();
 	function ans_time(){
 		var ans_time = setInterval(function(){
 			var time = $('.poptip .answer div span').text();

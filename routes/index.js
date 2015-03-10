@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../database/db').user;//用户表
 var Room = require('../database/db').room;//房间表
+var Word = require('../database/db').word;//词库表
 var server = require('http').createServer(router);
 server.listen(80);
 var io = require('socket.io').listen(server);
@@ -292,13 +293,14 @@ router.get('/room/ReducePlayer',function(req,res){
 	});
 });
 /*进入游戏房间*/
+var room_word = [];
 router.get('/room/painting',checkLogin);
 router.get('/room/painting', function(req, res) {
 	var name = req.session.user.name,
 		ownername = req.query.ownername,
 		roomid = req.query.roomid,
-		first_drawer = false;
-		players = [],ownerimg = '';
+		first_drawer = false,
+		players = [],ownerimg = '',word = '';
 	Room.find({'roomid':roomid},function(err,docs){
 		players = docs[0].user;
 		for(var i = 0;i < players.length; i++){
@@ -308,6 +310,16 @@ router.get('/room/painting', function(req, res) {
 		}
 		if(ownername == name){
 			first_drawer = true;
+			var random = Math.random();
+			Word.find(function(err,docs){
+				word = docs[0].word;
+				room_word.push({
+					roomid:roomid,
+					word:docs[0].word,
+					tip1:docs[0].tip1,
+					tip2:docs[0].tip2
+				});
+			});
 		}		
 		User.find({'name':name},function(err,docs){
 			user = {
@@ -324,7 +336,8 @@ router.get('/room/painting', function(req, res) {
 				players:players,
 				ownerimg:ownerimg,
 				painter:ownername,
-				first:first_drawer
+				first:first_drawer,
+				word:word
 			});
 		});
 	});
@@ -363,8 +376,18 @@ io.sockets.on('connection',function(socket){
 
 	});
 	socket.on('sendInRoom',function(msg){     //用户发送聊天消息房间内广播
-		console.log(msg.roomid);
-		socket.broadcast.to(msg.roomid).emit('receiveInRoom',msg);
+		if(msg.gameroom && !msg.drawer){
+			for(var i = 0;i < room_word.length;i++){
+				if(room_word[i].roomid == msg.roomid && room_word[i].word == msg.sendmess){
+					socket.broadcast.to(msg.roomid).emit('receiveInRoom',{correct:true,name:msg.name});
+					socket.emit('receiveInRoom',{correct:true,name:msg.name});
+				} else {
+					socket.broadcast.to(msg.roomid).emit('receiveInRoom',msg);
+				}
+			}
+		} else {
+			socket.broadcast.to(msg.roomid).emit('receiveInRoom',msg);
+		}
 	});
 	socket.on('sendInHall',function(msg){     //用户发送聊天消息大厅广播
 		console.log(msg.roomid);
