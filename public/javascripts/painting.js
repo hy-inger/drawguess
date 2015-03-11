@@ -238,17 +238,32 @@ $(document).ready(function(){
 		drawarea = $('.drawarea'),
 		poptip = $('.poptip');
 	socket.on('receiveInRoom',function(data){
+		function addScore(obj,score){
+			obj.find('b').text('+'+score).show().hide(3000);
+			score = parseInt(obj.children('p.score').text()) + score;
+			obj.children('p.score').text(score);
+		}
 		if(data.correct){
 			chat_ul.append('<li class="correct"><span>'+data.name+'</span>回答正确！</li>');
-			if(!drawarea.find('.riddler ul li.correct').length){
+			if((drawarea.find('.riddler ul li.correct').length) == (drawarea.find('.riddler ul li').length-2)){
+				//drawarea.find('.top .countdown').text('1');
+			}
+			var li_current = drawarea.find('.riddler ul li.current');
+			if(!drawarea.find('.riddler ul li.correct').length){								
+				addScore(li_current,3);
 				if(parseInt(drawarea.find('.top .countdown').text()) > 25){
 					chat_ul.append('<li>有人回答正确。游戏将在25S内结束。</li>');
 					drawarea.find('.top .countdown').text('25');
 				}
+			} else {				
+				addScore(li_current,1);
 			}
 			drawarea.find('.riddler ul li').each(function(){
 				if($(this).attr('_name') == data.name){
 					$(this).addClass('correct');
+					$(this).find('b').text('+1').show().hide(3000);				
+					addScore($(this),1);
+					
 				}
 			});
 
@@ -285,12 +300,13 @@ $(document).ready(function(){
 				clearInterval(ans_time);
 				poptip.hide();
 				var li_current = drawarea.find('ul li.current');
+				drawarea.find('ul li').removeClass('correct');
 				if(li_current.next().length){
 					var drawer_name = li_current.next().addClass('current').children('h4').text();
 					li_current.removeClass('current');
 					drawarea.find('.top img').attr('src',li_current.next().children('img').attr('src'));
 					drawarea.find('.top .countdown').text('60');
-					answer.text('8');
+					answer.text('5');
 					if(drawer){
 						drawer = false;
 						myDraw.setDrawer(false);

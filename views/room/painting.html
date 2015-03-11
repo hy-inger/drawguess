@@ -10,7 +10,7 @@
       <div class='poptip' style='display:none'>
         <div class='answer'>
           <h5>2人猜对</h5>
-          <div>倒计时：<span>8</span></div>
+          <div>倒计时：<span>5</span></div>
           <p>答案<span></span></p>
           <ul class='clearfix'>
             <li></li>
@@ -66,9 +66,10 @@
               <ul class='clearfix'>
                 <%for(var i = 0;i < players.length;i++){%>
                 <li class='<%if(players[i].owner){%>current<%}%>' _name = '<%=players[i].name%>'>
+                  <b>+1</b>
                   <h4 class="ellipsis"><%=players[i].name%></h4>
                   <img src="../<%=players[i].headimg%>">
-                  <p class='score'>10</p>
+                  <p class='score'>0</p>
                   <div class="per_info" style="display: none;">
                     <img src="../<%=players[i].headimg%>"/>
                     <h4 class="ellipsis"><%=players[i].name%></h4>

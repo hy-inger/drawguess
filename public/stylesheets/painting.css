@@ -821,7 +821,14 @@ ul{
 	position: relative;
 	margin:0 5px;
 }
-
+.drawarea .riddler ul li b{
+	position: absolute;
+	color:#BD2026;
+	font-size: 18px;
+	right:-16px;
+	top:38px;
+	display: none;
+}
 .drawarea .riddler ul li>img{
 	width:60px;
 	height:60px;

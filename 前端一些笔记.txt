@@ -81,3 +81,8 @@
 15、手机横屏竖屏显示。
 	横屏@media screen and (orientation:landscape) {	} 
 	竖屏@media screen and (orientation:portrait) and (max-width: 720px)  {}
+16、移动web开发框架。 Ionic.
+17、让一个消息显示几秒后消失方法。
+	(1)    $("#errormsg").html("您的信息输入错误，请重试!").show(300).delay(3000).hide(300);  
+	(2)    $("#errormsg").html("ok").hide(3000);// 这个是渐渐消失   
+    	   $("#errormsg").html("ok").fadeTo(3000).hide(); //这个是让他显示5秒（实际就是没有改变透明度），然后隐藏  
