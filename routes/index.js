@@ -310,17 +310,7 @@ router.get('/room/painting', function(req, res) {
 		}
 		if(ownername == name){
 			first_drawer = true;
-			var random = Math.random();
-			Word.find(function(err,docs){
-				word = docs[0].word;
-				room_word.push({
-					roomid:roomid,
-					word:docs[0].word,
-					tip1:docs[0].tip1,
-					tip2:docs[0].tip2
-				});
-			});
-		}		
+		}	
 		User.find({'name':name},function(err,docs){
 			user = {
 				'name':docs[0].name,
@@ -330,21 +320,72 @@ router.get('/room/painting', function(req, res) {
 				'flower':docs[0].flower,
 				'popular':docs[0].popular
 			};
-			res.render('room/painting',{
-				roomid:roomid,
-				user:user,
-				players:players,
-				ownerimg:ownerimg,
-				painter:ownername,
-				first:first_drawer,
-				word:word
-			});
+			if(ownername == name){
+				var random = Math.floor(Math.random()*4);
+				Word.find(function(err,docs){
+					word = docs[random].word;
+					room_word.push({
+						roomid:roomid,
+						word:docs[random].word,
+						tip1:docs[random].tip1,
+						tip2:docs[random].tip2
+					});
+					res.render('room/painting',{
+						roomid:roomid,
+						user:user,
+						players:players,
+						ownerimg:ownerimg,
+						painter:ownername,
+						first:first_drawer,
+						word:word
+					});
+				});
+			} else {
+				res.render('room/painting',{
+					roomid:roomid,
+					user:user,
+					players:players,
+					ownerimg:ownerimg,
+					painter:ownername,
+					first:first_drawer,
+					word:word
+				});
+			}
 		});
 	});
-	
-　　
 });
-
+/*作画用户获取词语*/
+router.get('/room/getWord',function(req,res){
+	var roomid = req.query.roomid;
+	var random = Math.floor(Math.random()*4);
+	Word.find(function(err,docs){
+		word = docs[random].word;
+		for(var i = 0; i < room_word.length;i ++){
+			if(room_word[i].roomid == roomid){
+				room_word[i].word = docs[random].word;
+				room_word[i].tip1 = docs[random].tip1;
+				room_word[i].tip2 = docs[random].tip2;
+				res.jsonp({'word':word});
+			}
+		}
+	});
+});
+/*猜画用户获取提示*/
+router.get('/room/getTip',function(req,res){
+	var roomid = req.query.roomid,
+		times = req.query.times,
+		tip;
+	for(var i = 0; i < room_word.length;i ++){
+		if(room_word[i].roomid == roomid){
+			if(times == 1)
+				tip = room_word[i].tip1;
+			else 
+				tip = room_word[i].tip2;
+			res.jsonp({'tip':tip});
+			return false;
+		}
+	}
+});
 /*与客户端通信传送消息*/
 var client = {};
 var joinRoom = [];
@@ -419,7 +460,7 @@ io.sockets.on('connection',function(socket){
 		socket.leave(msg.roomid); 
 	});
 	//游戏开始
-	socket.on('gameBegin',function(msg){
+	socket.on('gameBegin',function(msg){				//从等待房间进入游戏房间。
 		socket.broadcast.to(msg.roomid).emit('gameBeginInRoom',msg);
 		socket.emit('gameBeginInRoom',msg);
 		socket.broadcast.emit('gameBeginInHall',msg);

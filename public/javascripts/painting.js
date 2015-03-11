@@ -234,21 +234,26 @@ $(document).ready(function(){
 		});
 	});
 	//用户接受聊天消息广播
+	var chat_ul = $('.world_chat .chat_area .chat ul'),
+		drawarea = $('.drawarea'),
+		poptip = $('.poptip');
 	socket.on('receiveInRoom',function(data){
 		if(data.correct){
-			$('.world_chat .chat_area .chat ul').append('<li class="correct"><span>'+data.name+'</span>回答正确！</li>');
-			if(!$('.drawarea .riddler ul li.correct').length){
-				$('.world_chat .chat_area .chat ul').append('<li>有人回答正确。游戏将在25S内结束。</li>');
-				$('.drawarea .top .countdown').text('25');
+			chat_ul.append('<li class="correct"><span>'+data.name+'</span>回答正确！</li>');
+			if(!drawarea.find('.riddler ul li.correct').length){
+				if(parseInt(drawarea.find('.top .countdown').text()) > 25){
+					chat_ul.append('<li>有人回答正确。游戏将在25S内结束。</li>');
+					drawarea.find('.top .countdown').text('25');
+				}
 			}
-			$('.drawarea .riddler ul li').each(function(){
+			drawarea.find('.riddler ul li').each(function(){
 				if($(this).attr('_name') == data.name){
 					$(this).addClass('correct');
 				}
 			});
 
 		} else {
-			$('.world_chat .chat_area .chat ul').append(template('chat_list',data));
+			chat_ul.append(template('chat_list',data));
 		}
 	});
 	var count = setInterval(function(){
@@ -257,85 +262,122 @@ $(document).ready(function(){
 		time -- ;
 		$('.count').text(time);
 		if(time <= 0){
-			$('.main .world_chat .chat_area .chat ul').append('<li>********回合开始********</li>');
+			chat_ul.append('<li>********回合开始********</li>');
 			clearInterval(count);
 			$('.count').hide();
 			$('.cover').hide();
 		}
 	},1000);
+	//作画者放弃作画
+	drawarea.find('.top .painting .quit').click(function(){
+		show_answer();
+	});
 	//倒计时逻辑
-	//draw_time();
+	draw_time();
 	function ans_time(){
 		var ans_time = setInterval(function(){
-			var time = $('.poptip .answer div span').text();
+			var answer = poptip.find('.answer div span');
+			var time = answer.text();
 			time = parseInt(time);
 			time--;
-			$('.poptip .answer div span').text(time);
+			answer.text(time);
 			if(time <= 0){
 				clearInterval(ans_time);
-				$('.poptip').hide();
-				var li_current = $('.drawarea ul li.current');
+				poptip.hide();
+				var li_current = drawarea.find('ul li.current');
 				if(li_current.next().length){
 					var drawer_name = li_current.next().addClass('current').children('h4').text();
 					li_current.removeClass('current');
-					$('.drawarea .top img').attr('src',li_current.next().children('img').attr('src'));
-					$('.drawarea .top .countdown').text('60');
-					$('.poptip .answer div span').text('8');
+					drawarea.find('.top img').attr('src',li_current.next().children('img').attr('src'));
+					drawarea.find('.top .countdown').text('60');
+					answer.text('8');
 					if(drawer){
 						drawer = false;
 						myDraw.setDrawer(false);
-						$('.drawarea .top .painting').before('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>').remove();
-						$('.drawarea .painter').hide();
+						drawarea.find('.top .painting').before('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>').remove();
+						drawarea.find('.painter').hide();
 					} else {
 						if(drawer_name == name){
-							var new_current = $('.drawarea ul li.current');
-							$('.drawarea .top .guessing').before('<div class="painting"><p>题目：<span>duangduang</span></p><a>放弃</a></div>').remove();
-							drawer = true;
-							myDraw.setDrawer(true);
-							$('.drawarea .painter').show();
+							var new_current = drawarea.find('ul li.current');
+							$.ajax({
+								url:'/room/getWord',
+								type:'GET',
+								data:{roomid:roomid},
+								success:function(data){
+									drawarea.find('.top .guessing').before('<div class="painting"><p>题目：<span>'+data.word+'</span></p><a>放弃</a></div>').remove();
+									drawer = true;
+									myDraw.setDrawer(true);
+									drawarea.find('.painter').show();
+								},
+								error:function(data){
+									alert(data);
+								}
+							});
+							
 						} else {
-							$('.drawarea .top .guessing').html('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>');
+							drawarea.find('.top .guessing').html('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>');
 						}
 					}
 					draw_time();
-					$('.main .world_chat .chat_area .chat ul').append('<li>********回合开始********</li>');
+					chat_ul.append('<li>********回合开始********</li>');
 				}
 			}
 		},1000);
 	}
+
 	function draw_time(){
 		var countdown = setInterval(function(){
 			var time = $('.top .countdown').text();
 			time = parseInt(time);
 			time--;
 			$('.top .countdown').text(time);
-			if (time == 50) {
-				$('.drawarea .top .guessing').html('提示:'+'<span>2个字</span>');		
-			}
-			if (time == 40) {
-				$('.drawarea .top .guessing span').text($('.drawarea .top .guessing span').text()+',成龙');		
+			if(!drawer){
+				if (time == 50) {
+					$.ajax({
+						url:'getTip',
+						type:'GET',
+						data:{roomid:roomid,times:1},
+						success:function(data){
+							drawarea.find('.top .guessing').html('提示:'+'<span>'+data.tip+'</span>');	
+						}
+					});
+						
+				}
+				if (time == 40) {
+					$.ajax({
+						url:'getTip',
+						type:'GET',
+						data:{roomid:roomid,times:2},
+						success:function(data){
+							drawarea.find('.top .guessing span').text(drawarea.find('.top .guessing span').text()+','+data.tip);	
+						}
+					});
+						
+				}
 			}
 			if(time <= 0){
 				clearInterval(countdown);
 				if(drawer){
-					$('.poptip').show().find('ul').hide();
-					var answer = $('.top .painting span').text();
-					var correct_num = $('.drawarea .riddler ul li.correct').length;
-					$('.poptip').find('.answer p span').text('【'+answer+'】');
-					$('.poptip').find('h5').text(correct_num+'人猜对');
-					socket.emit('answer',{roomid:roomid,answer:answer,correct:correct_num});
-					ans_time();
+					show_answer();
 				}
-				$('.main .world_chat .chat_area .chat ul').append('<li>--------回合结束--------</li>');
+				chat_ul.append('<li>--------回合结束--------</li>');
 			}
 		},1000);
 	}
-	
+	function show_answer(){
+		poptip.show().find('ul').hide();
+		var answer = $('.top .painting span').text();
+		var correct_num = drawarea.find('.riddler ul li.correct').length;
+		poptip.find('.answer p span').text('【'+answer+'】');
+		poptip.find('h5').text(correct_num+'人猜对');
+		socket.emit('answer',{roomid:roomid,answer:answer,correct:correct_num});
+		ans_time();
+	}
 	socket.on('getAnswer',function(data){
 		console.log(data);
-		$('.poptip').show().find('ul').show();
-		$('.poptip').find('.answer p span').text('【'+data.answer+'】');
-		$('.poptip').find('h5').text(data.correct+'人猜对');
+		poptip.show().find('ul').show();
+		poptip.find('.answer p span').text('【'+data.answer+'】');
+		poptip.find('h5').text(data.correct+'人猜对');
 		ans_time();
 	});
 });
