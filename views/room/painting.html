@@ -18,9 +18,15 @@
             <li></li>
           </ul>
         </div>
-        <div class='button' style='text-align:center'>
-          <a class='cancel'>取消</a>
+        <div class='rank' style='display:none'>
+          <div class='rank_countdown'>倒计时：<span>5</span></div>
+          <ul class='clearfix'>
+            
+          </ul>
         </div>
+        <!--<div class='button' style='text-align:center'>
+          <a class='cancel'>取消</a>
+        </div>-->
       </div>
       <div class="main clearfix">
           <div class="header">
@@ -149,5 +155,21 @@
     </div>
     <p>{{#sendmess}}</p>
   </li>
+  </script>
+  <script id='rank_list' type="text/html">
+    {{each list as value i}}
+    {{value}}
+    <li class='clearfix'>
+      <div class='score'><span>{{value.score}}</span>分</div>
+      <div class='player'>
+        <em></em>
+        <img src='{{value.headimg}}'/>
+        <h5 class='ellipsis'>{{value.name}}</h5>
+      </div>
+      <p class='flower'><em></em>({{value.flower}})</p>
+      <p class='egg'><em></em>({{value.egg}})</p>
+      <p class='slipper'><em></em>({{value.slipper}})</p>
+    </li>
+    {{/each}}
   </script>
 </html>

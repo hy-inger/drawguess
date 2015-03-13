@@ -697,7 +697,7 @@ ul{
 	color:#A30505;
 	font-size: 50px;
 	position: absolute;
-	border:6px solid #AE5F2E;
+	/*border:6px solid #AE5F2E;*/
 	width:80px;
 	height:80px;
 	border-radius: 80px;
@@ -708,8 +708,17 @@ ul{
 	margin-left: -40px;
 	margin-top: -40px;
 	z-index: 4;
+	-webkit-animation:count 1.1s ease;
+	-moz-animation:count 1.1s ease;
 }
-
+@-moz-keyframes count{
+	0%{-webkit-transform:scale(1); opacity:1;}
+	100%{-webkit-transform:scale(1.6); opacity:0;}
+}
+@-webkit-keyframes count{
+	0%{-webkit-transform:scale(0.9); opacity:1;}
+	100%{-webkit-transform:scale(1.6); opacity:0;}
+}
 .drawarea .top img{
 	width:50px;
 	height:50px;
@@ -975,7 +984,7 @@ ul{
 	margin-top: -92px;
 	z-index: 4;
 	width:240px;
-	height:125px;
+	min-height:125px;
 	padding:30px 30px;
 	background: url('../images/tipbg.png');
 	display: none; 
@@ -1058,7 +1067,8 @@ ul{
 	color:#664A25;
 	font-weight: normal;
 }
-.poptip .answer div{
+.poptip .answer div,
+.poptip .rank .rank_countdown{
 	position: absolute;
 	right:8px;
 	top:8px;
@@ -1088,6 +1098,9 @@ ul{
 	margin:0 5px;
 	box-shadow: 1px 3px 7px #DBDAD6;
 }
+.poptip .answer ul li.click{
+	-webkit-animation:count 2s ease;
+}
 .poptip .answer ul li:nth-child(1){
 	margin-top: 8px;
 	background:#fff url('../images/egg.png') no-repeat;
@@ -1105,6 +1118,75 @@ ul{
 .poptip .answer+.button a{
 	margin:8px 100px;
 }
+.poptip .rank ul {
+	margin:0;
+	line-height: 40px;
+}
+.poptip .rank ul li{
+	font-size: 13px;
+	padding:5px 0px;
+
+}
+.poptip .rank ul li div,
+.poptip .rank ul li p{
+	float: left;
+}
+.poptip .rank ul li .score span{
+	color:#BD2026;
+	font-size: 18px;
+	margin-right: 5px;
+}
+.poptip .rank ul li .player{
+	position: relative;
+}
+.poptip .rank ul li .player img{
+	width:40px;
+	height:40px;
+	margin-left: 10px;
+}
+.poptip .rank ul li .player h5{
+	float: right;
+	margin-left: 5px;
+	margin-right: 5px;
+	width:35px;
+}
+.poptip .rank ul li .player em{
+	width: 32px;
+	height:32px;
+	position: absolute;
+	top:-17px;
+	left:-3px;
+}
+.poptip .rank ul li:nth-child(1) .player em{
+	background: url('../images/champion.png') no-repeat;
+}
+.poptip .rank ul li:nth-child(2) .player em{
+	background: url('../images/second.png') no-repeat;
+}
+.poptip .rank ul li:nth-child(3) .player em{
+	background: url('../images/third.png') no-repeat;
+}
+.poptip .rank ul li p{
+	margin-left:20px;
+	position: relative;
+}
+.poptip .rank ul li p em{
+	position: absolute;
+	width:16px;
+	height:16px;
+	left:-17px;
+	top:11px;
+}
+.poptip .rank ul li p.flower em{
+	background: url('../images/flowerS.png') no-repeat;
+}
+.poptip .rank ul li p.egg em{
+	background: url('../images/eggS.png') no-repeat;
+}
+.poptip .rank ul li p.slipper em{
+	background: url('../images/slipperS.png') no-repeat;
+}
+
 
 
 .ellipsis {

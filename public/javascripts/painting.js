@@ -236,42 +236,79 @@ $(document).ready(function(){
 	//用户接受聊天消息广播
 	var chat_ul = $('.world_chat .chat_area .chat ul'),
 		drawarea = $('.drawarea'),
-		poptip = $('.poptip');
-	socket.on('receiveInRoom',function(data){
-		function addScore(obj,score){
-			obj.find('b').text('+'+score).show().hide(3000);
-			score = parseInt(obj.children('p.score').text()) + score;
-			obj.children('p.score').text(score);
+		poptip = $('.poptip'),
+		integral = [];
+	/*保存用户积分和礼物数目*/
+	function holdScore(name,score,flower,egg,slipper,headimg){
+		if(!integral.length){
+			integral.push({name:name,score:score,flower:flower,egg:egg,slipper:slipper,headimg:headimg});
+		} else {
+			var i;
+			for(i = 0;i < integral.length ;i++){
+				if(integral[i].name == name){
+					integral[i].score = score;
+					integral[i].flower += flower;
+					integral[i].egg += egg;
+					integral[i].slipper += slipper;
+					return false;
+				}
+			}
+			if (i == integral.length){
+				integral.push({name:name,score:score,flower:flower,egg:egg,slipper:slipper,headimg:headimg});
+			}
 		}
+	}
+	function addScore(obj,score,flower,egg,slipper){
+		obj.find('b').text('+'+score).show().hide(3000);
+		score = parseInt(obj.children('p.score').text()) + score;
+		obj.children('p.score').text(score);
+		obj.find('.per_info .score span').text(score);
+		var name = obj.attr('_name'),
+			headimg = obj.children('img').attr('src');
+		holdScore(name,score,flower,egg,slipper,headimg);
+		console.log(integral);
+	}
+	socket.on('receiveInRoom',function(data){
+		
 		if(data.correct){
 			chat_ul.append('<li class="correct"><span>'+data.name+'</span>回答正确！</li>');
 			if((drawarea.find('.riddler ul li.correct').length) == (drawarea.find('.riddler ul li').length-2)){
-				//drawarea.find('.top .countdown').text('1');
+				drawarea.find('.top .countdown').text('1');
 			}
 			var li_current = drawarea.find('.riddler ul li.current');
 			if(!drawarea.find('.riddler ul li.correct').length){								
-				addScore(li_current,3);
+				addScore(li_current,3,0,0,0);
 				if(parseInt(drawarea.find('.top .countdown').text()) > 25){
 					chat_ul.append('<li>有人回答正确。游戏将在25S内结束。</li>');
 					drawarea.find('.top .countdown').text('25');
 				}
+				drawarea.find('.riddler ul li').each(function(){
+					if($(this).attr('_name') == data.name){
+						$(this).addClass('correct');
+						$(this).find('b').text('+1').show().hide(3000);				
+						addScore($(this),2,0,0,0);
+						
+					}
+				});
 			} else {				
-				addScore(li_current,1);
+				addScore(li_current,1,0,0,0);
+				drawarea.find('.riddler ul li').each(function(){
+					if($(this).attr('_name') == data.name){
+						$(this).addClass('correct');
+						$(this).find('b').text('+1').show().hide(3000);				
+						addScore($(this),1,0,0,0);
+						
+					}
+				});
 			}
-			drawarea.find('.riddler ul li').each(function(){
-				if($(this).attr('_name') == data.name){
-					$(this).addClass('correct');
-					$(this).find('b').text('+1').show().hide(3000);				
-					addScore($(this),1);
-					
-				}
-			});
+			
 
 		} else {
 			chat_ul.append(template('chat_list',data));
 		}
 	});
 	var count = setInterval(function(){
+		$('.count').hide().fadeTo(50).show();
 		var time = $('.count').text();
 		time = parseInt(time);
 		time -- ;
@@ -336,6 +373,31 @@ $(document).ready(function(){
 					}
 					draw_time();
 					chat_ul.append('<li>********回合开始********</li>');
+				} else {
+					poptip.show().find('.answer').hide();
+					var length = integral.length;
+					for(var i = 0;i < length-1;i ++){
+						for(var j = length-1;j > i;j --){							
+							if(integral[j].score > integral[j-1].score){
+								var temp = integral[j];
+									integral[j] = integral[j-1];
+									integral[j-1] = temp;
+							}
+						}
+					}					
+					$('.poptip .rank ul').html(template('rank_list',{list:integral}));
+					poptip.find('.rank').show().find('ul').show();
+					//一局游戏结束，回到等待房间。
+					var rank_countdown = setInterval(function(){
+						var times = parseInt($('.poptip .rank .rank_countdown span').text());
+						times --;
+						$('.poptip .rank .rank_countdown span').text(times);
+						if(times <= 0){
+							console.log(111111);
+							window.location.href = '/room/waitroom?roomid='+roomid;
+							clearInterval(rank_countdown);
+						}
+					},1000);
 				}
 			}
 		},1000);
@@ -396,4 +458,41 @@ $(document).ready(function(){
 		poptip.find('h5').text(data.correct+'人猜对');
 		ans_time();
 	});
+	//每轮游戏结束，用户送花送鸡蛋等
+	poptip.find('.answer ul li').click(function(i){
+		if(!$(this).siblings('li').hasClass('click')){
+			var index = $(this).index(),
+				type = ['鸡蛋','鲜花','拖鞋'];
+			$(this).addClass('click');
+			socket.emit('sendGift',{roomid:roomid,name:name,type:type[index]});
+		}
+	});
+	socket.on('getGiftMess',function(data){
+		console.log(data);
+		chat_ul.append('<li><span>'+data.name+'</span>送出'+data.type+'</li>');
+		var li_current = drawarea.find('.riddler ul li.current'),
+			name = li_current.attr('_name'),
+			score = parseInt(li_current.children('.score').text()),
+			headimg = li_current.children('img').attr('src');
+			flower=0,egg=0,slipper=0;
+		switch(data.type){
+			case '鲜花' :
+				score = 2;
+				flower = 1;
+				break;
+			case '鸡蛋' :
+				score = 0;
+				egg = 1;
+				break;
+			case '拖鞋' :
+				score = -2;
+				slipper = 1;
+				break;
+			default:
+				break;
+		}
+		addScore(li_current,score,flower,egg,slipper);
+		console.log(integral);
+	});
+	
 });

@@ -211,6 +211,7 @@ router.get('/room/waitroom',function(req,res){
 		num = req.query.num || 7,
 		owner = true;
 	Room.find({'roomid':req.query.roomid},function(err,docs){
+		console.log(req.query.roomid);
 		if(docs.length){
 			if(req.cookies.owner!='true'){
 				num = docs[0].playernum;
@@ -474,6 +475,12 @@ io.sockets.on('connection',function(socket){
 	socket.on('answer',function(msg){
 		console.log(msg);
 		socket.broadcast.to(msg.roomid).emit('getAnswer',msg);
+	});
+	//每轮结束后玩家送礼
+	socket.on('sendGift',function(msg){
+		console.log(msg);
+		socket.broadcast.to(msg.roomid).emit('getGiftMess',msg);
+		socket.emit('getGiftMess',msg);
 	});
 	socket.on('message',function(msg){    //收到客户端发送来的消息。msg为数据。
 	if(msg.mx)

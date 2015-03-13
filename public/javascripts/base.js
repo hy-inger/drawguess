@@ -1,5 +1,4 @@
 //世界公屏聊天消息。
-
 	socket = io.connect('ws://localhost',{
 	 		transports: ['websocket'],
 	 		"try multiple transports": false,
