@@ -145,13 +145,12 @@ $(document).ready(function(){
 	//用户离开房间广播
 	socket.on('leaveInRoom',function(data){
 		console.log(data);
-		var name = data.name,
+		var leave_name = data.name,
 			owner = data.owner,
 			players_li = $('.player_list .players ul li');
 		players_li.each(function(i){
-			if($(this).children('h4').text()  == name){
-				//$(this).replaceWith('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
-				console.log(name);
+			if($(this).children('h4').text()  == leave_name){				
+				console.log(leave_name);
 				var html = template('player_list',data);
 				$(this).before('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
 				$(this).remove();
@@ -164,6 +163,10 @@ $(document).ready(function(){
 			for(var j = 0;j < players_li.length;j++){					
 				if(players_li.eq(j).find('.owner').length <= 0){
 					players_li.eq(j).children('img').before('<p class="owner"><em></em>房主</p>');
+					console.log(name);
+					if(players_li.eq(j).children('h4').text() == name){
+						$('.player_list .top .action').removeClass('hide');
+					}
 					return false;
 				}	
 			}

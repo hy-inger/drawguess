@@ -541,6 +541,9 @@ ul{
 	width:240px;
 	height:62px;
 }
+.player_list .top .action.hide{
+	visibility: hidden;
+}
 .player_list .top .action a{
 	color:#130202;
 	cursor:pointer;
@@ -648,7 +651,7 @@ ul{
 .player_list .players ul li:nth-child(8) img{
 	background: #ad8666 url('../images/forbid3.png') no-repeat;
 }
-.player_list .players ul li h4{
+.player_list .players ul li>h4{
 	color:#802432;
 	font-size: 13px;
 	width:120px;

@@ -51,6 +51,7 @@ router.post('/register/action',function(req,res){
 			var user = docs;
 			console.log(docs);
 			req.session.user = {};
+			req.session.user._id = user._id;
 			req.session.user.name = user.name;
 			req.session.user.headimg = user.headimg;
 			req.session.user.sex = user.sex;
@@ -71,6 +72,7 @@ router.post('/login',function(req,res){
 			var user = docs[0];
 			if(docs[0].password == pw){
 				req.session.user = {};
+				req.session.user._id = user._id;
 				req.session.user.name = user.name;
 				req.session.user.headimg = user.headimg;
 				req.session.user.sex = user.sex;
@@ -95,33 +97,24 @@ router.get('/logout',function(req,res){
 /*进入世界大厅获取各房间信息*/
 router.get('/room/hall',checkLogin);
 router.get('/room/hall',function(req,res){
-	var name = req.session.user.name;
-	var user;
-	User.find({'name':name},function(err,docs){
-		user = {
-			'name':docs[0].name,
-			'headimg':docs[0].headimg,
-			'sex':docs[0].sex,
-			'score':docs[0].score,
-			'flower':docs[0].flower,
-			'popular':docs[0].popular
-		};
-		Room.find(function(err,docs){
-			if(docs.length){
-				docs.sort({"_id":1});
-				docs = docs.slice(0,6);
-				for(var i = 0 ;i < docs.length; i++){
-					var num = parseInt(docs[i].playernum);
-					if(docs[i].user.length < num);
-						docs[i].user.length = num;
-				}
-				
+	Room.find().populate({path:'user',select:'name headimg score sex score flower popular',}).exec(function(err,docs){
+		console.log(docs);
+		var user = req.session.user;
+		if(docs.length){
+			docs.sort({"_id":1});
+			docs = docs.slice(0,6);
+			for(var i = 0 ;i < docs.length; i++){
+				var num = parseInt(docs[i].playernum);
+				if(docs[i].user.length < num);
+					docs[i].user.length = num;
 			}
+		}
+		User.find({name:req.session.user.name},function(err,doc){
+			console.log(doc);
+			var user = doc[0];
 			res.render('room/hall',{'item':docs,'user':user});
-		});
-	});	
-	
-
+		});		
+	});
 });
 //用户切换房间列表
 router.get('/room/switchList',function(req,res){
@@ -129,7 +122,7 @@ router.get('/room/switchList',function(req,res){
 	var operate = req.query.operate;
 	if(operate == '2'){					//向后翻页
 		var num = page*6; 		
-		Room.find(function(err,docs){
+		Room.find().populate({path:'user',select:'name headimg score sex score flower popular',}).exec(function(err,docs){
 			if(docs.length){
 				docs.sort({"_id":1});
 				docs = docs.slice(num,num+6);
@@ -138,7 +131,7 @@ router.get('/room/switchList',function(req,res){
 		});
 	} else {							//operate = 1，向前翻页。
 		var num = (page-2)*6; 		
-		Room.find(function(err,docs){
+		Room.find().populate({path:'user',select:'name headimg score sex score flower popular',}).exec(function(err,docs){
 			if(docs.length){
 				docs.sort({"_id":1});
 				docs = docs.slice(num,num+6);
@@ -157,19 +150,11 @@ router.get('/room/playerEnter',function(req,res){
 		if(roompw && docs[0].roompw != roompw){
 			res.jsonp({'message':'pwerror'});
 		} else if((roompw && docs[0].roompw == roompw) || !roompw){
-			var data = {
-				name:req.session.user.name,
-				sex:req.session.user.sex,
-				headimg:'../'+req.session.user.headimg,
-				score:req.session.user.score,
-				flower:req.session.user.flower,
-				popular:req.session.user.popular,
-				owner:false
-			};
+			var data = req.session.user._id;
 			Room.update({'roomid':roomid},{'$push':{'user':data}},function(err,docs){
 				res.cookie('owner',false);
 				res.jsonp({'message':'success'});
-			});
+			});			
 		}
 	});
 
@@ -180,21 +165,17 @@ router.post('/room/create',function(req,res){
 		roomid;
 	Room.count(function(err,docs){
 		roomid = '00'+docs;
+		var user_id = req.session.user._id;
+		console.log(user_id);
 		var room = new Room({
 			roomid : roomid,
 			roompw : req.body.pw,
 			playernum : num,
-			user : [{
-				name:req.session.user.name,
-				sex:req.session.user.sex,
-				headimg:'../'+req.session.user.headimg,
-				score:req.session.user.score,
-				flower:req.session.user.flower,
-				popular:req.session.user.popular,
-				owner:true
-			}]
+			ownername : req.session.user.name,				
+			user:user_id
 		});
 		room.save(function(err,docs){
+			console.log(docs);
 			req.session.roompw = req.body.pw;
 			res.cookie('owner',true);
 			res.jsonp({message:'success',roomid:roomid});
@@ -207,38 +188,36 @@ router.get('/room/waitroom',checkLogin);
 router.get('/room/waitroom',function(req,res){
 	var name = req.session.user.name;
 	var roompw = req.session.roompw;
-	var user,players,
+	var players,
 		num = req.query.num || 7,
 		owner = true;
-	Room.find({'roomid':req.query.roomid},function(err,docs){
-		console.log(req.query.roomid);
+	Room.find({'roomid':req.query.roomid}).populate({path:'user',select:'name headimg score sex score flower popular',}).exec(function(err,docs){
 		if(docs.length){
-			if(req.cookies.owner!='true'){
+			res.cookie('owner',owner);
+			if(docs[0].ownername != name){
 				num = docs[0].playernum;
-				owner = false;				
+				owner = false;
+				res.cookie('owner',owner);			
 			}
-			players = docs[0].user;
-			User.find({'name':name},function(err,docs){
-				user = {
-					'roomid':req.query.roomid,
-					'num':parseInt(num),
-					'roompw':roompw,
-					'name':docs[0].name,
-					'headimg':docs[0].headimg,
-					'sex':docs[0].sex,
-					'score':docs[0].score,
-					'flower':docs[0].flower,
-					'popular':docs[0].popular,
-					'owner' : owner
-				};
+			players = docs[0].user;	
+			for(var i = 0;i < players.length;i++){
+				if(players[i].name == docs[0].ownername){
+					players[i].owner = true;
+				}
+			}
+			User.find({name:name},function(err,doc){
+				var user = doc[0];
+				user.roomid = req.query.roomid;
+				user.num = parseInt(num);
+				user.roompw = roompw;
+				user.owner = owner;	
 				res.render('room/waitroom',{user:user,players:players,num:num});
-				
 			});
+			
 		} else {
 			res.redirect('/room/hall');
 		}
-	});
-		
+	})
 
 });
 //用户离开房间
@@ -246,19 +225,19 @@ router.post('/room/leave',function(req,res){
 	var roomid = req.body.roomid,
 		name = req.body.name,
 		owner;
-	Room.find({'roomid':roomid},function(err,docs){
+	Room.find({'roomid':roomid}).populate({path:'user',select:'name'}).exec(function(err,docs){
+		console.log(docs);
 		var user = docs[0].user;
 		for(var i = 0; i<user.length;i++){
 			if(user[i].name == name){
-				owner = user[i].owner;
 				user.splice(i,1);
 			}
 		}
 		if(user.length){
-			if(owner){
-				user[0].owner = true;
+			if(docs[0].ownername == name){
+				docs[0].ownername = user[0].name;
 			}
-			Room.update({'roomid':roomid},{'$set':{user:user}},function(err,docs){
+			Room.update({'roomid':roomid},{'$set':{user:user,ownername:docs[0].ownername}},function(err,docs){
 				res.clearCookie('owner');
 				res.jsonp({'message':'add'});
 			});
@@ -268,6 +247,7 @@ router.post('/room/leave',function(req,res){
 			});
 		}
 	});
+
 	
 });
 /*房主改变房间可进入人数*/
@@ -302,35 +282,28 @@ router.get('/room/painting', function(req, res) {
 		roomid = req.query.roomid,
 		first_drawer = false,
 		players = [],ownerimg = '',word = '';
-	Room.find({'roomid':roomid},function(err,docs){
+
+	Room.find({'roomid':roomid}).populate({path:'user',select:'name headimg score sex score flower popular'}).exec(function(err,docs){
 		players = docs[0].user;
 		for(var i = 0;i < players.length; i++){
-			if(players[i].owner){
+			if(players[i].name == ownername){
 				ownerimg = players[i].headimg;
+				players[i].owner = true;
 			}
 		}
 		if(ownername == name){
 			first_drawer = true;
-		}	
-		User.find({'name':name},function(err,docs){
-			user = {
-				'name':docs[0].name,
-				'headimg':docs[0].headimg,
-				'sex':docs[0].sex,
-				'score':docs[0].score,
-				'flower':docs[0].flower,
-				'popular':docs[0].popular
-			};
-			if(ownername == name){
-				var random = Math.floor(Math.random()*4);
-				Word.find(function(err,docs){
-					word = docs[random].word;
-					room_word.push({
-						roomid:roomid,
-						word:docs[random].word,
-						tip1:docs[random].tip1,
-						tip2:docs[random].tip2
-					});
+			var random = Math.floor(Math.random()*4);
+			Word.find(function(err,docs){
+				word = docs[random].word;
+				room_word.push({
+					roomid:roomid,
+					word:docs[random].word,
+					tip1:docs[random].tip1,
+					tip2:docs[random].tip2
+				});
+				User.find({name:name},function(err,doc){
+					var user = doc[0];
 					res.render('room/painting',{
 						roomid:roomid,
 						user:user,
@@ -341,7 +314,10 @@ router.get('/room/painting', function(req, res) {
 						word:word
 					});
 				});
-			} else {
+			});
+		} else {
+			User.find({name:name},function(err,doc){
+				var user = doc[0];
 				res.render('room/painting',{
 					roomid:roomid,
 					user:user,
@@ -351,8 +327,8 @@ router.get('/room/painting', function(req, res) {
 					first:first_drawer,
 					word:word
 				});
-			}
-		});
+			});
+		}
 	});
 });
 /*作画用户获取词语*/
@@ -387,6 +363,38 @@ router.get('/room/getTip',function(req,res){
 		}
 	}
 });
+/*每局游戏结束时将用户积分礼物等存入数据库*/
+router.get('/room/saveScore',function(req,res){
+	var integral = req.query.integral;
+	console.log(req.session.user);
+	for(var i = 0;i < integral.length;i++){
+		if(req.session.user.name == integral[i].name){
+			req.session.user.score = integral[i].score;
+			req.session.user.flower = integral[i].flower;			
+		}			
+	}
+	console.log(req.session.user);
+	User.find(function(err,docs){
+		var j = 0;
+		docs.forEach(function(doc){
+			console.log(j);
+			for(var i = 0;i < integral.length;i++){
+				if(doc.name == integral[i].name){
+					doc.score += parseInt(integral[i].score);
+					doc.flower += parseInt(integral[i].flower);
+					doc.save();
+					j++;
+					return false;
+				}			
+			}
+			console.log(doc);
+			if(j == integral.length){
+				return false;
+			}
+		});
+		
+	});
+});
 /*与客户端通信传送消息*/
 var client = {};
 var joinRoom = [];
@@ -400,7 +408,7 @@ io.sockets.on('connection',function(socket){
 	socket.on('joinWaitRoom',function(msg){ 
 		var roomid = msg.roomid;
 		socket.broadcast.emit('reload',{name:msg.name});
-		socket.join(msg.roomid);//刷新相当于断开重连，每次的socket.id不同。所以每次都要重新加入room.bug之一。
+		socket.join(msg.roomid);//刷新相当于断开重连，每次的socket.id不同。所以每次都要重新加入.room.bug之一。
 		joinRoom.push({id:'room'+socket.id,name:msg.name,roomid:msg.roomid,owner:msg.owner,joinid:socket.join().id});
 		if(!client[roomid])
 		  client[roomid] = [];
@@ -415,7 +423,6 @@ io.sockets.on('connection',function(socket){
 		  socket.broadcast.to(msg.roomid).emit('joinWaitRoom',msg);//用户进入房间广播给同房间用户
 		  socket.broadcast.emit('joinRoomToHall',msg);    //用户进入房间广播给世界用户
 		}
-
 	});
 	socket.on('sendInRoom',function(msg){     //用户发送聊天消息房间内广播
 		if(msg.gameroom && !msg.drawer){

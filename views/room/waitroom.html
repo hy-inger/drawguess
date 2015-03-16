@@ -15,11 +15,9 @@
 		<div class="left player_list">
 			<div class='top'>
 				<h1><%=user.roomid%></h1>
-				<div class="action">
-				<%if(user.owner){%>
+				<div class="action <%if(!user.owner){%>hide<%}%>">				
 					<a class='begin'>立即开始</a>
-					<p><a class='addtime'>加&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时</a><a class='invite'>广播邀请</a></p>
-				<%}%>
+					<p><a class='addtime'>加&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时</a><a class='invite'>广播邀请</a></p>				
 				</div>
 				
 				<div class="countdown">20</div>

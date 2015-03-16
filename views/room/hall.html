@@ -46,9 +46,9 @@
 								<%for (var j = 0;j<item[i].user.length;j++){%>
 								<%if (!!item[i].user[j]){%>	
 								<li _username='<%= item[i].user[j].name%>'>
-									<img src='<%= item[i].user[j].headimg%>'/>
+									<img src='../<%= item[i].user[j].headimg%>'/>
 									<div class="per_info">
-										<img src='<%= item[i].user[j].headimg%>'/>
+										<img src='../<%= item[i].user[j].headimg%>'/>
 										<h4 class='ellipsis'><%= item[i].user[j].name%></h4>
 										<em class="sex <%= item[i].user[j].sex%>"></em>
 										<em class="hi"></em>
@@ -56,7 +56,7 @@
 										<div>
 											<p class="score">积 分：<span><%= item[i].user[j].score%></span></p>
 											<p class="flower">鲜 花：<span><%= item[i].user[j].flower%></span></p>
-											<p class="popular">人 气：<span><%= item[i].user[j].flower%></span></p>
+											<p class="popular">人 气：<span><%= item[i].user[j].popular%></span></p>
 										</div>
 									</div>
 								</li>
@@ -126,9 +126,9 @@
 			{{each room.user as user i}}
 			{{if user}}
 			<li _username='{{user.name}}'>
-				<img src='{{user.headimg}}'/>
+				<img src='../{{user.headimg}}'/>
 				<div class="per_info">
-					<img src='{{user.headimg}}'/>
+					<img src='../{{user.headimg}}'/>
 					<h4>{{user.name}}</h4>
 					<em class="sex {{user.sex}}"></em>
 					<em class="hi"></em>

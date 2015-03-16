@@ -263,6 +263,9 @@ $(document).ready(function(){
 		score = parseInt(obj.children('p.score').text()) + score;
 		obj.children('p.score').text(score);
 		obj.find('.per_info .score span').text(score);
+		obj.find('.per_info .flower span').text(flower);
+		$('.world_chat .user_info .score span').text(score);
+		$('.world_chat .user_info .flower span').text(flower);
 		var name = obj.attr('_name'),
 			headimg = obj.children('img').attr('src');
 		holdScore(name,score,flower,egg,slipper,headimg);
@@ -325,7 +328,7 @@ $(document).ready(function(){
 		show_answer();
 	});
 	//倒计时逻辑
-	draw_time();
+	//draw_time();
 	function ans_time(){
 		var ans_time = setInterval(function(){
 			var answer = poptip.find('.answer div span');
@@ -494,5 +497,35 @@ $(document).ready(function(){
 		addScore(li_current,score,flower,egg,slipper);
 		console.log(integral);
 	});
-	
+	integral=[{
+		name:'huang',
+		score:9,
+		flower:3,
+		egg:0,
+		slipper:0,
+		headimg:''
+	},{
+		name:'ying',
+		score:8,
+		flower:3,
+		egg:0,
+		slipper:0,
+		headimg:''
+	},{
+		name:'huangying',
+		score:10,
+		flower:3,
+		egg:0,
+		slipper:0,
+		headimg:''
+	},
+	]
+	$.ajax({
+			url:'/room/saveScore',
+			type:'GET',
+			data:{integral:integral},
+			success:function(data){
+				console.log(data);
+			}
+		});
 });

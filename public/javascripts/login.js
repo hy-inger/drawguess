@@ -75,6 +75,7 @@ $(document).ready(function(){
 				url:'/register/action',
 				async:false,
 				success:function(data){
+					console.log(data);
 					if(data.message == 'success'){
 						window.location.replace('http://localhost:3000/room/hall');				
 					}

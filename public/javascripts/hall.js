@@ -74,6 +74,7 @@ $(document).ready(function(){
 				data:ownerdata,
 				async:false,
 				success:function(data){
+					console.log(data);
 					poptip.hide();
 					window.location.replace('/room/waitroom?roomid=' + data.roomid +'&num=' + num);
 				}

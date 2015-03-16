@@ -14,17 +14,25 @@ var userScheMa = new Schema({//new Schema()中传入一个JSON对象，该对象
 	sex:String,
 	age:String,
 	headimg:String,
-	score:String,
-	flower:String,
-	popular:String
+	score:Number,
+	flower:Number,
+	popular:Number
 }); 
 exports.user = db.model('users', userScheMa); // 与users集合关联
 
-var roomScheMa = new mongoose.Schema({
+/*var roomScheMa = new mongoose.Schema({
 	roomid:String,
 	roompw:String,
 	playernum:String,
 	user:Array
+});
+exports.room = db.model('rooms',roomScheMa);*/
+var roomScheMa = new mongoose.Schema({
+	roomid:String,
+	roompw:String,
+	playernum:String,
+	ownername:String,
+	user:[{type:Schema.Types.ObjectId,ref:'users'}]
 });
 exports.room = db.model('rooms',roomScheMa);
 
