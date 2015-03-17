@@ -366,14 +366,6 @@ router.get('/room/getTip',function(req,res){
 /*每局游戏结束时将用户积分礼物等存入数据库*/
 router.get('/room/saveScore',function(req,res){
 	var integral = req.query.integral;
-	console.log(req.session.user);
-	for(var i = 0;i < integral.length;i++){
-		if(req.session.user.name == integral[i].name){
-			req.session.user.score = integral[i].score;
-			req.session.user.flower = integral[i].flower;			
-		}			
-	}
-	console.log(req.session.user);
 	User.find(function(err,docs){
 		var j = 0;
 		docs.forEach(function(doc){
@@ -392,7 +384,6 @@ router.get('/room/saveScore',function(req,res){
 				return false;
 			}
 		});
-		
 	});
 });
 /*与客户端通信传送消息*/

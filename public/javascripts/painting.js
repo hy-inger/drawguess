@@ -328,7 +328,7 @@ $(document).ready(function(){
 		show_answer();
 	});
 	//倒计时逻辑
-	//draw_time();
+	draw_time();
 	function ans_time(){
 		var ans_time = setInterval(function(){
 			var answer = poptip.find('.answer div span');
@@ -387,16 +387,25 @@ $(document).ready(function(){
 									integral[j-1] = temp;
 							}
 						}
-					}					
+					}
+					if(drawer){
+						$.ajax({
+							url:'/room/saveScore',
+							type:'GET',
+							data:{integral:integral},
+							success:function(data){
+								console.log(data);
+							}
+						});		
+					}		
 					$('.poptip .rank ul').html(template('rank_list',{list:integral}));
 					poptip.find('.rank').show().find('ul').show();
 					//一局游戏结束，回到等待房间。
 					var rank_countdown = setInterval(function(){
 						var times = parseInt($('.poptip .rank .rank_countdown span').text());
 						times --;
-						$('.poptip .rank .rank_countdown span').text(times);
+						$('.poptip .rank .rank_countdown span').text(times);						
 						if(times <= 0){
-							console.log(111111);
 							window.location.href = '/room/waitroom?roomid='+roomid;
 							clearInterval(rank_countdown);
 						}
@@ -497,35 +506,5 @@ $(document).ready(function(){
 		addScore(li_current,score,flower,egg,slipper);
 		console.log(integral);
 	});
-	integral=[{
-		name:'huang',
-		score:9,
-		flower:3,
-		egg:0,
-		slipper:0,
-		headimg:''
-	},{
-		name:'ying',
-		score:8,
-		flower:3,
-		egg:0,
-		slipper:0,
-		headimg:''
-	},{
-		name:'huangying',
-		score:10,
-		flower:3,
-		egg:0,
-		slipper:0,
-		headimg:''
-	},
-	]
-	$.ajax({
-			url:'/room/saveScore',
-			type:'GET',
-			data:{integral:integral},
-			success:function(data){
-				console.log(data);
-			}
-		});
+	
 });
