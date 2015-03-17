@@ -14,6 +14,7 @@
 		roomid = $('.top h1').text() || '',
 		gameroom = false,
 		drawer = false;
+		owner = false;
 	$(document).on('mouseenter mouseleave','.world_hall .room_list ul li .online ul li,.world_chat .chat_area .chat ul li .sender img,.player_list .players ul li,.riddler ul li',function(event){
 		if($(this).parent('.sender').length){
 			$(this).siblings('.per_info').toggle();
@@ -81,7 +82,18 @@
 			$(this).val('');
 		}
 	});
-
+	/*用户离开房间*/
+	$('.leaveroom').click(function(){
+		socket.emit('leaveRoom',{'name':name,'roomid':roomid,'owner':owner});
+		$.ajax({
+			url:'/room/leave',
+			type:'POST',
+			data:{'name':name,'owner':owner,'roomid':roomid},
+			success:function(data){
+				window.location.replace('/room/hall');
+			}
+		});
+	});
 	/*用户退出账号，清除session记录*/
 	$('.logout').click(function(){
 		$.ajax({

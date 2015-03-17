@@ -424,7 +424,7 @@ ul{
 	background: url('../images/popular.png') no-repeat;
 }
 .main .world_chat .chat_area .chat{
-	height:467px;
+	height:438px;
 	margin-bottom: 40px;
 	margin-top:5px;
 	overflow: auto;
@@ -514,7 +514,7 @@ ul{
 /*大厅页面end*/
 .player_list{
 	padding-top:30px;
-	padding-bottom:58px;
+	padding-bottom:87px;
 }
 .player_list .top{
 	padding-bottom: 10px;
@@ -668,21 +668,23 @@ ul{
 	font-size: 13px;
 
 }
-.player_list .leaveroom{
+/*离开房间*/
+.leaveroom{
 	color:#942F4E;
-	text-align: center;
+	text-align: right;
 	font-size: 16px;
 	font-weight: bold;
 	margin-top: 10px;
+	margin-right: 16px;
 	cursor: pointer;
 	position: relative;
 }
-.player_list .leaveroom em{
+.leaveroom em{
 	position: absolute;
 	width:32px;
 	height:32px;
 	background: url('../images/return.png') no-repeat;
-	left:260px;
+	left:203px;
 	top:-6px;
 }
 /*游戏房间页面*/

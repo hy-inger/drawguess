@@ -150,7 +150,7 @@ $(document).ready(function(){
 	$('.cover').height($('.container').height());
 	var mycanvas = document.getElementById('mycanvas');
 	
-	var owner = document.cookie;
+	owner = document.cookie;
 	owner = owner.split('=')[1];
 	var myDraw = new Draw(mycanvas);
 	myDraw.setlineWidth(2);
@@ -328,7 +328,7 @@ $(document).ready(function(){
 		show_answer();
 	});
 	//倒计时逻辑
-	draw_time();
+	//draw_time();
 	function ans_time(){
 		var ans_time = setInterval(function(){
 			var answer = poptip.find('.answer div span');

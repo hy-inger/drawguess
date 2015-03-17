@@ -31,7 +31,7 @@
       <div class="main clearfix">
           <div class="header">
             <img src="/images/logo.png">
-            <a class="logout">退 出</a>
+            <a class="logout">退 出 账 号</a>
           </div>
           <div class="left drawarea">
             <div class='count'>0</div>
@@ -96,23 +96,27 @@
           <div class="world_chat">        
           <%if(!!user){%>
           <div class="user_info clearfix" _sex='<%=user.sex%>'>
-        <div class="info_left"><img src ='../<%=user.headimg%>'/><h4 class="ellipsis"><%=user.name%></h4></div>
-        <div class="info_right">
-          <p class="score"><em></em>积分：<span><%=user.score%></span></p>
-          <p class="flower"><em></em>鲜花：<span><%=user.flower%></span></p>
-          <p class="popular"><em></em>人气：<span><%=user.popular%></span></p>
-        </div>
-          </div>
-          <%} else {%>
-          <div class="user_info clearfix" _sex=''>
-        <div class="info_left"><img src ='/images/logohead.png'/><h4 class="ellipsis">你画我猜</h4></div>
-        <div class="info_right">
-          <p class="score"><em></em>积分：<span>0</span></p>
-          <p class="flower"><em></em>鲜花：<span>0</span></p>
-          <p class="popular"><em></em>人气：<span>0</span></p>
-        </div>
+            <div class="info_left"><img src ='../<%=user.headimg%>'/><h4 class="ellipsis"><%=user.name%></h4></div>
+            <div class="info_right">
+              <p class="score"><em></em>积分：<span><%=user.score%></span></p>
+              <p class="flower"><em></em>鲜花：<span><%=user.flower%></span></p>
+              <p class="popular"><em></em>人气：<span><%=user.popular%></span></p>
+            </div>
+              </div>
+              <%} else {%>
+              <div class="user_info clearfix" _sex=''>
+            <div class="info_left"><img src ='/images/logohead.png'/><h4 class="ellipsis">你画我猜</h4></div>
+            <div class="info_right">
+              <p class="score"><em></em>积分：<span>0</span></p>
+              <p class="flower"><em></em>鲜花：<span>0</span></p>
+              <p class="popular"><em></em>人气：<span>0</span></p>
+            </div>
           </div>
           <%}%>
+          <div class='leaveroom'>
+            <em></em>
+            离开房间
+          </div>
           <div class="chat_area">
             <div class="chat">
               <ul>

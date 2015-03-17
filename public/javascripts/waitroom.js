@@ -15,8 +15,7 @@ $(document).ready(function(){
 		});
 		window.history.pushState('forward', null, './#forward');
 	}*/
-	console.log(roomid);
-	var owner = document.cookie;
+	owner = document.cookie;
 	owner = owner.split('=')[1];
 	 	/*user_info = $('.world_chat .user_info'),
  		name = user_info.find('h4').text(),
@@ -117,18 +116,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	/*用户离开房间*/
-	$('.player_list .leaveroom').click(function(){
-		socket.emit('leaveRoom',{'name':name,'roomid':roomid,'owner':owner});
-		$.ajax({
-			url:'/room/leave',
-			type:'POST',
-			data:{'name':name,'owner':owner,'roomid':roomid},
-			success:function(data){
-				window.location.replace('/room/hall');
-			}
-		});
-	});
+	
 	//用户加入房间广播
 	socket.on('joinWaitRoom',function(data){
 		$('.player_list .players ul li').each(function(){
@@ -144,13 +132,11 @@ $(document).ready(function(){
 	});
 	//用户离开房间广播
 	socket.on('leaveInRoom',function(data){
-		console.log(data);
 		var leave_name = data.name,
-			owner = data.owner,
+			leave_owner = data.owner,
 			players_li = $('.player_list .players ul li');
 		players_li.each(function(i){
 			if($(this).children('h4').text()  == leave_name){				
-				console.log(leave_name);
 				var html = template('player_list',data);
 				$(this).before('<li><img class="waiting" src=""><span>等待玩家</span><h4></h4></li>');
 				$(this).remove();
@@ -159,13 +145,13 @@ $(document).ready(function(){
 				return false;
 			}
 		});
-		if(owner == 'true'){
+		if(leave_owner == 'true'){
 			for(var j = 0;j < players_li.length;j++){					
 				if(players_li.eq(j).find('.owner').length <= 0){
 					players_li.eq(j).children('img').before('<p class="owner"><em></em>房主</p>');
-					console.log(name);
 					if(players_li.eq(j).children('h4').text() == name){
 						$('.player_list .top .action').removeClass('hide');
+						owner = 'true';
 					}
 					return false;
 				}	
