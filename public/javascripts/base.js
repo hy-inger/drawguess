@@ -83,7 +83,8 @@
 		}
 	});
 	/*用户离开房间*/
-	$('.leaveroom').click(function(){
+	$('.leave_room').click(function(){
+		console.log(owner);
 		socket.emit('leaveRoom',{'name':name,'roomid':roomid,'owner':owner});
 		$.ajax({
 			url:'/room/leave',

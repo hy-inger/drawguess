@@ -278,12 +278,12 @@ var room_word = [];
 router.get('/room/painting',checkLogin);
 router.get('/room/painting', function(req, res) {
 	var name = req.session.user.name,
-		ownername = req.query.ownername,
 		roomid = req.query.roomid,
 		first_drawer = false,
-		players = [],ownerimg = '',word = '';
+		players = [],ownerimg = '',word = '',ownername;
 
 	Room.find({'roomid':roomid}).populate({path:'user',select:'name headimg score sex score flower popular'}).exec(function(err,docs){
+		ownername = docs[0].ownername;
 		players = docs[0].user;
 		for(var i = 0;i < players.length; i++){
 			if(players[i].name == ownername){
@@ -294,6 +294,7 @@ router.get('/room/painting', function(req, res) {
 		if(ownername == name){
 			first_drawer = true;
 			var random = Math.floor(Math.random()*4);
+			res.cookie('owner',true);
 			Word.find(function(err,docs){
 				word = docs[random].word;
 				room_word.push({
@@ -387,29 +388,27 @@ router.get('/room/saveScore',function(req,res){
 	});
 });
 /*与客户端通信传送消息*/
-var client = {};
-var joinRoom = [];
+var client = {};	//已进入房间的用户，用户再次刷新时不再向其他用户推送消息。
+var joinRoom = [];	//保证用户刷新后仍然进入原来的房间，因为刷新后socket.id会改变。
 var heartbeat = 0;
-var linknum = 0;
 //var socket = io.connect();
 io.sockets.on('connection',function(socket){
 	socket.emit('open',{'message':'sss'});
-	linknum ++ ;
-	//console.log(linknum);
 	socket.on('joinWaitRoom',function(msg){ 
 		var roomid = msg.roomid;
 		socket.broadcast.emit('reload',{name:msg.name});
-		socket.join(msg.roomid);//刷新相当于断开重连，每次的socket.id不同。所以每次都要重新加入.room.bug之一。
+		socket.join(msg.roomid);//刷新相当于断开重连，每次的socket.id不同。所以每次都要重新加入。room.bug之一。
 		joinRoom.push({id:'room'+socket.id,name:msg.name,roomid:msg.roomid,owner:msg.owner,joinid:socket.join().id});
 		if(!client[roomid])
 		  client[roomid] = [];
 		var i ;
+		console.log(client);
 		for(i = 0; i < client[msg.roomid].length ; i++){
 		  if(client[msg.roomid][i] == msg.name)
 		    return false; 
 		}
+		console.log(i);
 		if(i == client[msg.roomid].length){
-		  //console.log(msg.name);
 		  client[msg.roomid].push(msg.name);
 		  socket.broadcast.to(msg.roomid).emit('joinWaitRoom',msg);//用户进入房间广播给同房间用户
 		  socket.broadcast.emit('joinRoomToHall',msg);    //用户进入房间广播给世界用户
@@ -442,9 +441,11 @@ io.sockets.on('connection',function(socket){
 		socket.broadcast.emit('ReduceInHall',msg);
 	});
 	socket.on('leaveRoom',function(msg){    //用户离开房间消息广播。
-		for(var i = 0;i < client[msg.roomid].length ; i++){
-			if(client[msg.roomid][i] == msg.name){
-				client[msg.roomid].splice(i,1);
+		if(!!client[msg.roomid]){
+			for(var i = 0;i < client[msg.roomid].length ; i++){
+				if(client[msg.roomid][i] == msg.name){
+					client[msg.roomid].splice(i,1);
+				}
 			}
 		}
 		for(var j = 0;j < joinRoom.length;j++){
@@ -453,6 +454,13 @@ io.sockets.on('connection',function(socket){
 		}
 		if(msg.joinid){	
 			socket.join().id = msg.joinid;
+		}
+		if(room_word.length){
+			for(var k = 0;k < room_word.length;k ++){
+				if(room_word[k].roomid == msg.roomid){
+					msg.answer = room_word[k].word;
+				}
+			}
 		}
 		socket.broadcast.to(msg.roomid).emit('leaveInRoom',msg);
 		socket.broadcast.emit('leaveRoomToHall',msg);
@@ -476,7 +484,6 @@ io.sockets.on('connection',function(socket){
 	});
 	//每轮结束后玩家送礼
 	socket.on('sendGift',function(msg){
-		console.log(msg);
 		socket.broadcast.to(msg.roomid).emit('getGiftMess',msg);
 		socket.emit('getGiftMess',msg);
 	});
@@ -493,7 +500,6 @@ io.sockets.on('connection',function(socket){
 	});
 	socket.on('disconnect',function(msg){
 		console.log(':disconnect');
-		linknum -- ;
 		for(var i = 0;i < joinRoom.length;i++){
 			if(joinRoom[i].id == ('room'+socket.id)){
 				console.log('dis');

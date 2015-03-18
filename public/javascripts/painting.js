@@ -328,7 +328,7 @@ $(document).ready(function(){
 		show_answer();
 	});
 	//倒计时逻辑
-	//draw_time();
+	draw_time();
 	function ans_time(){
 		var ans_time = setInterval(function(){
 			var answer = poptip.find('.answer div span');
@@ -339,12 +339,16 @@ $(document).ready(function(){
 			if(time <= 0){
 				clearInterval(ans_time);
 				poptip.hide();
-				var li_current = drawarea.find('ul li.current');
+				var li_current = drawarea.find('ul li.current'),
+					li_current_next = li_current.next();
 				drawarea.find('ul li').removeClass('correct');
-				if(li_current.next().length){
-					var drawer_name = li_current.next().addClass('current').children('h4').text();
+				if(li_current.hasClass('remove')){
+					li_current.remove();
+				}
+				if(li_current_next.length && drawarea.find('.riddler ul li').length>=2){
+					var drawer_name = li_current_next.addClass('current').children('h4').text();
 					li_current.removeClass('current');
-					drawarea.find('.top img').attr('src',li_current.next().children('img').attr('src'));
+					drawarea.find('.top img').attr('src',li_current_next.children('img').attr('src'));
 					drawarea.find('.top .countdown').text('60');
 					answer.text('5');
 					if(drawer){
@@ -377,6 +381,12 @@ $(document).ready(function(){
 					draw_time();
 					chat_ul.append('<li>********回合开始********</li>');
 				} else {
+					console.log(11);
+					if(!integral.length){
+						$('.riddler ul li').each(function(){
+							addScore($(this),0,0,0,0);
+						});
+					}
 					poptip.show().find('.answer').hide();
 					var length = integral.length;
 					for(var i = 0;i < length-1;i ++){
@@ -456,6 +466,7 @@ $(document).ready(function(){
 	}
 	function show_answer(){
 		poptip.show().find('ul').hide();
+		poptip.find('.answer').show();
 		var answer = $('.top .painting span').text();
 		var correct_num = drawarea.find('.riddler ul li.correct').length;
 		poptip.find('.answer p span').text('【'+answer+'】');
@@ -466,6 +477,7 @@ $(document).ready(function(){
 	socket.on('getAnswer',function(data){
 		console.log(data);
 		poptip.show().find('ul').show();
+		poptip.find('.answer').show();
 		poptip.find('.answer p span').text('【'+data.answer+'】');
 		poptip.find('h5').text(data.correct+'人猜对');
 		ans_time();
@@ -506,5 +518,32 @@ $(document).ready(function(){
 		addScore(li_current,score,flower,egg,slipper);
 		console.log(integral);
 	});
-	
+	/*用户游戏过程中离开房间提示*/
+	$('.leaveroom').click(function(){
+		poptip.find('.answer').hide();
+		poptip.show().find('.logout_tip').show();
+	});
+	$('.poptip .certain').click(function(){
+		$('.poptip').slideUp('fast');
+	});
+	socket.on('leaveInRoom',function(data){
+		var leave_name = data.name;
+		chat_ul.append('<li>'+leave_name+'离开房间。</li>');
+		$('.riddler ul li').each(function(){
+			var li_name = $(this).attr('_name');
+			if(leave_name == li_name){
+				if(!$(this).hasClass('current')){
+					$(this).remove();
+				} else {
+					$('.poptip .logout_tip').hide();
+					$(this).addClass('remove');
+					var correct = $('.riddler ul li.correct').length;
+					poptip.show().find('ul').show();
+					poptip.find('.answer').show().find('p span').text('【'+data.answer+'】');
+					poptip.find('h5').text(correct+'人猜对');
+					ans_time();
+				}
+			}
+		});
+	});
 });

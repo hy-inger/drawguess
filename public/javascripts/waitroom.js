@@ -181,6 +181,6 @@ $(document).ready(function(){
 		//window.location.replace('/room/painting?roomid=' + roomid + '&ownername=' + name + '&ownerimg' + headimg);
 	});	
 	socket.on('gameBeginInRoom',function(data){
-		window.location.replace('/room/painting?roomid=' + data.roomid + '&ownername=' + data.ownername);
+		window.location.replace('/room/painting?roomid=' + data.roomid);
 	});
 });

@@ -1191,7 +1191,16 @@ ul{
 .poptip .rank ul li p.slipper em{
 	background: url('../images/slipperS.png') no-repeat;
 }
-
+.poptip .logout_tip p{
+	text-align: center;
+}
+.poptip .logout_tip p:nth-child(1){
+	padding-bottom: 10px;
+	color:#BD2026;
+}
+.poptip .logout_tip .button a {
+	padding:10px 21px;
+}
 
 
 .ellipsis {
