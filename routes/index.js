@@ -482,6 +482,10 @@ io.sockets.on('connection',function(socket){
 		console.log(msg);
 		socket.broadcast.to(msg.roomid).emit('getAnswer',msg);
 	});
+	//游戏结束后返回到等待房间时，大厅房间恢复为可进入状态。
+	socket.on('GameEnd',function(msg){
+		socket.broadcast.emit('GameEndInHall',msg);
+	});
 	//每轮结束后玩家送礼
 	socket.on('sendGift',function(msg){
 		socket.broadcast.to(msg.roomid).emit('getGiftMess',msg);

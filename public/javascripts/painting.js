@@ -416,6 +416,7 @@ $(document).ready(function(){
 						times --;
 						$('.poptip .rank .rank_countdown span').text(times);						
 						if(times <= 0){
+							socket.emit('GameEnd',{roomid:roomid});
 							window.location.href = '/room/waitroom?roomid='+roomid;
 							clearInterval(rank_countdown);
 						}

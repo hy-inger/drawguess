@@ -242,4 +242,14 @@ $(document).ready(function(){
 			}
 		});
 	});
+	//房间游戏结束时房间恢复为可进入状态
+	socket.on('GameEndInHall',function(data){
+		var roomid = data.roomid;
+		console.log(roomid);
+		$('.room_list ul li').each(function(){
+			if(roomid == $(this).find('.roomid h1').text()){
+				$(this).find('.join_button').removeClass('unjoin');
+			}
+		});
+	});
 });
