@@ -274,7 +274,7 @@ $(document).ready(function(){
 	socket.on('receiveInRoom',function(data){
 		
 		if(data.correct){
-			chat_ul.append('<li class="correct"><span>'+data.name+'</span>回答正确！</li>');
+			chat_ul.append('<li class="name"><span>'+data.name+'</span>猜对了答案！</li>');
 			if((drawarea.find('.riddler ul li.correct').length) == (drawarea.find('.riddler ul li').length-2)){
 				drawarea.find('.top .countdown').text('1');
 			}
@@ -282,7 +282,7 @@ $(document).ready(function(){
 			if(!drawarea.find('.riddler ul li.correct').length){								
 				addScore(li_current,3,0,0,0);
 				if(parseInt(drawarea.find('.top .countdown').text()) > 25){
-					chat_ul.append('<li>有人回答正确。游戏将在25S内结束。</li>');
+					chat_ul.append('<li>有人猜对答案。游戏将在25S内结束。</li>');
 					drawarea.find('.top .countdown').text('25');
 				}
 				drawarea.find('.riddler ul li').each(function(){
@@ -318,6 +318,8 @@ $(document).ready(function(){
 		$('.count').text(time);
 		if(time <= 0){
 			chat_ul.append('<li>********回合开始********</li>');
+			var drawer_name = $('.riddler ul li.current').attr('_name');
+			chat_ul.append('<li class="name">现在由<span>'+drawer_name+'</span>画图</li>');
 			clearInterval(count);
 			$('.count').hide();
 			$('.cover').hide();
@@ -354,7 +356,7 @@ $(document).ready(function(){
 					if(drawer){
 						drawer = false;
 						myDraw.setDrawer(false);
-						drawarea.find('.top .painting').before('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>').remove();
+						drawarea.find('.top .painting').before('<div class="guessing">现在由<span>'+drawer_name+'</span>画图</div>').remove();
 						drawarea.find('.painter').hide();
 					} else {
 						if(drawer_name == name){
@@ -375,11 +377,12 @@ $(document).ready(function(){
 							});
 							
 						} else {
-							drawarea.find('.top .guessing').html('<div class="guessing">现在由<span>'+drawer_name+'</span>作画</div>');
+							drawarea.find('.top .guessing').html('<div class="guessing">现在由<span>'+drawer_name+'</span>画图/div>');
 						}
 					}
 					draw_time();
 					chat_ul.append('<li>********回合开始********</li>');
+					chat_ul.append('<li class="name">现在由<span>'+drawer_name+'</span>画图</li>');
 				} else {
 					console.log(11);
 					if(!integral.length){
@@ -439,6 +442,7 @@ $(document).ready(function(){
 						type:'GET',
 						data:{roomid:roomid,times:1},
 						success:function(data){
+							console.log(data.tip);
 							drawarea.find('.top .guessing').html('提示:'+'<span>'+data.tip+'</span>');	
 						}
 					});
@@ -450,6 +454,7 @@ $(document).ready(function(){
 						type:'GET',
 						data:{roomid:roomid,times:2},
 						success:function(data){
+							console.log(data.tip);
 							drawarea.find('.top .guessing span').text(drawarea.find('.top .guessing span').text()+','+data.tip);	
 						}
 					});

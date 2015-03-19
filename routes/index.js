@@ -143,8 +143,9 @@ router.get('/room/switchList',function(req,res){
 });
 /*用户加入房间，数据加入房间数据库*/
 router.get('/room/playerEnter',function(req,res){
+	console.log(req.query);
 	var roomid = req.query.roomid,
-		roompw = req.query.roompw || '';
+		roompw = req.query.roompw || '';		
 	Room.find({'roomid':roomid},function(err,docs){
 		//var user = docs[0].user;
 		if(roompw && docs[0].roompw != roompw){
@@ -295,8 +296,15 @@ router.get('/room/painting', function(req, res) {
 			first_drawer = true;
 			var random = Math.floor(Math.random()*4);
 			res.cookie('owner',true);
+			console.log(room_word);
 			Word.find(function(err,docs){
 				word = docs[random].word;
+				for(var i = 0; i < room_word.length;i ++){
+					if(room_word[i].roomid == roomid){
+						room_word.splice(i,1);
+					}
+				}
+				console.log(room_word);
 				room_word.push({
 					roomid:roomid,
 					word:docs[random].word,
@@ -353,6 +361,7 @@ router.get('/room/getTip',function(req,res){
 	var roomid = req.query.roomid,
 		times = req.query.times,
 		tip;
+		console.log(room_word);
 	for(var i = 0; i < room_word.length;i ++){
 		if(room_word[i].roomid == roomid){
 			if(times == 1)
@@ -360,7 +369,7 @@ router.get('/room/getTip',function(req,res){
 			else 
 				tip = room_word[i].tip2;
 			res.jsonp({'tip':tip});
-			return false;
+			//return false;
 		}
 	}
 });
@@ -380,7 +389,6 @@ router.get('/room/saveScore',function(req,res){
 					return false;
 				}			
 			}
-			console.log(doc);
 			if(j == integral.length){
 				return false;
 			}

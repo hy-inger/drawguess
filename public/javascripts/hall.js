@@ -107,7 +107,6 @@ $(document).ready(function(){
 		var $this = $(this);
 		if($this.hasClass('unjoin'))
 			return;
-
 		var roomid = $this.siblings('.roomid').find('h1').text();
 		var player_data = {
 			'roomid':roomid,			

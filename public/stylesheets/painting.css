@@ -866,7 +866,7 @@ ul{
 	text-align: center;
 	color:#802432;
 }
-.main .world_chat .chat_area .chat ul li.correct span{
+.main .world_chat .chat_area .chat ul li.name span{
 	color:#747AD5;
 	font-size: 16px;
 }
