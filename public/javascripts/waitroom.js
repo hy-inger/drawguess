@@ -77,6 +77,8 @@ $(document).ready(function(){
 	});
 	//改变房间可进入人数。
 	$('.player_list .players ul li').click(function(){
+		if(owner == 'false')
+			return;
 		var img = $(this).children('img');
 		if(img.hasClass('forbid')){
 			img.css('background','#ddc9a8').removeClass('forbid').addClass('waiting').siblings('span').show();

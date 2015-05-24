@@ -311,7 +311,7 @@ $(document).ready(function(){
 		}
 	});
 	var count = setInterval(function(){
-		$('.count').hide().fadeTo(50).show();
+		$('.count').hide().fadeTo(100).show();
 		var time = $('.count').text();
 		time = parseInt(time);
 		time -- ;
@@ -353,6 +353,8 @@ $(document).ready(function(){
 					drawarea.find('.top img').attr('src',li_current_next.children('img').attr('src'));
 					drawarea.find('.top .countdown').text('60');
 					answer.text('5');
+					myDraw.emptyCanvas();
+					socket.send({'type':'empty'});
 					if(drawer){
 						drawer = false;
 						myDraw.setDrawer(false);
